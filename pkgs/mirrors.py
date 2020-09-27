@@ -23,9 +23,9 @@ def change_pypi():
     user = os.path.expanduser('~')
 
     if sys.platform == 'win32':
-        cfg = f"{user}/appdata/roaming/pip/pip.ini"
+        cfg = user + "/appdata/roaming/pip/pip.ini"
     elif sys.platform == 'linux' or sys.platform == 'darwin':
-        cfg = f"{user}/.pip/pip.conf"
+        cfg = user + "/.pip/pip.conf"
 
     os.makedirs(os.path.dirname(cfg), exist_ok=True)
     with open(cfg, 'w', encoding='utf-8') as fp:
@@ -48,7 +48,7 @@ auto_activate_base: false
 
 def change_conda():
     user = os.path.expanduser('~')
-    cfg = f"{user}/.condarc"
+    cfg = user + "/.condarc"
 
     with open(cfg, 'w', encoding='utf-8') as fp:
         fp.write(conda_mirrors)

@@ -67,12 +67,12 @@ def build_system_components(os_id, navigator_id):
     elif os_id == 'android':
         platform = choice(OS_PLATFORM['android'])
         if navigator_id == 'firefox':
-            ua_platform = '%s; Mobile' % platform
+            platform = '%s; Mobile' % platform
         elif navigator_id in ('chrome', 'opera'):
             dev_id = choice(ANDROID_DEV)
             bulid_id = choice(ANDROID_BUILD)
             device_id = '%s Build/%s' % (dev_id, bulid_id)
-            ua_platform = 'Linux; %s; %s' % (platform, device_id)
+            platform = 'Linux; %s; %s' % (platform, device_id)
         res = {'ua_platform': platform}
     elif os_id == 'ios':
         platform = choice(list(IOS_VERSION))
@@ -102,7 +102,7 @@ def build_app_components(os_id, navigator_id):
             'build_version': get_chrome_build(),
         }
     elif navigator_id == 'ie':
-        num_ver, build_version, trident_version = choice(IE_VERSION)
+        _, build_version, trident_version = choice(IE_VERSION)
         res = {
             'build_version': build_version,
             'trident_version': trident_version,
