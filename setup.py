@@ -1,10 +1,15 @@
+'''
+Date: 2020-09-21 23:48:26
+LastEditors: Rustle Karl
+LastEditTime: 2020-12-17 15:31:44
+'''
 import os.path
 
 from setuptools import setup, find_packages
 
 '''
 python setup.py sdist
-pip install dist/toolkit-py-0.1.3.tar.gz
+pip install dist/toolkit-py-0.1.4.tar.gz
 python setup.py bdist_wheel
 pip install twine
 twine upload dist/*
@@ -22,7 +27,7 @@ with open(os.path.join(cwd, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='toolkit-py',
-    version='0.1.3',
+    version='0.1.4',
     url='https://github.com/fujiawei-dev/toolkit-py',
     keywords=['toolkit', 'toolset'],
     description='Personal toolkit implemented by Python.',
@@ -49,6 +54,7 @@ setup(
             'rpd = pkgs:reproduce',
             'gua = pkgs:script_gua',
             'chs = pkgs:script_chs',
+            'cc = pkgs:cclear',
         ],
     },
 

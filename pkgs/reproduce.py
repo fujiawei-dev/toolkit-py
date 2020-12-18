@@ -29,6 +29,9 @@ tmpl_gitignore = '''\
 upload.ini
 w_*
 replace
+*ttf
+fonts
+cc
 
 # IDE 文件
 .idea
@@ -39,6 +42,7 @@ replace
 # Go 相关
 vendor
 go.sum
+*.exe
 
 # Python 相关
 __pycache__
