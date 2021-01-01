@@ -1,7 +1,7 @@
 '''
 Date: 2020-12-17 15:17:56
 LastEditors: Rustle Karl
-LastEditTime: 2020-12-18 08:21:16
+LastEditTime: 2021-01-01 18:21:45
 '''
 
 import os
@@ -21,13 +21,15 @@ def clear_go_cmts(old: str, new: str):
     '''Clear golang comments.'''
     old_fp = open(old, 'r', encoding='utf-8')
     new_fp = open(new, 'w', encoding='utf-8')
-    while (l := old_fp.readline()):
-        if l.lstrip().startswith('//'):
+    line = old_fp.readline()
+    while line:
+        if line.lstrip().startswith('//'):
             continue
-        if '//' in l:
-            new_fp.write(l[:l.index('//')])
+        if '//' in line:
+            new_fp.write(line[:line.index('//')])
             continue
-        new_fp.write(l)
+        new_fp.write(line)
+        line = old_fp.readline()
     old_fp.close()
     new_fp.close()
 
@@ -37,18 +39,20 @@ def clear_py_cmts(old: str, new: str, strict=True):
     old_fp = open(old, 'r', encoding='utf-8')
     new_fp = open(new, 'w', encoding='utf-8')
     flag = 0
-    while (l := old_fp.readline()):
-        if l.lstrip().startswith("'''") or l.lstrip().startswith('"""'):
+    line = old_fp.readline()
+    while line:
+        if line.lstrip().startswith("'''") or line.lstrip().startswith('"""'):
             flag += 1
             continue
-        if l.rstrip().endswith("'''") or l.rstrip().endswith('"""'):
+        if line.rstrip().endswith("'''") or line.rstrip().endswith('"""'):
             flag = 0
             continue
         if flag % 2 == 1:
             continue
-        if '#' in l and strict:
-            new_fp.write(l[:l.index('#')])
+        if '#' in line and strict:
+            new_fp.write(line[:line.index('#')])
             continue
-        new_fp.write(l)
+        new_fp.write(line)
+        line = old_fp.readline()
     old_fp.close()
     new_fp.close()

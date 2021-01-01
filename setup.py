@@ -1,7 +1,7 @@
 '''
 Date: 2020-09-21 23:48:26
 LastEditors: Rustle Karl
-LastEditTime: 2020-12-17 15:31:44
+LastEditTime: 2021-01-01 18:23:23
 '''
 import os.path
 
@@ -9,7 +9,7 @@ from setuptools import setup, find_packages
 
 '''
 python setup.py sdist
-pip install dist/toolkit-py-0.1.4.tar.gz
+pip install dist/toolkit-py-0.1.5.tar.gz
 python setup.py bdist_wheel
 pip install twine
 twine upload dist/*
@@ -27,7 +27,7 @@ with open(os.path.join(cwd, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='toolkit-py',
-    version='0.1.4',
+    version='0.1.5',
     url='https://github.com/fujiawei-dev/toolkit-py',
     keywords=['toolkit', 'toolset'],
     description='Personal toolkit implemented by Python.',
@@ -63,7 +63,6 @@ setup(
         'Environment :: Console',
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',

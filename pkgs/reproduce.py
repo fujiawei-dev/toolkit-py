@@ -45,6 +45,7 @@ go.sum
 *.exe
 
 # Python 相关
+venv
 __pycache__
 build
 dist
@@ -63,6 +64,7 @@ logs
 
 # 存储文件
 uploads
+storage
 *.db
 
 # Dropbox
