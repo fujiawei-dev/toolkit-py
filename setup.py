@@ -1,19 +1,11 @@
 '''
 Date: 2020-09-21 23:48:26
 LastEditors: Rustle Karl
-LastEditTime: 2021-01-01 18:23:23
+LastEditTime: 2021-03-12 12:33:06
 '''
 import os.path
 
-from setuptools import setup, find_packages
-
-'''
-python setup.py sdist
-pip install dist/toolkit-py-0.1.5.tar.gz
-python setup.py bdist_wheel
-pip install twine
-twine upload dist/*
-'''
+from setuptools import find_packages, setup
 
 # What packages are required for this module to be executed?
 requires = [
@@ -27,7 +19,7 @@ with open(os.path.join(cwd, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='toolkit-py',
-    version='0.1.5',
+    version='0.1.6',
     url='https://github.com/fujiawei-dev/toolkit-py',
     keywords=['toolkit', 'toolset'],
     description='Personal toolkit implemented by Python.',

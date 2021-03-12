@@ -10,7 +10,6 @@ Functions:
 from itertools import product
 from random import choice, randint
 
-import six
 from .exceptions import InvalidOption
 from .constants import *
 
@@ -133,7 +132,7 @@ def get_option_choices(opt_name, opt_value, default_value, all_choices):
     """
 
     choices = []
-    if isinstance(opt_value, six.string_types):
+    if isinstance(opt_value, str):
         choices = [opt_value]
     elif isinstance(opt_value, (list, tuple)):
         choices = list(opt_value)

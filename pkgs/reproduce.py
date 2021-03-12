@@ -66,6 +66,8 @@ logs
 uploads
 storage
 *.db
+testdata
+_gsdata_
 
 # Dropbox
 *.paper
@@ -76,7 +78,7 @@ storage
 tmpl_license = '''\
 The MIT License (MIT)
 
-Copyright (c) 2020 Rustle Karl
+Copyright (c) 2021 Rustle Karl
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
