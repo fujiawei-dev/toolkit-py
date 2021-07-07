@@ -5,10 +5,10 @@ from datetime import datetime
 
 # README.md
 tmpl_readme = '''\
-#
+# README
 '''
 
-# upload.ini
+# upload.sh
 tmpl_upload = '''\
 git init
 git add LICENSE
@@ -26,18 +26,25 @@ git push -u origin master
 # .gitignore
 tmpl_gitignore = '''\
 # 自定义文件
-upload.ini
+upload.sh
 w_*
 replace
 *ttf
 fonts
 cc
+.sync_folder.json
 
 # IDE 文件
 .idea
 .vscode
 .vscode-test/
 .vscodeignore
+
+# Dart
+.dart_tool/
+.packages
+build/
+doc/api/
 
 # Go 相关
 vendor
@@ -72,6 +79,7 @@ _gsdata_
 # Dropbox
 *.paper
 
+.dockerignore
 .gitignore\
 '''
 
@@ -97,7 +105,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.\
-'''.replace('2020', str(datetime.now().year))
+'''.replace('2021', str(datetime.now().year))
 
 tmpl_vscodeignore = '''\
 .vscode/**
@@ -113,14 +121,14 @@ vsc-extension-quickstart.md
 **/*.ts
 '''
 
-files = ['.gitignore', 'LICENSE', 'upload.ini', 'README.md']
+files = ['.gitignore', 'LICENSE', 'upload.sh', 'README.md']
 tmpls = [tmpl_gitignore, tmpl_license, tmpl_upload, tmpl_readme]
 
 # files.append('.vscodeignore')
 # tmpls.append(tmpl_vscodeignore)
 
 
-def reproduce():
+def script_rpd():
     for file, tmpl in zip(files, tmpls):
         if isfile(file):
             continue

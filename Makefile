@@ -4,7 +4,7 @@
 .NOTPARALLEL: ;          # wait for target to finish
 .EXPORT_ALL_VARIABLES: ; # send all vars to shell
 
-VERSION = 0.1.6
+VERSION = 0.1.9
 PACKAGE = toolkit-py
 
 all: setup
