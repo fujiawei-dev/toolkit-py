@@ -1,7 +1,7 @@
 '''
 Date: 2020-09-21 23:48:26
 LastEditors: Rustle Karl
-LastEditTime: 2021-03-12 12:33:06
+LastEditTime: 2021.05.22 20:32:35
 '''
 import os.path
 
@@ -19,7 +19,7 @@ with open(os.path.join(cwd, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='toolkit-py',
-    version='0.1.6',
+    version='0.1.9',
     url='https://github.com/fujiawei-dev/toolkit-py',
     keywords=['toolkit', 'toolset'],
     description='Personal toolkit implemented by Python.',
@@ -33,20 +33,18 @@ setup(
     zip_safe=False,
 
     # 必须附带的数据文件
-    data_files=[('pkgs',
-                 ["pkgs/user_agent/static/android_build.json",
-                  "pkgs/user_agent/static/android_dev.json",
-                  "pkgs/user_agent/static/ios.json",
-                  "pkgs/user_agent/static/opera_build.json", ])],
+    data_files=[('scripts',
+                 ["scripts/user_agent/static/android_build.json",
+                  "scripts/user_agent/static/android_dev.json",
+                  "scripts/user_agent/static/ios.json",
+                  "scripts/user_agent/static/opera_build.json", ])],
 
     entry_points={
         'console_scripts': [
-            'ip = pkgs:external_ip',
-            'ipx = pkgs:external_proxy_ip',
-            'rpd = pkgs:reproduce',
-            'gua = pkgs:script_gua',
-            'chs = pkgs:script_chs',
-            'cc = pkgs:cclear',
+            'rpd = scripts:script_rpd',
+            'gua = scripts:script_gua',
+            'chs = scripts:script_chs',
+            'kieng = scripts:script_kieng',
         ],
     },
 
