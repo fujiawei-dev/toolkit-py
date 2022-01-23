@@ -19,7 +19,7 @@ with open(os.path.join(cwd, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='toolkit-py',
-    version='0.1.9',
+    version='0.1.10',
     url='https://github.com/fujiawei-dev/toolkit-py',
     keywords=['toolkit', 'toolset'],
     description='Personal toolkit implemented by Python.',
