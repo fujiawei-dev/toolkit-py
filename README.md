@@ -49,3 +49,11 @@ Commands:
   py      Create python project scaffold.
   python  Create python project scaffold.
 ```
+
+### Upload pictures to public image hosting server
+
+```shell
+$ upsfortypora test.png
+Upload Success:
+http://dd-static.jd.com/ddimg/jfs/t1/132543/17/21538/145549/61fa87f9E883b9b32/f23efa3a806cab76.jpg
+```
