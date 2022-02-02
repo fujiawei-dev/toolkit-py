@@ -1,6 +1,13 @@
-'''Use function via console.
+'''
+Date: 2020-09-21 23:48:26
+Description: This module is for generating random, valid web navigator's User-Agent HTTP headers.
+LastEditors: Rustle Karl
+LastEditTime: 2022.02.02 15:01
+'''
 
-## Command Line Usage
+'''
+Command Line Usage
+
 ```shell
 $ gua
 Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36 Edge/15.14986
@@ -16,27 +23,30 @@ Mozilla/5.0 (iPhone; CPU iPhone OS 9_3_3 like Mac OS X) AppleWebKit/602.2.14 (KH
 ```
 '''
 
-
 from argparse import ArgumentParser
 
-from .user_agent import generate_user_agent
+from .generate import generate_user_agent
 
 
-def script_gua():
+def command_gua():
     parser = ArgumentParser(
-        usage='%(prog)s [options] usage',
-        description='Generates User-Agent HTTP header',
+            usage='%(prog)s [options] usage',
+            description='Generates User-Agent HTTP header',
     )
+
     parser.add_argument('-o', '--os',
                         help='limit list of os for generation, possible values:\
                         "win", "linux", "mac", "android", "ios", "all"')
-    parser.add_argument('-n', '--navigator',
+
+    parser.add_argument('-n', '--browser',
                         help='limit list of browser engines for generation, possible values:\
-                        "chrome", "firefox", "ie", "edge", "safari", "opera", "all"')
-    parser.add_argument('-d', '--device-type', help='possible values:\
+                        "chrome", "firefox", "edge", "safari", "opera", "all"')
+
+    parser.add_argument('-d', '--platform', help='possible values:\
                         "desktop", "smartphone", "all"')
+
     opts = parser.parse_args()
-    gua = generate_user_agent(os=opts.os,
-                              navigator=opts.navigator,
-                              device_type=opts.device_type)
+
+    gua = generate_user_agent(os=opts.os, browser=opts.browser, platform=opts.platform)
+
     print(gua)
