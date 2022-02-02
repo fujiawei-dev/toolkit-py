@@ -1,8 +1,8 @@
 '''Automatically create some common files.'''
 
-from os.path import isfile
 from datetime import datetime
 from os import mkdir
+from os.path import isfile
 
 # README.md
 tmpl_readme = '''\
@@ -35,6 +35,7 @@ fonts
 cc
 .sync_folder.json
 bin/
+scratches/
 
 # IDE 文件
 .idea
@@ -126,6 +127,7 @@ vsc-extension-quickstart.md
 files = ['.gitignore', 'LICENSE', 'upload.sh', 'README.md']
 tmpls = [tmpl_gitignore, tmpl_license, tmpl_upload, tmpl_readme]
 
+
 # files.append('.vscodeignore')
 # tmpls.append(tmpl_vscodeignore)
 
@@ -134,7 +136,11 @@ def script_rpd():
     for file, tmpl in zip(files, tmpls):
         if isfile(file):
             continue
-        print(tmpl, file=open(file, 'w', encoding='utf-8'))
+        print(tmpl.replace("\r", ""), file=open(file, 'w', encoding='utf-8', newline='\n'))
 
-    mkdir('scratches')
+    try:
+        mkdir('scratches')
+    except FileExistsError:
+        pass
+
     print('OK')
