@@ -11,7 +11,7 @@ SHELL := pwsh.exe
 .SHELLFLAGS := -NoProfile -Command
 endif
 
-VERSION = 0.2.0
+VERSION = 0.2.1
 PACKAGE = toolkit-py
 
 all: install clean
@@ -28,7 +28,7 @@ build:
 install: build
 	pip install --force-reinstall --no-deps dist/$(PACKAGE)-$(VERSION).tar.gz
 
-upload:
+upload: build
 	twine upload dist/$(PACKAGE)-$(VERSION).tar.gz
 
 #清理编译中间文件
