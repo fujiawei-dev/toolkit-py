@@ -23,3 +23,29 @@ Mozilla/5.0 (Linux; Android 8.1; Huawei P20 Lite Build/OPR3.170623.008) AppleWeb
 $ gua -n safari -o ios
 Mozilla/5.0 (iPhone; CPU iPhone OS 9_3_3 like Mac OS X) AppleWebKit/602.2.14 (KHTML, like Gecko) Version/9.0 Mobile/13G34 Safari/602.2
 ```
+
+### Change to other faster open source mirror sites
+
+```shell
+$ cfm
+Usage: cfm [OPTIONS] COMMAND [ARGS]...
+Options:
+  --help  Show this message and exit.
+Commands:
+  py      Change pypi & conda source minors.
+  python  Change pypi & conda source minors.
+```
+
+### Create basic project scaffold.
+
+```shell
+$ cps
+Usage: cps [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  py      Create python project scaffold.
+  python  Create python project scaffold.
+```
