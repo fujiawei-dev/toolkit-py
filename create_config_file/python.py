@@ -16,6 +16,8 @@ def pypirc(read_only=True):
     conf = os.path.join(os.path.expanduser('~'), '.pypirc')
 
     content = '''\
+# https://pypi.org/manage/account/#API%20tokens
+
 [distutils]
 index-servers =
     pypi
