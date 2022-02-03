@@ -8,6 +8,7 @@ import os
 from datetime import datetime
 
 __all__ = [
+    'create_common_files',
     'Entity',
     'TEMPLATE_LICENSE',
     'TEMPLATE_README',
