@@ -33,6 +33,7 @@ clean:
 
 
 def python():
-    create_common_files()
+    create_common_files(['tests','tests/data'])
+
     Entity('requirements.txt', '\n').create()
     Entity(TEMPLATE_MAKEFILE.file, PYTHON_MAKEFILE_CONTENT).create()

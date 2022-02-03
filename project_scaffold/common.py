@@ -65,7 +65,7 @@ TEMPLATE_GITIGNORE = Entity('.gitignore', '''\
 # Others
 .sync_folder.json
 bin/
-scratch/
+scratches/
 .dockerignore
 .gitignore
 
@@ -121,12 +121,19 @@ endif
 ''')
 
 
-def create_common_files():
+def create_common_files(folders: list = None):
     TEMPLATE_LICENSE.create()
     TEMPLATE_README.create()
     TEMPLATE_GITIGNORE.create()
 
-    scratch = 'scratch'
+    if folders is None:
+        folders = []
 
-    if not os.path.exists(scratch):
-        os.mkdir(scratch)
+    folders.extend([
+        'scratches',
+        'examples',
+        '.github/workflows',
+    ])
+
+    for folder in folders:
+        os.makedirs(folder, exist_ok=True)

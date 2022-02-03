@@ -14,11 +14,11 @@ def command_cps():
     pass
 
 
-@command_cps.command(help="Create python project scaffold.")
+@command_cps.command(help="Create Python project scaffold.")
 def py():
     _python()
 
 
-@command_cps.command(help="Create python project scaffold.")
+@command_cps.command(help="Create Python project scaffold.")
 def python():
     _python()
