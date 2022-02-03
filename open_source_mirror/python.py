@@ -30,6 +30,8 @@ def pypi():
                 'trusted-host=mirrors.aliyun.com\n',
         )
 
+    print(conf)
+
 
 def conda():
     # https://www.anaconda.com/
@@ -47,6 +49,9 @@ def conda():
                 'ssl_verify: false\n'
                 'auto_activate_base: false\n'
         )
+
+    print(conf)
+
 
 def python():
     pypi(), conda()
