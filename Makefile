@@ -11,10 +11,10 @@ SHELL := pwsh.exe
 .SHELLFLAGS := -NoProfile -Command
 endif
 
-VERSION = 0.2.1
+VERSION = 0.2.2
 PACKAGE = toolkit-py
 
-all: install clean
+all: test install clean
 
 dep:
 	pip install -r requirements.txt
@@ -30,6 +30,10 @@ install: build
 
 upload: build
 	twine upload dist/$(PACKAGE)-$(VERSION).tar.gz
+
+test:
+	pytest
+	rm -r .pytest_cache
 
 #清理编译中间文件
 clean:

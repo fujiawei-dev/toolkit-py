@@ -21,7 +21,7 @@ with open(os.path.join(cwd, 'README.md'), encoding='utf-8') as f:
 
 setup(
         name='toolkit-py',
-        version='0.2.1',
+        version='0.2.2',
         url='https://github.com/fujiawei-dev/toolkit-py',
         keywords=['toolkit', 'toolset'],
         description='Personal toolkit implemented by Python.',
@@ -41,6 +41,7 @@ setup(
                 'cfm=open_source_mirror:command_cfm',
                 'cps=project_scaffold:command_cps',
                 'upsfortypora=image_hosting_service:command_ups_for_typora',
+                'ccf=create_config_file:command_ccf',
             ],
         },
 

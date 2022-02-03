@@ -10,7 +10,7 @@ PYTHON_MAKEFILE_CONTENT = TEMPLATE_MAKEFILE.content + '''
 VERSION = 1.0.0
 PACKAGE = package
 
-all: install clean
+all: test install clean
 
 dep:
     pip install -r requirements.txt
@@ -25,6 +25,10 @@ install: build
 upload:
     twine upload dist/$(PACKAGE)-$(VERSION).tar.gz
 
+test:
+    pytest
+    rm -r .pytest_cache
+
 clean:
     rm -r build
     rm -r dist
@@ -33,7 +37,7 @@ clean:
 
 
 def python():
-    create_common_files(['tests','tests/data'])
+    create_common_files(['tests', 'tests/data'])
 
     Entity('requirements.txt', '\n').create()
     Entity(TEMPLATE_MAKEFILE.file, PYTHON_MAKEFILE_CONTENT).create()

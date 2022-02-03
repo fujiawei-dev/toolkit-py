@@ -63,3 +63,26 @@ $ upsfortypora test.png
 Upload Success:
 http://dd-static.jd.com/ddimg/jfs/t1/132543/17/21538/145549/61fa87f9E883b9b32/f23efa3a806cab76.jpg
 ```
+
+### Create or display the configuration of commonly used software
+
+```shell
+$ ccf
+Usage: ccf [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  python (py)  Create or display configuration files about Python.
+  
+ $ ccf py -h
+ Usage: ccf py [OPTIONS]
+
+  Create or display configuration files about Python.
+
+Options:
+  -m, --method INTEGER     1 -> .pypirc
+  -r, --read-only BOOLEAN  Read only or create configuration files.
+  -h, --help               Show this message and exit.
+```

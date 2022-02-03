@@ -89,6 +89,7 @@ venv/
 __pycache__/
 dist/
 *egg-info/
+.pytest_cache/
 
 # JavaScript / TypeScript
 node_modules/
