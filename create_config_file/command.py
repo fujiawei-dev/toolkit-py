@@ -7,6 +7,8 @@ LastEditTime: 2022.02.02 18:14
 import click
 from click_aliases import ClickAliasedGroup
 
+from .clash import clash as _clash
+from .hosts import hosts as _hosts
 from .python import python as _python
 
 
@@ -24,3 +26,13 @@ def command_ccf():
 @click.option('--read-only', '-r', default=True, type=bool, help="Read only or create configuration files.")
 def python(method, read_only):
     _python(method, read_only)
+
+
+@command_ccf.command(help="Display configuration file of hosts.")
+def hosts():
+    _hosts()
+
+
+@command_ccf.command(help="Display configuration file of clash.")
+def clash():
+    _clash()

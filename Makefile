@@ -40,3 +40,7 @@ clean:
 	rm -r build
 	rm -r dist
 	rm -r *egg-info
+
+tag:
+	git tag v$(VERSION)
+	git push origin v$(VERSION)
