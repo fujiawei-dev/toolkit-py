@@ -11,7 +11,7 @@ SHELL := pwsh.exe
 .SHELLFLAGS := -NoProfile -Command
 endif
 
-VERSION = 0.2.2
+VERSION = 0.2.3
 PACKAGE = toolkit-py
 
 all: test install clean
@@ -40,3 +40,7 @@ clean:
 	rm -r build
 	rm -r dist
 	rm -r *egg-info
+
+tag:
+	git tag v$(VERSION)
+	git push origin v$(VERSION)
