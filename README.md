@@ -1,7 +1,7 @@
 # Toolkit-Py
 
-![PyPI](https://img.shields.io/pypi/v/toolkit-py)
-![PyPI - License](https://img.shields.io/pypi/l/toolkit-py)
+[![PyPI](https://img.shields.io/pypi/v/toolkit-py)](https://pypi.org/project/toolkit-py/)
+[![PyPI - License](https://img.shields.io/pypi/l/toolkit-py)](https://github.com/fujiawei-dev/toolkit-py/blob/master/LICENSE)
 
 [![Python Package Test](https://github.com/fujiawei-dev/toolkit-py/actions/workflows/python-test.yml/badge.svg)](https://github.com/fujiawei-dev/toolkit-py/actions/workflows/python-test.yml)
 [![Upload Python Package](https://github.com/fujiawei-dev/toolkit-py/actions/workflows/python-publish.yml/badge.svg)](https://github.com/fujiawei-dev/toolkit-py/actions/workflows/python-publish.yml)
@@ -9,7 +9,11 @@
 ## Installation
 
 ```shell
-pip install toolkit-py
+pip install -U toolkit-py
+```
+
+```shell
+pip install -U toolkit-py -i https://pypi.douban.com/simple
 ```
 
 ## Usage
@@ -52,8 +56,10 @@ Options:
   --help  Show this message and exit.
 
 Commands:
-  py      Create python project scaffold.
-  python  Create python project scaffold.
+  base    Create basic project scaffold.
+  notes   Create notes project scaffold.
+  py      Create Python project scaffold.
+  python  Create Python project scaffold.
 ```
 
 ### Upload pictures to public image hosting server
