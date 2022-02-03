@@ -14,6 +14,12 @@ requires = [
     'requests',
 ]
 
+extras_require = {
+    ':python_version < "3.7"': [
+        'dataclasses',
+    ],
+}
+
 # Import the README and use it as the long-description.
 cwd = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(cwd, 'README.md'), encoding='utf-8') as f:
@@ -34,6 +40,7 @@ setup(
         include_package_data=True,
         zip_safe=False,
         install_requires=requires,
+        extras_require=extras_require,
 
         entry_points={
             'console_scripts': [
