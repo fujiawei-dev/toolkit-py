@@ -18,6 +18,16 @@ pip install -U toolkit-py -i https://pypi.douban.com/simple
 
 ## Usage
 
+### Recursively change the encoding of text files in the current folder
+
+```shell
+$ cen
+c05_mbr.asm: GB2312 -> utf-8
+c17_core.asm: GB2312 -> utf-8
+c17_mbr.asm: GB2312 -> utf-8
+nasmide.ini: ascii -> utf-8
+```
+
 ### Generates HTTP User-Agent header
 
 ```shell
