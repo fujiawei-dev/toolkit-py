@@ -16,7 +16,7 @@ TEXT_EXTENSIONS = {
 }
 
 
-def change_encoding(src, dst=None, encoding='utf-8'):
+def change_encoding(src, dst=None, encoding='utf-8', lf=True):
     if os.path.splitext(src)[-1] in TEXT_EXTENSIONS:
         if not dst:
             dst = src
@@ -28,10 +28,14 @@ def change_encoding(src, dst=None, encoding='utf-8'):
             content = fp.read()
 
             original_encoding = chardet.detect(content)['encoding']
-            if original_encoding == encoding:
-                return
-
             content = content.decode(original_encoding).encode(encoding)
+
+            if lf:
+                # CRLF -> LF
+                content = content.replace(b'\r\n', b'\n')
+            else:
+                # LF -> CRLF
+                content = content.replace(b'\n', b'\r\n')
 
             if dst == src:
                 fp.seek(0)
