@@ -22,7 +22,7 @@ def pypi():
 
     os.makedirs(os.path.dirname(conf), exist_ok=True)
 
-    with open(conf, 'w', encoding='utf-8') as fp:
+    with open(conf, 'w', encoding='utf-8', newline='\n') as fp:
         fp.write(
                 '[global]\n'
                 'index-url=https://mirrors.aliyun.com/pypi/simple/\n'
@@ -38,7 +38,7 @@ def conda():
 
     conf = os.path.join(os.path.expanduser('~'), '.condarc')
 
-    with open(conf, 'w', encoding='utf-8') as fp:
+    with open(conf, 'w', encoding='utf-8', newline='\n') as fp:
         fp.write(
                 'channels:\n'
                 '  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/\n'

@@ -13,7 +13,7 @@ import click
 def writer(conf, content='', read_only=True, official=''):
     if not read_only and content != '':
         os.makedirs(os.path.dirname(conf), exist_ok=True)
-        with open(conf, 'w', encoding='utf8') as fp:
+        with open(conf, 'w', encoding='utf8', newline='\n') as fp:
             fp.write(content)
 
     if official:

@@ -33,7 +33,7 @@ clean:
     rm -r build
     rm -r dist
     rm -r *egg-info
-'''
+'''.replace('    ', '\t')
 
 
 def python():

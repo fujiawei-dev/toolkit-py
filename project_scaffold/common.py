@@ -27,7 +27,7 @@ class Entity(object):
         if os.path.exists(self.file):
             return
 
-        with open(self.file, 'w', encoding='utf-8') as fp:
+        with open(self.file, 'w', encoding='utf-8', newline='\n') as fp:
             fp.write(self.content)
 
 
@@ -72,6 +72,7 @@ scratches/
 
 # IDE
 .idea/
+cmake-build-debug/
 .vscode/
 .vscode-test/
 .vscodeignore

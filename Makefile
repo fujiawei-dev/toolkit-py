@@ -11,7 +11,7 @@ SHELL := pwsh.exe
 .SHELLFLAGS := -NoProfile -Command
 endif
 
-VERSION = 0.2.4
+VERSION = 0.2.5
 PACKAGE = toolkit-py
 
 all: test install clean

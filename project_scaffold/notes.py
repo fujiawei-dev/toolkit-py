@@ -16,6 +16,8 @@ def notes():
         'libraries/tripartite',  # 第三方库
         'assets/images',  # 图片
         'src',  # 源码示例
+        'src/docs',  # 源码示例
+        'src/quickstart',  # 源码示例
         'src/libraries/standard',  # 标准库源码示例
         'src/libraries/tripartite',  # 第三方库源码示例
     ])
