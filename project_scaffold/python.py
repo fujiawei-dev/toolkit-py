@@ -4,13 +4,15 @@ Description: Omit
 LastEditors: Rustle Karl
 LastEditTime: 2022.02.02 19:08
 '''
-from .common import Entity, TEMPLATE_MAKEFILE, create_common_files
+from pathlib import Path
 
-PYTHON_MAKEFILE_CONTENT = TEMPLATE_MAKEFILE.content + '''
-VERSION = 1.0.0
-PACKAGE = package
+from .common import Entity, TEMPLATE_MAKEFILE, TEMPLATE_README, create_common_files
 
-all: test install clean
+PYTHON_MAKEFILE_CONTENT: str = TEMPLATE_MAKEFILE.content + '''
+VERSION = 0.0.1
+PACKAGE = {package}
+
+all: install test clean
 
 dep:
     pip install -r requirements.txt
@@ -19,10 +21,13 @@ build:
     python setup.py sdist
     python setup.py bdist_wheel
 
-install: build
+uninstall:
+    pip uninstall -y $(PACKAGE)
+
+install: uninstall build
     pip install --force-reinstall --no-deps dist/$(PACKAGE)-$(VERSION).tar.gz
 
-upload:
+upload: build
     twine upload dist/$(PACKAGE)-$(VERSION).tar.gz
 
 test:
@@ -33,11 +38,49 @@ clean:
     rm -r build
     rm -r dist
     rm -r *egg-info
-'''.replace('    ', '\t')
+
+tag:
+    git tag v$(VERSION)
+    git push origin v$(VERSION)
+'''.replace('    ', '\t')  # 4 whitespaces -> tab
+
+PYTHON_README_CONTENT = '''\
+# {title}
+
+## Installation
+
+```shell
+pip install -U {package}
+```
+
+```shell
+pip install -U {package} -i https://pypi.douban.com/simple
+```
+
+## Usage
+
+```shell
+
+```
+'''
 
 
 def python():
-    create_common_files(['tests', 'tests/data'])
-
     Entity('requirements.txt', '\n').create()
-    Entity(TEMPLATE_MAKEFILE.file, PYTHON_MAKEFILE_CONTENT).create()
+
+    package = Path.cwd().stem
+
+    Entity(
+            TEMPLATE_README.file,
+            PYTHON_README_CONTENT.format(
+                    title=package.replace('-', ' ').title(),
+                    package=package,
+            ),
+    ).create()
+
+    Entity(
+            TEMPLATE_MAKEFILE.file,
+            PYTHON_MAKEFILE_CONTENT.format(package=package),
+    ).create()
+
+    create_common_files(['tests', 'tests/data'])

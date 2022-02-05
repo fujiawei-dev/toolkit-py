@@ -4,17 +4,18 @@
 .NOTPARALLEL: ;          # wait for target to finish
 .EXPORT_ALL_VARIABLES: ; # send all vars to shell
 
-.IGNORE: dep clean;            # ignore all errors, keep going
+.IGNORE: dep clean test;            # ignore all errors, keep going
 
 ifeq ($(OS), Windows_NT)
 SHELL := pwsh.exe
 .SHELLFLAGS := -NoProfile -Command
 endif
 
-VERSION = 0.2.5
+VERSION = 0.2.6
 PACKAGE = toolkit-py
 
-all: test install clean
+# 无语，同一个命令只执行一次
+all: install test clean
 
 dep:
 	pip install -r requirements.txt
@@ -24,8 +25,11 @@ build:
 	python setup.py sdist
 	python setup.py bdist_wheel
 
+uninstall:
+	pip uninstall -y $(PACKAGE)
+
 # 安装
-install: build
+install: uninstall build
 	pip install --force-reinstall --no-deps dist/$(PACKAGE)-$(VERSION).tar.gz
 
 upload: build

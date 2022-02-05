@@ -115,7 +115,7 @@ TEMPLATE_MAKEFILE = Entity('Makefile', '''\
 .NOTPARALLEL: ;          # wait for target to finish
 .EXPORT_ALL_VARIABLES: ; # send all vars to shell
 
-.IGNORE: dep clean;            # ignore all errors, keep going
+.IGNORE: dep clean test;            # ignore all errors, keep going
 
 ifeq ($(OS), Windows_NT)
 SHELL := pwsh.exe
