@@ -11,10 +11,13 @@ SHELL := pwsh.exe
 .SHELLFLAGS := -NoProfile -Command
 endif
 
-VERSION = 0.2.7
+VERSION := $(shell python -c "from unified_command.version import __version__; print(__version__, end='')")
 PACKAGE = toolkit-py
 
 all: reinstall test
+
+version:
+	echo $(VERSION)
 
 dep:
 	pip install -r requirements.txt

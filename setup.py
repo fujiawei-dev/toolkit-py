@@ -1,11 +1,13 @@
 '''
 Date: 2020-09-21 23:48:26
 LastEditors: Rustle Karl
-LastEditTime: 2022.02.02 17:43:15
+LastEditTime: 2022.02.06 09:59:23
 '''
 import os.path
 
 from setuptools import find_packages, setup
+
+from unified_command.version import __version__
 
 # What packages are required for this module to be executed?
 requires = [
@@ -21,14 +23,15 @@ extras_require = {
     ],
 }
 
+root = os.path.abspath(os.path.dirname(__file__))
+
 # Import the README and use it as the long-description.
-cwd = os.path.abspath(os.path.dirname(__file__))
-with open(os.path.join(cwd, 'README.md'), encoding='utf-8') as f:
+with open(os.path.join(root, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
         name='toolkit-py',
-        version='0.2.7',
+        version=__version__,
         url='https://github.com/fujiawei-dev/toolkit-py',
         keywords=['toolkit', 'toolset'],
         description='Personal toolkit implemented by Python.',

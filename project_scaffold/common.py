@@ -7,6 +7,8 @@ LastEditTime: 2022.02.02 19:08
 import os
 from datetime import datetime
 
+from unified_command.version import __header_
+
 __all__ = [
     'create_common_files',
     'Entity',
@@ -62,7 +64,7 @@ TEMPLATE_README = Entity('README.md', '''\
 ''')
 
 # .gitignore
-TEMPLATE_GITIGNORE = Entity('.gitignore', '''\
+TEMPLATE_GITIGNORE = Entity('.gitignore', __header_ + '''
 # Others
 .sync_folder.json
 bin/
@@ -108,7 +110,7 @@ logs/
 ''')
 
 # Makefile
-TEMPLATE_MAKEFILE = Entity('Makefile', '''\
+TEMPLATE_MAKEFILE = Entity('Makefile', __header_ + '''
 .PHONY: ;
 .SILENT: ;               # no need for @
 .ONESHELL: ;             # recipes execute in same shell
