@@ -12,7 +12,7 @@ PYTHON_MAKEFILE_CONTENT: str = TEMPLATE_MAKEFILE.content + '''
 VERSION = 0.0.1
 PACKAGE = {package}
 
-all: install test clean
+all: reinstall test
 
 dep:
     pip install -r requirements.txt
@@ -26,6 +26,8 @@ uninstall:
 
 install: uninstall build
     pip install --force-reinstall --no-deps dist/$(PACKAGE)-$(VERSION).tar.gz
+
+reinstall: install clean
 
 upload: build
     twine upload dist/$(PACKAGE)-$(VERSION).tar.gz

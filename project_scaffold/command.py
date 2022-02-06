@@ -6,6 +6,7 @@ LastEditTime: 2022.02.02 18:14
 '''
 import click
 
+from .c import c as _c
 from .common import create_common_files
 from .notes import notes as _notes
 from .python import python as _python
@@ -34,3 +35,8 @@ def python():
 @command_cps.command(help="Create notes project scaffold.")
 def notes():
     _notes()
+
+
+@command_cps.command(help="Create C/C++ project scaffold.")
+def c():
+    _c()

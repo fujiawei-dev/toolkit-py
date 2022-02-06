@@ -11,16 +11,14 @@ SHELL := pwsh.exe
 .SHELLFLAGS := -NoProfile -Command
 endif
 
-VERSION = 0.2.6
+VERSION = 0.2.7
 PACKAGE = toolkit-py
 
-# 无语，同一个命令只执行一次
-all: install test clean
+all: reinstall test
 
 dep:
 	pip install -r requirements.txt
 
-# 打包
 build:
 	python setup.py sdist
 	python setup.py bdist_wheel
@@ -28,9 +26,10 @@ build:
 uninstall:
 	pip uninstall -y $(PACKAGE)
 
-# 安装
 install: uninstall build
 	pip install --force-reinstall --no-deps dist/$(PACKAGE)-$(VERSION).tar.gz
+
+reinstall: install clean
 
 upload: build
 	twine upload dist/$(PACKAGE)-$(VERSION).tar.gz
@@ -39,7 +38,6 @@ test:
 	pytest
 	rm -r .pytest_cache
 
-#清理编译中间文件
 clean:
 	rm -r build
 	rm -r dist
