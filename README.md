@@ -1,10 +1,10 @@
 # Toolkit-Py
 
 [![PyPI](https://img.shields.io/pypi/v/toolkit-py)](https://pypi.org/project/toolkit-py/)
-[![PyPI - License](https://img.shields.io/pypi/l/toolkit-py)](https://github.com/fujiawei-dev/toolkit-py/blob/master/LICENSE)
+[![License](https://img.shields.io/pypi/l/toolkit-py)](https://github.com/fujiawei-dev/toolkit-py/blob/master/LICENSE)
 
-[![Python Package Test](https://github.com/fujiawei-dev/toolkit-py/actions/workflows/python-test.yml/badge.svg)](https://github.com/fujiawei-dev/toolkit-py/actions/workflows/python-test.yml)
-[![Upload Python Package](https://github.com/fujiawei-dev/toolkit-py/actions/workflows/python-publish.yml/badge.svg)](https://github.com/fujiawei-dev/toolkit-py/actions/workflows/python-publish.yml)
+[![Python Test](https://github.com/fujiawei-dev/toolkit-py/actions/workflows/python-test.yml/badge.svg)](https://github.com/fujiawei-dev/toolkit-py/actions/workflows/python-test.yml)
+[![Python Publish](https://github.com/fujiawei-dev/toolkit-py/actions/workflows/python-publish.yml/badge.svg)](https://github.com/fujiawei-dev/toolkit-py/actions/workflows/python-publish.yml)
 
 ## Installation
 
