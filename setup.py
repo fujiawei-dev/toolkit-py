@@ -12,6 +12,7 @@ from unified_command.version import __version__
 # What packages are required for this module to be executed?
 requires = [
     'click',
+    'click_aliases',
     'lxml',
     'requests',
     'chardet',
