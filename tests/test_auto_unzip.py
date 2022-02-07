@@ -5,11 +5,17 @@ LastEditors: Rustle Karl
 LastEditTime: 2022.02.07 23:03
 """
 import shutil
+import sys
 
 from unified_command.auto_unzip import Unzipper
 
 
 def test_auto_unzip():
+    version = sys.version_info
+
+    if version.major < 3 or version.minor < 7:
+        return
+
     unzipper = Unzipper()
     test_path = unzipper.create_7z_files_for_test()
     assert unzipper.run(test_path)
