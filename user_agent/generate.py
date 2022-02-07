@@ -6,7 +6,7 @@ LastEditTime: 2022.02.02 15:01
 """
 from enum import Enum
 from random import choice, randint
-from typing import Optional
+from typing import Optional, Union
 
 ANDROID_BUILD_ARGS = [
     "OPD3.170816.023",
@@ -988,7 +988,7 @@ def generate_app_args(os: OS, browser: Browser):
 def generate_user_agent(
     os=OS.Windows,
     browser=Browser.Chrome,
-    platform=Optional[Platform.Desktop, None],
+    platform=Union[Platform.Desktop, None],
 ):
     """Generates HTTP User-Agent header"""
 
