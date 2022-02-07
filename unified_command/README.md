@@ -11,7 +11,10 @@ Commands:
   auto-unzip (unzip,uz)  Automatically extract files.
 ```
 
+## Table of Contents
+
 - [Unified Command](#unified-command)
+  - [Table of Contents](#table-of-contents)
   - [ucmd unzip](#ucmd-unzip)
 
 ## ucmd unzip

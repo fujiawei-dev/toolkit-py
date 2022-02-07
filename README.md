@@ -6,16 +6,19 @@
 [![Python Test](https://github.com/fujiawei-dev/toolkit-py/actions/workflows/python-test.yml/badge.svg)](https://github.com/fujiawei-dev/toolkit-py/actions/workflows/python-test.yml)
 [![Python Publish](https://github.com/fujiawei-dev/toolkit-py/actions/workflows/python-publish.yml/badge.svg)](https://github.com/fujiawei-dev/toolkit-py/actions/workflows/python-publish.yml)
 
+## Table of Contents
+
 - [Toolkit-Py](#toolkit-py)
-    - [Installation](#installation)
-    - [Usage](#usage)
-        - [Automatically unzip files recursively](#automatically-unzip-files-recursively)
-        - [Recursively change the encoding of text files in the current folder](#recursively-change-the-encoding-of-text-files-in-the-current-folder)
-        - [Generates HTTP User-Agent header](#generates-http-user-agent-header)
-        - [Change to other faster open source mirror sites](#change-to-other-faster-open-source-mirror-sites)
-        - [Create basic project scaffold](#create-basic-project-scaffold)
-        - [Upload pictures to public image hosting server](#upload-pictures-to-public-image-hosting-server)
-        - [Create or display the configuration of commonly used software](#create-or-display-the-configuration-of-commonly-used-software)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Usage](#usage)
+    - [Automatically unzip files recursively](#automatically-unzip-files-recursively)
+    - [Recursively change the encoding of text files in the current folder](#recursively-change-the-encoding-of-text-files-in-the-current-folder)
+    - [Generates HTTP User-Agent header](#generates-http-user-agent-header)
+    - [Change to other faster open source mirror sites](#change-to-other-faster-open-source-mirror-sites)
+    - [Create basic project scaffold](#create-basic-project-scaffold)
+    - [Upload pictures to public image hosting server](#upload-pictures-to-public-image-hosting-server)
+    - [Create or display the configuration of commonly used software](#create-or-display-the-configuration-of-commonly-used-software)
 
 ## Installation
 
