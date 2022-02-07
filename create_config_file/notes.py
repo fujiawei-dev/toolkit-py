@@ -60,9 +60,9 @@ def new_article(path):
         with open(TEMPLATE_ARTICLE_CONTENT.file) as fp:
             content = fp.read()
             if content:
-                template_article += content
+                template_article += (content + "\n\n") * 5
             else:
-                template_article += TEMPLATE_ARTICLE_CONTENT.content
+                template_article += (TEMPLATE_ARTICLE_CONTENT.content + "\n\n") * 5
 
     with open(path, "w", encoding="utf-8", newline="\n") as fp:
         fp.write(template_article)

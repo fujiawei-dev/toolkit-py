@@ -13,7 +13,7 @@ INVISIBLE_CHARACTERS = ("\xa0", "\x0b", "\x0c", "\u200b", "\u3000")
 SPACE_CHARACTERS = ("&nbsp;",)
 
 # 行末尾空格
-PATTERN_LINE_RIGHT_WHITESPACE = re.compile(r" +\n")
+PATTERN_LINE_RIGHT_WHITESPACE = re.compile(r"[ \t]+\n")
 
 
 # 替换一组字符
