@@ -10,6 +10,8 @@ from pathlib import Path
 import chardet
 import click
 
+from .whitespace import clean_characters
+
 TEXT_EXTENSIONS = {
     ".txt",
     ".py",
@@ -23,7 +25,7 @@ TEXT_EXTENSIONS = {
 }
 
 
-def change_encoding(src, dst=None, encoding="utf-8", lf=True):
+def change_encoding(src, dst=None, encoding="utf-8"):
     if os.path.splitext(src)[-1] in TEXT_EXTENSIONS:
         if not dst:
             dst = src
@@ -32,17 +34,11 @@ def change_encoding(src, dst=None, encoding="utf-8", lf=True):
             encoding = "utf-8"
 
         with open(src, "rb+") as fp:
-            content = fp.read()
-
+            # CRLF -> LF
+            content = fp.read().replace(b"\r\n", b"\n")
             original_encoding = chardet.detect(content)["encoding"]
-            content = content.decode(original_encoding).encode(encoding)
-
-            if lf:
-                # CRLF -> LF
-                content = content.replace(b"\r\n", b"\n")
-            else:
-                # LF -> CRLF
-                content = content.replace(b"\n", b"\r\n")
+            content = content.decode(original_encoding)
+            content = clean_characters(content).encode(encoding)
 
             if dst == src:
                 fp.seek(0)
