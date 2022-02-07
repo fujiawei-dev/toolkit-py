@@ -1,14 +1,16 @@
-'''
+"""
 Date: 2022.02.05 20:22
 Description: Omit
 LastEditors: Rustle Karl
 LastEditTime: 2022.02.05 20:22
-'''
+"""
 from pathlib import Path
 
 from .common import Entity, TEMPLATE_MAKEFILE, TEMPLATE_README, create_common_files
 
-C_MAKEFILE_CONTENT: str = TEMPLATE_MAKEFILE.content + '''
+C_MAKEFILE_CONTENT: str = (
+    TEMPLATE_MAKEFILE.content
+    + """
 PROJECT = {project}
 
 TARGET = $(PROJECT)
@@ -37,9 +39,12 @@ reinstall: uninstall install
 tag:
     git tag v$(VERSION)
     git push origin v$(VERSION)
-'''.replace('    ', '\t')  # 4 whitespaces -> tab
+""".replace(
+        "    ", "\t"
+    )
+)  # 4 whitespaces -> tab
 
-C_README_CONTENT = '''\
+C_README_CONTENT = """\
 # {title}
 
 ## Installation
@@ -53,23 +58,23 @@ make install
 ```shell
 
 ```
-'''
+"""
 
 
 def c():
     project = Path.cwd().stem
 
     Entity(
-            TEMPLATE_MAKEFILE.file,
-            C_MAKEFILE_CONTENT.format(project=project.replace('-', '_')),
+        TEMPLATE_MAKEFILE.file,
+        C_MAKEFILE_CONTENT.format(project=project.replace("-", "_")),
     ).create()
 
     Entity(
-            TEMPLATE_README.file,
-            C_README_CONTENT.format(
-                    title=project.replace('-', ' ').title(),
-                    project=project,
-            ),
+        TEMPLATE_README.file,
+        C_README_CONTENT.format(
+            title=project.replace("-", " ").title(),
+            project=project,
+        ),
     ).create()
 
     create_common_files()

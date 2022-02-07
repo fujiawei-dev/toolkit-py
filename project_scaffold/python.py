@@ -1,15 +1,17 @@
-'''
+"""
 Date: 2022.02.02 19:08
 Description: Omit
 LastEditors: Rustle Karl
 LastEditTime: 2022.02.06 10:08:31
-'''
+"""
 from pathlib import Path
 
 from unified_command.version import GENERATOR_HEADER
 from .common import Entity, TEMPLATE_MAKEFILE, TEMPLATE_README, create_common_files
 
-PYTHON_MAKEFILE_CONTENT: str = TEMPLATE_MAKEFILE.content + '''
+PYTHON_MAKEFILE_CONTENT: str = (
+    TEMPLATE_MAKEFILE.content
+    + """
 VERSION := $(shell python -c "from {underscores_package}.version import __version__; print(__version__, end='')")
 PACKAGE = {package}
 
@@ -48,9 +50,12 @@ clean:
 tag:
     git tag v$(VERSION)
     git push origin v$(VERSION)
-'''.replace('    ', '\t')  # 4 whitespaces -> tab
+""".replace(
+        "    ", "\t"
+    )
+)  # 4 whitespaces -> tab
 
-PYTHON_README_CONTENT = '''\
+PYTHON_README_CONTENT = """\
 # {title}
 
 [![PyPI](https://img.shields.io/pypi/v/{package})](https://pypi.org/project/{package}/)
@@ -73,13 +78,19 @@ pip install -U {package} -i https://pypi.douban.com/simple
 ```shell
 
 ```
-'''
+"""
 
-PYTHON_VERSION_CONTENT = GENERATOR_HEADER + '''
+PYTHON_VERSION_CONTENT = (
+    GENERATOR_HEADER
+    + """
 __version__ = '0.0.1'
-'''
+"""
+)
 
-PYTHON_TEST = Entity('.github/workflows/python-test.yml', GENERATOR_HEADER + '''
+PYTHON_TEST = Entity(
+    ".github/workflows/python-test.yml",
+    GENERATOR_HEADER
+    + """
 # https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
 name: Python Test
@@ -116,15 +127,23 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
-''')
+""",
+)
 
-PYTHON_TEST_CONF = Entity('tests/confitest.py', GENERATOR_HEADER + '''
+PYTHON_TEST_CONF = Entity(
+    "tests/confitest.py",
+    GENERATOR_HEADER
+    + """
 def pytest_sessionfinish(session, exitstatus):
     if exitstatus == 5:
         session.exitstatus = 0
-''')
+""",
+)
 
-PYTHON_PUBLISH = Entity('.github/workflows/python-publish.yml', GENERATOR_HEADER + '''
+PYTHON_PUBLISH = Entity(
+    ".github/workflows/python-publish.yml",
+    GENERATOR_HEADER
+    + """
 # https://help.github.com/en/actions/language-and-framework-guides/using-python-with-github-actions#publishing-to-package-registries
 
 name: Python Publish
@@ -155,9 +174,12 @@ jobs:
       with:
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
-''')
+""",
+)
 
-PYTHON_SETUP_CONTENT = GENERATOR_HEADER + '''
+PYTHON_SETUP_CONTENT = (
+    GENERATOR_HEADER
+    + """
 import os
 
 from setuptools import setup
@@ -197,46 +219,50 @@ setup(
             'Topic :: Software Development :: Libraries :: Python Modules',
         ],
 )
-'''
+"""
+)
 
 
 def python():
-    Entity('requirements.txt', '\n').create()
+    Entity("requirements.txt", "\n").create()
 
     package = Path.cwd().stem
-    underscores_package = package.replace('-', '_')
+    underscores_package = package.replace("-", "_")
 
     Entity(
-            TEMPLATE_MAKEFILE.file,
-            PYTHON_MAKEFILE_CONTENT.format(
-                    package=package,
-                    underscores_package=underscores_package,
-            ),
+        TEMPLATE_MAKEFILE.file,
+        PYTHON_MAKEFILE_CONTENT.format(
+            package=package,
+            underscores_package=underscores_package,
+        ),
     ).create()
 
     Entity(
-            TEMPLATE_README.file,
-            PYTHON_README_CONTENT.format(
-                    title=package.replace('-', ' ').title(),
-                    package=package,
-            ),
+        TEMPLATE_README.file,
+        PYTHON_README_CONTENT.format(
+            title=package.replace("-", " ").title(),
+            package=package,
+        ),
     ).create()
 
-    create_common_files([underscores_package, 'tests', 'tests/data'])
+    create_common_files([underscores_package, "tests", "tests/data"])
 
     Entity(
-            f'{underscores_package}/version.py',
-            PYTHON_VERSION_CONTENT,
+        f"{underscores_package}/version.py",
+        PYTHON_VERSION_CONTENT,
     ).create()
 
     PYTHON_TEST.create()
     PYTHON_TEST_CONF.create()
 
-    Entity('tests/__init__.py', GENERATOR_HEADER).create()
+    Entity("tests/__init__.py", GENERATOR_HEADER).create()
 
     PYTHON_PUBLISH.create()
 
-    Entity('setup.py', PYTHON_SETUP_CONTENT.format(
+    Entity(
+        "setup.py",
+        PYTHON_SETUP_CONTENT.format(
             package=package,
             underscores_package=underscores_package,
-    )).create()
+        ),
+    ).create()

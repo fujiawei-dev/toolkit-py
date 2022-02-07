@@ -1,26 +1,25 @@
-'''
+"""
 Date: 2022.02.02 19:08
 Description: Automatically create basic common files.
 LastEditors: Rustle Karl
 LastEditTime: 2022.02.02 19:08
-'''
+"""
 import os
 from datetime import datetime
 
 from unified_command.version import GENERATOR_HEADER
 
 __all__ = [
-    'create_common_files',
-    'Entity',
-    'TEMPLATE_LICENSE',
-    'TEMPLATE_README',
-    'TEMPLATE_GITIGNORE',
-    'TEMPLATE_MAKEFILE',
+    "create_common_files",
+    "Entity",
+    "TEMPLATE_LICENSE",
+    "TEMPLATE_README",
+    "TEMPLATE_GITIGNORE",
+    "TEMPLATE_MAKEFILE",
 ]
 
 
 class Entity(object):
-
     def __init__(self, file, content):
         self.file = file
         self.content = content
@@ -29,12 +28,14 @@ class Entity(object):
         if os.path.exists(self.file):
             return
 
-        with open(self.file, 'w', encoding='utf-8', newline='\n') as fp:
+        with open(self.file, "w", encoding="utf-8", newline="\n") as fp:
             fp.write(self.content)
 
 
 # LICENSE
-TEMPLATE_LICENSE = Entity('LICENSE', '''\
+TEMPLATE_LICENSE = Entity(
+    "LICENSE",
+    """\
 The MIT License (MIT)
 
 Copyright (c) %d Rustle Karl
@@ -56,15 +57,18 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-''' % datetime.now().year)
+"""
+    % datetime.now().year,
+)
 
 # README.md
-TEMPLATE_README = Entity('README.md', '''\
-# README
-''')
+TEMPLATE_README = Entity("README.md", "# README\n")
 
 # .gitignore
-TEMPLATE_GITIGNORE = Entity('.gitignore', GENERATOR_HEADER + '''
+TEMPLATE_GITIGNORE = Entity(
+    ".gitignore",
+    GENERATOR_HEADER
+    + """
 # Others
 .sync_folder.json
 bin/
@@ -107,10 +111,14 @@ logs/
 
 # Dropbox
 *.paper
-''')
+""",
+)
 
 # Makefile
-TEMPLATE_MAKEFILE = Entity('Makefile', GENERATOR_HEADER + '''
+TEMPLATE_MAKEFILE = Entity(
+    "Makefile",
+    GENERATOR_HEADER
+    + """
 .PHONY: ;
 .SILENT: ;               # no need for @
 .ONESHELL: ;             # recipes execute in same shell
@@ -123,7 +131,8 @@ ifeq ($(OS), Windows_NT)
 SHELL := pwsh.exe
 .SHELLFLAGS := -NoProfile -Command
 endif
-''')
+""",
+)
 
 
 def create_common_files(folders: list = None):
@@ -134,11 +143,13 @@ def create_common_files(folders: list = None):
     if folders is None:
         folders = []
 
-    folders.extend([
-        'scratches',
-        'examples',
-        '.github/workflows',
-    ])
+    folders.extend(
+        [
+            "scratches",
+            "examples",
+            ".github/workflows",
+        ]
+    )
 
     for folder in folders:
         os.makedirs(folder, exist_ok=True)

@@ -1,9 +1,9 @@
-'''
+"""
 Date: 2022.02.02 18:14
 Description: Omit
 LastEditors: Rustle Karl
 LastEditTime: 2022.02.02 18:14
-'''
+"""
 import click
 
 from .c import c as _c

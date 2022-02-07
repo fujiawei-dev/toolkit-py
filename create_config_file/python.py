@@ -1,9 +1,9 @@
-'''
+"""
 Date: 2022.02.03 9:11
 Description: Omit
 LastEditors: Rustle Karl
 LastEditTime: 2022.02.03 9:11
-'''
+"""
 import os
 from enum import IntEnum
 
@@ -11,11 +11,11 @@ from .common import writer
 
 
 def pypirc(read_only=True):
-    official = 'https://packaging.python.org/en/latest/specifications/pypirc/'
+    official = "https://packaging.python.org/en/latest/specifications/pypirc/"
 
-    conf = os.path.join(os.path.expanduser('~'), '.pypirc')
+    conf = os.path.join(os.path.expanduser("~"), ".pypirc")
 
-    content = '''\
+    content = """\
 # https://pypi.org/manage/account/#API%20tokens
 
 [distutils]
@@ -36,7 +36,7 @@ password = <TestPyPI token>
 repository = <private-repository URL>
 username = <private-repository username>
 password = <private-repository password>
-'''
+"""
 
     writer(conf, content, read_only=read_only, official=official)
 

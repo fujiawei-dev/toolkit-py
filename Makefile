@@ -14,7 +14,10 @@ endif
 VERSION := $(shell python -c "from unified_command.version import __version__; print(__version__, end='')")
 PACKAGE = toolkit-py
 
-all: reinstall test
+all: format reinstall test
+
+format:
+	black .
 
 version:
 	echo $(VERSION)

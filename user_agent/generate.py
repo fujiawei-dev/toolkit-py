@@ -1,11 +1,12 @@
-'''
+"""
 Date: 2020-09-21 23:48:26
 Description: This module is for generating random, valid web navigator's User-Agent HTTP headers.
 LastEditors: Rustle Karl
 LastEditTime: 2022.02.02 15:01
-'''
+"""
 from enum import Enum
 from random import choice, randint
+from typing import Optional
 
 ANDROID_BUILD_ARGS = [
     "OPD3.170816.023",
@@ -207,7 +208,7 @@ ANDROID_BUILD_ARGS = [
     "MRA58V",
     "MRA58U",
     "MRA58N",
-    "MRA58K"
+    "MRA58K",
 ]
 
 ANDROID_DEVICES = [
@@ -399,7 +400,7 @@ ANDROID_DEVICES = [
     "vivo Y81s",
     "vivo Y83",
     "vivo Y85",
-    "vivo Z1"
+    "vivo Z1",
 ]
 
 IOS_BUILD_ARGS_DEVICES = {
@@ -457,7 +458,7 @@ IOS_BUILD_ARGS_DEVICES = {
     "12.0.1": "16A405",
     "12.1": "16B93",
     "12.1.1": "16C50",
-    "12.1.2": "16C104"
+    "12.1.2": "16C104",
 }
 
 OPERA_BUILD_ARGS = [
@@ -579,16 +580,16 @@ OPERA_BUILD_ARGS = [
     "57.0.3098.116",
     "57.0.3098.76",
     "57.0.3098.91",
-    "58.0.3135.47"
+    "58.0.3135.47",
 ]
 
 
 class OS(str, Enum):
-    Windows = 'win'
-    Mac = 'mac'
-    Linux = 'linux'
-    Android = 'android'
-    IOS = 'ios'
+    Windows = "win"
+    Mac = "mac"
+    Linux = "linux"
+    Android = "android"
+    IOS = "ios"
 
     @classmethod
     def to_list(cls):
@@ -596,8 +597,8 @@ class OS(str, Enum):
 
 
 class Platform(str, Enum):
-    Desktop = 'desktop'
-    Smartphone = 'smartphone'
+    Desktop = "desktop"
+    Smartphone = "smartphone"
 
     @classmethod
     def to_list(cls):
@@ -605,11 +606,11 @@ class Platform(str, Enum):
 
 
 class Browser(str, Enum):
-    Chrome = 'chrome'
-    Firefox = 'firefox'
-    Edge = 'edge'
-    Safari = 'safari'
-    Opera = 'opera'
+    Chrome = "chrome"
+    Firefox = "firefox"
+    Edge = "edge"
+    Safari = "safari"
+    Opera = "opera"
 
     ChromeAndroid = Chrome + OS.Android
     ChromeIOS = Chrome + OS.IOS
@@ -638,8 +639,19 @@ OS_PLATFORM = {
 }
 
 PLATFORM_BROWSER = {
-    Platform.Desktop: (Browser.Chrome, Browser.Firefox, Browser.Edge, Browser.Safari, Browser.Opera),
-    Platform.Smartphone: (Browser.Firefox, Browser.Chrome, Browser.Safari, Browser.Opera),
+    Platform.Desktop: (
+        Browser.Chrome,
+        Browser.Firefox,
+        Browser.Edge,
+        Browser.Safari,
+        Browser.Opera,
+    ),
+    Platform.Smartphone: (
+        Browser.Firefox,
+        Browser.Chrome,
+        Browser.Safari,
+        Browser.Opera,
+    ),
 }
 
 BROWSER_PLATFORM = {
@@ -669,76 +681,76 @@ BROWSER_OS = {
 OS_VERSION = {
     # https://en.wikipedia.org/wiki/Windows_NT#Releases
     OS.Windows: (
-        'Windows NT 5.1',  # Windows XP
-        'Windows NT 6.1',  # Windows 7
-        'Windows NT 6.2',  # Windows 8
-        'Windows NT 6.3',  # Windows 8.1
-        'Windows NT 10.0',  # Windows 10
+        "Windows NT 5.1",  # Windows XP
+        "Windows NT 6.1",  # Windows 7
+        "Windows NT 6.2",  # Windows 8
+        "Windows NT 6.3",  # Windows 8.1
+        "Windows NT 10.0",  # Windows 10
     ),
     # https://en.wikipedia.org/wiki/Macintosh_operating_systems#Releases_2
     OS.Mac: (
-        'Macintosh; Intel Mac OS X 10.10',
-        'Macintosh; Intel Mac OS X 10.11',
-        'Macintosh; Intel Mac OS X 10.12',
-        'Macintosh; Intel Mac OS X 10.13',  # 2017-9-25
-        'Macintosh; Intel Mac OS X 10.14',  # 2018-9-24
+        "Macintosh; Intel Mac OS X 10.10",
+        "Macintosh; Intel Mac OS X 10.11",
+        "Macintosh; Intel Mac OS X 10.12",
+        "Macintosh; Intel Mac OS X 10.13",  # 2017-9-25
+        "Macintosh; Intel Mac OS X 10.14",  # 2018-9-24
     ),
     OS.Linux: (
-        'X11; Linux',
-        'X11; Ubuntu; Linux',
-        'X11; Debian; Linux',
+        "X11; Linux",
+        "X11; Ubuntu; Linux",
+        "X11; Debian; Linux",
     ),
     # https://en.wikipedia.org/wiki/Android_(operating_system)
     OS.Android: (
-        'Android 8.0',  # 2017-8-21
-        'Android 8.1',  # 2017-12-5
-        'Android 9',  # 2018-8-6
-        'Android 10',  # 2019-9-3
-        'Android 11',  # 2020-9-8
-        'Android 12',  # 2021-10-4
+        "Android 8.0",  # 2017-8-21
+        "Android 8.1",  # 2017-12-5
+        "Android 9",  # 2018-8-6
+        "Android 10",  # 2019-9-3
+        "Android 11",  # 2020-9-8
+        "Android 12",  # 2021-10-4
     ),
     OS.IOS: None,
 }
 
 # https://en.wikipedia.org/wiki/MacOS#Release_history
 MACOSX_CHROME_BUILD_RANGE = {
-    '10.10': (0, 5),
-    '10.11': (0, 6),
-    '10.12': (0, 6),
-    '10.13': (0, 6),
-    '10.14': (0, 2),
+    "10.10": (0, 5),
+    "10.11": (0, 6),
+    "10.12": (0, 6),
+    "10.13": (0, 6),
+    "10.14": (0, 2),
 }
 
 OS_CPU = {
     OS.Windows: (
-        '',  # 32bit
-        'Win64; x64',  # 64bit
-        'WOW64',  # 32bit process on 64bit system
+        "",  # 32bit
+        "Win64; x64",  # 64bit
+        "WOW64",  # 32bit process on 64bit system
     ),
     OS.Linux: (
-        'i686',  # 32bit
-        'x86_64',  # 64bit
-        'i686 on x86_64',  # 32bit process on 64bit system
+        "i686",  # 32bit
+        "x86_64",  # 64bit
+        "i686 on x86_64",  # 32bit process on 64bit system
     ),
     OS.Android: (
-        'armv7l',  # 32bit
-        'armv8l',  # 64bit
+        "armv7l",  # 32bit
+        "armv8l",  # 64bit
     ),
 }
 
 # https://en.wikipedia.org/wiki/History_of_Firefox
 FIREFOX_VERSION = (
-    '54.0',  # 2017-6-13
-    '55.0',  # 2017-8-8
-    '56.0',  # 2017-9-28
-    '57.0',  # 2017-11-14
-    '58.0',  # 2018-1-23
-    '59.0',  # 2018-3-13
-    '60.0',  # 2018-5-9
-    '61.0',  # 2018-6-26
-    '62.0',  # 2018-9-5
-    '63.0',  # 2018-10-23
-    '64.0',  # 2018-12-11
+    "54.0",  # 2017-6-13
+    "55.0",  # 2017-8-8
+    "56.0",  # 2017-9-28
+    "57.0",  # 2017-11-14
+    "58.0",  # 2018-1-23
+    "59.0",  # 2018-3-13
+    "60.0",  # 2018-5-9
+    "61.0",  # 2018-6-26
+    "62.0",  # 2018-9-5
+    "63.0",  # 2018-10-23
+    "64.0",  # 2018-12-11
 )
 
 # https://en.wikipedia.org/wiki/Google_Chrome_version_history
@@ -759,114 +771,114 @@ CHROME_VERSION = (
 )
 
 WEBKIT_VERSION = (
-    '601.4.4',
-    '601.5.17',
-    '601.6.17',
-    '601.7.1',
-    '601.7.8',
-    '602.1.50',
-    '602.2.14',
-    '602.3.12',
-    '602.4.8',
-    '603.1.30',
-    '603.2.4',
-    '603.3.8',
+    "601.4.4",
+    "601.5.17",
+    "601.6.17",
+    "601.7.1",
+    "601.7.8",
+    "602.1.50",
+    "602.2.14",
+    "602.3.12",
+    "602.4.8",
+    "603.1.30",
+    "603.2.4",
+    "603.3.8",
 )
 
 SAFARI_VERSION = (
-    '10.1.2',
-    '11.1.2',
-    '12.0.2',
+    "10.1.2",
+    "11.1.2",
+    "12.0.2",
 )
 
 # https://en.wikipedia.org/wiki/Microsoft_Edge#Release_history
 EDGE_VERSION = (
-    '15.14986',
-    '15.15063',
-    '16.16299',
-    '17.17134',
-    '18.17763',
+    "15.14986",
+    "15.15063",
+    "16.16299",
+    "17.17134",
+    "18.17763",
 )
 
 USER_AGENT_TEMPLATE = {
     Browser.Firefox: (
-        'Mozilla/5.0'
-        ' ({system[ua_platform]}; rv:{app[build_version]})'
-        ' Gecko/{app[geckotrail]}'
-        ' Firefox/{app[build_version]}'
+        "Mozilla/5.0"
+        " ({system[ua_platform]}; rv:{app[build_version]})"
+        " Gecko/{app[geckotrail]}"
+        " Firefox/{app[build_version]}"
     ),
     Browser.Chrome: (
-        'Mozilla/5.0'
-        ' ({system[ua_platform]}) AppleWebKit/537.36'
-        ' (KHTML, like Gecko)'
-        ' Chrome/{app[build_version]} Safari/537.36'
+        "Mozilla/5.0"
+        " ({system[ua_platform]}) AppleWebKit/537.36"
+        " (KHTML, like Gecko)"
+        " Chrome/{app[build_version]} Safari/537.36"
     ),
     Browser.ChromeAndroid: (
-        'Mozilla/5.0'
-        ' ({system[ua_platform]}) AppleWebKit/537.36'
-        ' (KHTML, like Gecko)'
-        ' Chrome/{app[build_version]} Mobile Safari/537.36'
+        "Mozilla/5.0"
+        " ({system[ua_platform]}) AppleWebKit/537.36"
+        " (KHTML, like Gecko)"
+        " Chrome/{app[build_version]} Mobile Safari/537.36"
     ),
     Browser.SafariIOS: (
-        'Mozilla/5.0'
-        ' (iPhone; CPU iPhone OS {system[ua_platform]} like Mac OS X) AppleWebKit/{app[webkit_version]}'
-        ' (KHTML, like Gecko)'
-        ' Version/{system[version]} Mobile/{system[platform_ver]} Safari/{app[safari_version]}'
+        "Mozilla/5.0"
+        " (iPhone; CPU iPhone OS {system[ua_platform]} like Mac OS X) AppleWebKit/{app[webkit_version]}"
+        " (KHTML, like Gecko)"
+        " Version/{system[version]} Mobile/{system[platform_ver]} Safari/{app[safari_version]}"
     ),
     Browser.SafariMac: (
-        'Mozilla/5.0'
-        ' ({system[ua_platform]}) AppleWebKit/{app[webkit_version]}'
-        ' (KHTML, like Gecko)'
-        ' Version/{app[build_version]} Safari/{app[webkit_version]}'
+        "Mozilla/5.0"
+        " ({system[ua_platform]}) AppleWebKit/{app[webkit_version]}"
+        " (KHTML, like Gecko)"
+        " Version/{app[build_version]} Safari/{app[webkit_version]}"
     ),
     # https://developer.chrome.com/multidevice/user-agent#chrome_for_ios_user_agent
     Browser.ChromeIOS: (
-        'Mozilla/5.0'
-        ' (iPhone; CPU iPhone OS {system[ua_platform]} like Mac OS X) AppleWebKit/601.4.4'
-        ' (KHTML, like Gecko)'
-        ' CriOS/{app[build_version]} Mobile/{system[platform_ver]} Safari/601.4'
+        "Mozilla/5.0"
+        " (iPhone; CPU iPhone OS {system[ua_platform]} like Mac OS X) AppleWebKit/601.4.4"
+        " (KHTML, like Gecko)"
+        " CriOS/{app[build_version]} Mobile/{system[platform_ver]} Safari/601.4"
     ),
     # https://cloud.tencent.com/developer/section/1190015
     Browser.FirefoxIOS: (
-        'Mozilla/5.0'
-        ' (iPhone; CPU iPhone OS {system[ua_platform]} like Mac OS X) AppleWebKit/601.4.4'
-        ' (KHTML, like Gecko)'
-        ' FxiOS/{app[build_version]} Mobile/{system[platform_ver]} Safari/601.4'
+        "Mozilla/5.0"
+        " (iPhone; CPU iPhone OS {system[ua_platform]} like Mac OS X) AppleWebKit/601.4.4"
+        " (KHTML, like Gecko)"
+        " FxiOS/{app[build_version]} Mobile/{system[platform_ver]} Safari/601.4"
     ),
     Browser.Edge: (
-        'Mozilla/5.0'
-        ' ({system[ua_platform]}) AppleWebKit/537.36'
-        ' (KHTML, like Gecko)'
-        ' Chrome/64.0.3282.140 Safari/537.36'
-        ' Edge/{app[build_version]}'
+        "Mozilla/5.0"
+        " ({system[ua_platform]}) AppleWebKit/537.36"
+        " (KHTML, like Gecko)"
+        " Chrome/64.0.3282.140 Safari/537.36"
+        " Edge/{app[build_version]}"
     ),
     # https://deviceatlas.com/blog/mobile-browser-user-agent-strings
     Browser.Opera: (
-        'Mozilla/5.0'
-        ' ({system[ua_platform]}) AppleWebKit/537.36'
-        ' (KHTML, like Gecko)'
-        ' Chrome/64.0.3282.140 Safari/537.36'
-        ' OPR/{app[build_version]}'
+        "Mozilla/5.0"
+        " ({system[ua_platform]}) AppleWebKit/537.36"
+        " (KHTML, like Gecko)"
+        " Chrome/64.0.3282.140 Safari/537.36"
+        " OPR/{app[build_version]}"
     ),
     Browser.OperaAndroid: (
-        'Mozilla/5.0'
-        ' ({system[ua_platform]}) AppleWebKit/537.36'
-        ' (KHTML, like Gecko)'
-        ' Chrome/64.0.3282.140 Mobile Safari/537.36'
-        ' OPR/{app[build_version]}'
+        "Mozilla/5.0"
+        " ({system[ua_platform]}) AppleWebKit/537.36"
+        " (KHTML, like Gecko)"
+        " Chrome/64.0.3282.140 Mobile Safari/537.36"
+        " OPR/{app[build_version]}"
     ),
     Browser.OperaIOS: (
-        'Mozilla/5.0'
-        ' (iPhone; CPU iPhone OS {system[ua_platform]} like Mac OS X) AppleWebKit/601.4.4'
-        ' (KHTML, like Gecko)'
-        ' OPiOS/{app[build_version]} Mobile/{system[platform_ver]} Safari/601.4'
+        "Mozilla/5.0"
+        " (iPhone; CPU iPhone OS {system[ua_platform]} like Mac OS X) AppleWebKit/601.4.4"
+        " (KHTML, like Gecko)"
+        " OPiOS/{app[build_version]} Mobile/{system[platform_ver]} Safari/601.4"
     ),
 }
 
 
 def generate_chrome_version():
     args = choice(CHROME_VERSION)
-    return '%d.0.%d.%d' % (args[0], randint(args[1], args[2]), randint(0, 99))
+    return "%d.0.%d.%d" % (args[0], randint(args[1], args[2]), randint(0, 99))
 
 
 def fix_mac_version(platform: str, browser: Browser):
@@ -875,12 +887,12 @@ def fix_mac_version(platform: str, browser: Browser):
     underscores instead of dots. E.g. platform for Firefox will be: 'Intel Mac OS X 10.11'
     but for Chrome, Opera and Safari it will be 'Intel Mac OS X 10_11_6'.
     """
-    version = platform.split('OS X ', 1)[1]
+    version = platform.split("OS X ", 1)[1]
     build = choice(range(*MACOSX_CHROME_BUILD_RANGE[version]))
-    version = version.replace('.', '_') + '_' + str(build)
+    version = version.replace(".", "_") + "_" + str(build)
     if browser == Browser.Safari:
-        return 'Macintosh; U; Intel Mac OS X %s; zh-cn' % version
-    return 'Macintosh; Intel Mac OS X %s' % version
+        return "Macintosh; U; Intel Mac OS X %s; zh-cn" % version
+    return "Macintosh; Intel Mac OS X %s" % version
 
 
 def generate_system_args(os: OS, browser: Browser):
@@ -889,19 +901,19 @@ def generate_system_args(os: OS, browser: Browser):
 
     if os == OS.Windows:
         if browser == Browser.Edge:
-            platform = 'Windows NT 10.0'
+            platform = "Windows NT 10.0"
         else:
             platform = choice(OS_VERSION[os])
 
         cpu = choice(OS_CPU[os])
 
         if cpu:
-            platform = '%s; %s' % (platform, cpu)
+            platform = "%s; %s" % (platform, cpu)
 
-        res['ua_platform'] = platform
+        res["ua_platform"] = platform
 
     elif os == OS.Linux:
-        res['ua_platform'] = '%s %s' % (choice(OS_VERSION[os]), choice(OS_CPU[os]))
+        res["ua_platform"] = "%s %s" % (choice(OS_VERSION[os]), choice(OS_CPU[os]))
 
     elif os == OS.Mac:
         platform = choice(OS_VERSION[os])
@@ -909,26 +921,30 @@ def generate_system_args(os: OS, browser: Browser):
         if browser in (Browser.Chrome, Browser.Safari, Browser.Opera):
             platform = fix_mac_version(platform, browser)
 
-        res['ua_platform'] = platform
+        res["ua_platform"] = platform
 
     elif os == OS.Android:
         platform = choice(OS_VERSION[os])
 
         if browser == Browser.Firefox:
-            platform = '%s; Mobile' % platform
+            platform = "%s; Mobile" % platform
 
         elif browser in (Browser.Chrome, Browser.Opera):
-            platform = 'Linux; %s; %s Build/%s' % (platform, choice(ANDROID_DEVICES), choice(ANDROID_BUILD_ARGS))
+            platform = "Linux; %s; %s Build/%s" % (
+                platform,
+                choice(ANDROID_DEVICES),
+                choice(ANDROID_BUILD_ARGS),
+            )
 
-        res['ua_platform'] = platform
+        res["ua_platform"] = platform
 
     elif os == OS.IOS:
         platform = choice(list(IOS_BUILD_ARGS_DEVICES))
 
         res = {
-            'ua_platform': platform.replace('.', '_'),
-            'version': platform.split('.')[0] + '.0',
-            'platform_ver': IOS_BUILD_ARGS_DEVICES[platform],
+            "ua_platform": platform.replace(".", "_"),
+            "version": platform.split(".")[0] + ".0",
+            "platform_ver": IOS_BUILD_ARGS_DEVICES[platform],
         }
 
     return res
@@ -942,34 +958,38 @@ def generate_app_args(os: OS, browser: Browser):
         geckotrail = build_version = choice(FIREFOX_VERSION)
 
         if os in PLATFORM_OS[Platform.Desktop]:
-            geckotrail = '20100101'
+            geckotrail = "20100101"
 
         res = {
-            'build_version': build_version,
-            'geckotrail': geckotrail,
+            "build_version": build_version,
+            "geckotrail": geckotrail,
         }
 
     elif browser == Browser.Chrome:
-        res = {'build_version': generate_chrome_version()}
+        res = {"build_version": generate_chrome_version()}
 
     elif browser == Browser.Edge:
-        res = {'build_version': choice(EDGE_VERSION)}
+        res = {"build_version": choice(EDGE_VERSION)}
 
     elif browser == Browser.Safari:
         webkit_version = choice(WEBKIT_VERSION)
         res = {
-            'webkit_version': webkit_version,
-            'safari_version': webkit_version[:5],
-            'build_version': choice(SAFARI_VERSION),
+            "webkit_version": webkit_version,
+            "safari_version": webkit_version[:5],
+            "build_version": choice(SAFARI_VERSION),
         }
 
     elif browser == Browser.Opera:
-        res = {'build_version': choice(OPERA_BUILD_ARGS)}
+        res = {"build_version": choice(OPERA_BUILD_ARGS)}
 
     return res
 
 
-def generate_user_agent(os=OS.Windows, browser=Browser.Chrome, platform=Platform.Desktop):
+def generate_user_agent(
+    os=OS.Windows,
+    browser=Browser.Chrome,
+    platform=Optional[Platform.Desktop, None],
+):
     """Generates HTTP User-Agent header"""
 
     if not platform:
@@ -1001,7 +1021,7 @@ def generate_user_agent(os=OS.Windows, browser=Browser.Chrome, platform=Platform
     return USER_AGENT_TEMPLATE[keywords].format(system=system, app=app)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print(generate_user_agent())
     print(generate_user_agent(OS.Windows, platform=None))
     print(generate_user_agent(OS.Linux, platform=None))

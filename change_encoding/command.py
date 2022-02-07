@@ -1,9 +1,9 @@
-'''
+"""
 Date: 2022.02.04 10:55
 Description: Recursively change the encoding of text files in the current folder.
 LastEditors: Rustle Karl
 LastEditTime: 2022.02.04 10:55
-'''
+"""
 import os
 from pathlib import Path
 
@@ -11,31 +11,38 @@ import chardet
 import click
 
 TEXT_EXTENSIONS = {
-    '.txt', '.py', '.go', '.js', '.ts',
-    '.md', '.ini', '.json', '.asm',
+    ".txt",
+    ".py",
+    ".go",
+    ".js",
+    ".ts",
+    ".md",
+    ".ini",
+    ".json",
+    ".asm",
 }
 
 
-def change_encoding(src, dst=None, encoding='utf-8', lf=True):
+def change_encoding(src, dst=None, encoding="utf-8", lf=True):
     if os.path.splitext(src)[-1] in TEXT_EXTENSIONS:
         if not dst:
             dst = src
 
         if not encoding:
-            encoding = 'utf-8'
+            encoding = "utf-8"
 
-        with open(src, 'rb+') as fp:
+        with open(src, "rb+") as fp:
             content = fp.read()
 
-            original_encoding = chardet.detect(content)['encoding']
+            original_encoding = chardet.detect(content)["encoding"]
             content = content.decode(original_encoding).encode(encoding)
 
             if lf:
                 # CRLF -> LF
-                content = content.replace(b'\r\n', b'\n')
+                content = content.replace(b"\r\n", b"\n")
             else:
                 # LF -> CRLF
-                content = content.replace(b'\n', b'\r\n')
+                content = content.replace(b"\n", b"\r\n")
 
             if dst == src:
                 fp.seek(0)
@@ -43,13 +50,13 @@ def change_encoding(src, dst=None, encoding='utf-8', lf=True):
                 fp.write(content)
 
             else:
-                with open(dst, 'wb') as fw:
+                with open(dst, "wb") as fw:
                     fw.write(content)
 
-            print(f'{os.path.basename(src)}: {original_encoding} -> {encoding}')
+            print(f"{os.path.basename(src)}: {original_encoding} -> {encoding}")
 
 
-def change_all_files_encoding(directory=None, encoding='utf-8'):
+def change_all_files_encoding(directory=None, encoding="utf-8"):
     if directory is None:
         directory = Path.cwd()
     elif not os.path.isdir(directory):
@@ -63,7 +70,7 @@ def change_all_files_encoding(directory=None, encoding='utf-8'):
 
 
 @click.command()
-@click.argument('encoding', required=False)
+@click.argument("encoding", required=False)
 def command_cen(encoding):
-    '''All files in the current path are converted to the specified encoding.'''
+    """All files in the current path are converted to the specified encoding."""
     change_all_files_encoding(encoding=encoding)

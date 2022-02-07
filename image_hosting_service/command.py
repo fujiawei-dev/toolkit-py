@@ -1,9 +1,9 @@
-'''
+"""
 Date: 2022.02.02 18:14
 Description: Omit
 LastEditors: Rustle Karl
 LastEditTime: 2022.02.02 18:14
-'''
+"""
 import os.path
 import sys
 
@@ -12,13 +12,13 @@ from .jd import upload as upload_to_jd
 
 
 def upload_image(path: str) -> UploadResult:
-    if path.startswith('http'):
+    if path.startswith("http"):
         path = download_image(path)
 
     if os.path.isfile(path):
         return upload_to_jd(path)
 
-    return UploadResult(message=f'file {path} not is file')
+    return UploadResult(message=f"file {path} not is file")
 
 
 def command_ups_for_typora():
@@ -32,5 +32,5 @@ def command_ups_for_typora():
         else:
             success_list.append(result.message)
 
-    print('Upload Success:')
-    print('\n'.join(success_list))
+    print("Upload Success:")
+    print("\n".join(success_list))
