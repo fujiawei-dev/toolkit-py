@@ -11,7 +11,7 @@ import time
 from queue import Queue
 from shutil import which
 from threading import Thread
-from typing import List
+from typing import List, Tuple
 
 PASSWORDS_DEFAULT_DIR = os.path.expanduser("~/.config/.passwords")
 PASSWORDS_CUSTOMIZE_FILE = os.path.join(PASSWORDS_DEFAULT_DIR, "customize.txt")
@@ -68,8 +68,8 @@ def _cmd_7zip_compress(src, dst, password) -> bool:
 
 
 def cmd_7zip_decompress(
-        src, dst="", passwords=None, executable="7z"
-) -> List[bool, str, str]:
+    src, dst="", passwords=None, executable="7z"
+) -> Tuple[bool, str, str]:
     if not which(executable):
         raise ValueError(f"{executable} not found.")
 
@@ -88,7 +88,7 @@ def cmd_7zip_decompress(
     return False, "", dst
 
 
-def _need_continue(src, i=0, j=0) -> List[int, int]:
+def _need_continue(src, i=0, j=0) -> Tuple[int, int]:
     if os.path.isfile(src):
         return 0, 1
 
@@ -136,9 +136,9 @@ class Unzipper(object):
 
         self._passwords_loaded = True
 
-    def _cmd_7zip(self, src, dst, parent) -> List[bool, str, str]:
+    def _cmd_7zip(self, src, dst, parent) -> Tuple[bool, str, str]:
         success, password, dst = cmd_7zip_decompress(
-                src, dst, self._passwords_dictionary
+            src, dst, self._passwords_dictionary
         )
 
         if success:
@@ -184,8 +184,8 @@ class Unzipper(object):
 
             for file in os.listdir(src):
                 t = Thread(
-                        target=self._run_recursive,
-                        args=(os.path.join(src, file), move_to, parent, depth + 1),
+                    target=self._run_recursive,
+                    args=(os.path.join(src, file), move_to, parent, depth + 1),
                 )
                 t.start()
                 ts.append(t)
@@ -253,9 +253,9 @@ class Unzipper(object):
         for i in range(0, 100, 5):
             test_zip_file = os.path.join(test_path, f"test_zip_file_1_{i:02d}.7z")
             if _cmd_7zip_compress(
-                    test_jpg_files[i: i + 5],
-                    test_zip_file,
-                    choice(self._passwords_dictionary[1:]),
+                test_jpg_files[i : i + 5],
+                test_zip_file,
+                choice(self._passwords_dictionary[1:]),
             ):
                 test_zip_files_1.append(test_zip_file)
 
@@ -267,9 +267,9 @@ class Unzipper(object):
         for i in range(0, 15, 5):
             test_zip_file = os.path.join(test_path, f"test_zip_file_2_{i:02d}.7z")
             if _cmd_7zip_compress(
-                    test_zip_files_1[i: i + 5],
-                    test_zip_file,
-                    choice(self._passwords_dictionary[1:]),
+                test_zip_files_1[i : i + 5],
+                test_zip_file,
+                choice(self._passwords_dictionary[1:]),
             ):
                 test_zip_files_2.append(test_zip_file)
 
