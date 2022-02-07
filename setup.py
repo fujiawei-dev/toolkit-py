@@ -1,7 +1,7 @@
 """
 Date: 2020-09-21 23:48:26
 LastEditors: Rustle Karl
-LastEditTime: 2022.02.06 09:59:23
+LastEditTime: 2022.02.08 00:02:29
 """
 import os.path
 
@@ -54,6 +54,7 @@ setup(
             "upsfortypora=image_hosting_service:command_ups_for_typora",
             "ccf=create_config_file:command_ccf",
             "cen=change_encoding:command_cen",
+            "ucmd=unified_command.command:command_ucmd",
         ],
     },
     classifiers=[
