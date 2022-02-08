@@ -2,17 +2,20 @@
 Date: 2022.02.07 15:09
 Description: Automatically unzip files recursively.
 LastEditors: Rustle Karl
-LastEditTime: 2022.02.08 08:07:30
+LastEditTime: 2022.02.08 18:46:44
 """
 import contextlib
 import os.path
+import re
 import shutil
 import subprocess
 import time
+from collections import defaultdict
+from pathlib import Path
 from queue import LifoQueue, Queue
 from shutil import which
 from threading import Thread
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 PASSWORDS_DIR = os.path.normpath(os.path.expanduser("~/.config/.passwords"))
 PASSWORDS_FILE = os.path.normpath(os.path.join(PASSWORDS_DIR, "customize.txt"))
@@ -122,6 +125,21 @@ def _need_continue(src, i=0, j=0) -> Tuple[int, int]:
     return i, j
 
 
+def normalize_segment_zips(file, suffixes: list) -> list:
+    print(f"[debug] {file}: {suffixes}")
+
+    files = []
+    for suffix in suffixes:
+        src = os.path.normpath(file + suffix)
+        suffix = ".7z.%03d" % int(re.sub(r"[^\d]", "0", suffix[suffix.rfind(".") :]))
+        dst = os.path.normpath(file + suffix)
+        if src != dst:
+            os.renames(src, dst)
+        files.append(dst)
+    files.sort()
+    return files
+
+
 class Unzipper(object):
     # 密码字典
     _passwords_dictionary: List[str] = [""]
@@ -129,6 +147,9 @@ class Unzipper(object):
 
     _failed_items = Queue()  # 失败列队
     _successful_items = LifoQueue()  # 成功列队
+
+    # 有可能是分卷压缩文件
+    _segment_zips: Dict[str, Queue] = defaultdict(Queue)
 
     def __init__(self):
         self._loads_passwords()
@@ -168,15 +189,34 @@ class Unzipper(object):
 
         return success, password, dst
 
-    def _run_recursive(self, src, move_to, parent, depth=0):
+    def _run_recursive(self, src, move_to, parent, segment=False) -> bool:
         """嵌套压缩解压"""
         if os.path.isfile(src):
             suffix = os.path.splitext(src)[1]
+
             if suffix in EXCLUDE_SUFFIXES:
-                return
-            elif suffix in DELETE_SUFFIXES:
+                return True
+
+            if suffix in DELETE_SUFFIXES:
                 os.unlink(src)
-                return
+                return True
+
+            # 已经确认是分卷压缩
+            if not segment:
+                p = Path(src)
+
+                if len(p.suffixes) > 1:  # 多个后缀可能是分卷压缩
+                    stem = p.stem
+                    pos = stem.find(".")
+
+                    if pos != -1:
+                        stem = stem[:pos]
+
+                    k = (p.parent / stem).as_posix()
+                    v = p.as_posix()[len(k) :]
+                    self._segment_zips[k].put(v)
+
+                    return True
 
             if suffix == "":  # 无后缀名的情况自动添加后缀
                 _src = src + ".7z"
@@ -190,8 +230,7 @@ class Unzipper(object):
                 i, j = _need_continue(src)
                 if j > 0 and (i < j or i < 8):
                     print("[debug] continue unzip: %s" % src)
-                    self._run_recursive(src, move_to, parent, depth + 1)
-                    return
+                    return self._run_recursive(src, move_to, parent)
 
                 # 如果解压出来的是文件夹组织的，则单独移动文件夹，否则一起移动
                 for file in os.listdir(src):
@@ -205,6 +244,8 @@ class Unzipper(object):
                 except OSError:
                     shutil.move(src, move_to)
 
+            return success
+
         elif not is_equal_path(src, move_to) and os.path.isdir(src):
             # 多线程处理
 
@@ -213,7 +254,7 @@ class Unzipper(object):
             for file in os.listdir(src):
                 t = Thread(
                     target=self._run_recursive,
-                    args=(os.path.join(src, file), move_to, parent, depth + 1),
+                    args=(os.path.join(src, file), move_to, parent),
                     daemon=True,
                 )
                 t.start()
@@ -221,6 +262,10 @@ class Unzipper(object):
 
             for t in ts:
                 t.join()
+
+            # FIXME: How to get return value?
+
+        return False
 
     def run(self, src, move_to="") -> bool:
         begin = time.time()  # 计时器
@@ -232,6 +277,13 @@ class Unzipper(object):
         os.makedirs(move_to, exist_ok=True)
 
         self._run_recursive(src, move_to, src)
+
+        for k, v in self._segment_zips.items():
+            files = normalize_segment_zips(k, list(v.queue))
+            if self._run_recursive(files[0], move_to, src, segment=True):
+                for file in files:
+                    os.unlink(file)
+                self._segment_zips[k] = Queue()
 
         if not self._successful_items.empty():
             print("\n=========== INFO ============")
@@ -249,6 +301,13 @@ class Unzipper(object):
             elif os.path.isdir(file):
                 os.removedirs(file)
 
+        if self._segment_zips:
+            print("\n=========== WARNING ============")
+
+            for k, v in self._segment_zips.items():
+                if not v.empty():
+                    print(k, ":", list(v.queue))
+
         no_failure = True
 
         if not self._failed_items.empty():
@@ -258,7 +317,7 @@ class Unzipper(object):
         while not self._failed_items.empty():
             print(self._failed_items.get())
 
-        print(f"\ncost {time.time() - begin:.02f}s")
+        print(f"\n\ncost {time.time() - begin:.02f}s")
 
         return no_failure
 
