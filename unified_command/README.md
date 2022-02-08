@@ -1,4 +1,6 @@
-# Unified Command
+# Unified Command 统一命令
+
+> 将各种子命令统一到该命令之下，之前的方式每次都创建新的执行文件，一个是麻烦，每次都必须修改 setup.py 添加，另一个是可能与其他知名软件重名，污染命名空间。
 
 ```shell
 $ ucmd
@@ -13,11 +15,20 @@ Commands:
 
 ## Table of Contents
 
-- [Unified Command](#unified-command)
+- [Unified Command 统一命令](#unified-command-统一命令)
   - [Table of Contents](#table-of-contents)
-  - [ucmd unzip](#ucmd-unzip)
+  - [解压嵌套加密压缩文件](#解压嵌套加密压缩文件)
+    - [TODO](#todo)
+    - [显示密码字典的路径](#显示密码字典的路径)
 
-## ucmd unzip
+## 解压嵌套加密压缩文件
+
+> 有些网站为了防止资源失效，经常对一个文件多层加密，解压起来真的是浪费时间。实在是受不了了，才有了这个命令工具。
+
+### TODO
+
+- [ ] 处理分卷压缩包
+- [ ] 删除多余空目录
 
 ```shell
 $ ucmd uz -h
@@ -30,3 +41,23 @@ Options:
   -t, --test BOOLEAN    Create 7z files for test.
   -h, --help            Show this message and exit.
 ```
+
+不加任何参数选项则自动解压当前文件夹。
+
+### 显示密码字典的路径
+
+```shell
+$ ucmd uz -c
+C:\Users\Admin/.config/.passwords # 文件夹，当前路径下的所有文件都认为是字典文件，全部会读取
+C:\Users\Admin/.config/.passwords\customize.txt # 文件，优先级最高的字典文件
+```
+
+```shell
+
+```
+
+```shell
+
+```
+
+

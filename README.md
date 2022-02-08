@@ -34,7 +34,7 @@ pip install -U toolkit-py -i https://pypi.douban.com/simple
 
 ### Automatically unzip files recursively
 
-[ucmd-unzip](unified_command/README.md#ucmd-unzip)
+[解压嵌套加密压缩文件](unified_command/README.md#解压嵌套加密压缩文件)
 
 ### Recursively change the encoding of text files in the current folder
 

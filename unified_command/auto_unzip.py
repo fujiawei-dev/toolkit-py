@@ -2,13 +2,13 @@
 Date: 2022.02.07 15:09
 Description: Automatically unzip files recursively.
 LastEditors: Rustle Karl
-LastEditTime: 2022.02.07 15:09
+LastEditTime: 2022.02.08 08:07:30
 """
 import os.path
 import shutil
 import subprocess
 import time
-from queue import Queue
+from queue import LifoQueue, Queue
 from shutil import which
 from threading import Thread
 from typing import List, Tuple
@@ -29,6 +29,11 @@ DELETE_SUFFIXES = {
     ".txt",
     ".url",
 }
+
+
+def is_equal_path(a, b):
+    """判断路径相同"""
+    return os.path.normpath(a) == os.path.normpath(b)
 
 
 def _cmd_7zip_decompress(src, dst, password) -> bool:
@@ -89,6 +94,7 @@ def cmd_7zip_decompress(
 
 
 def _need_continue(src, i=0, j=0) -> Tuple[int, int]:
+    """判断是否继续解压"""
     if os.path.isfile(src):
         return 0, 1
 
@@ -106,16 +112,18 @@ def _need_continue(src, i=0, j=0) -> Tuple[int, int]:
 
 
 class Unzipper(object):
+    # 密码字典
     _passwords_dictionary: List[str] = [""]
     _passwords_loaded = False
 
-    _failed_items = Queue()
-    _successful_items = Queue()
+    _failed_items = Queue()  # 失败列队
+    _successful_items = LifoQueue()  # 成功列队
 
     def __init__(self):
         self._loads_passwords()
 
     def _loads_passwords(self):
+        """载入密码字典"""
         if self._passwords_loaded:
             return
 
@@ -130,13 +138,16 @@ class Unzipper(object):
                 fp.write(b"\n")
 
         for file in os.listdir(PASSWORDS_DEFAULT_DIR):
-            if os.path.isfile(file):
+            if os.path.isfile(file) and not is_equal_path(
+                file, PASSWORDS_CUSTOMIZE_FILE
+            ):
                 with open(file, encoding="utf-8") as fp:
                     self._passwords_dictionary.extend(fp.read().splitlines())
 
         self._passwords_loaded = True
 
     def _cmd_7zip(self, src, dst, parent) -> Tuple[bool, str, str]:
+        """单文件解压"""
         success, password, dst = cmd_7zip_decompress(
             src, dst, self._passwords_dictionary
         )
@@ -149,6 +160,7 @@ class Unzipper(object):
         return success, password, dst
 
     def _run_recursive(self, src, move_to, parent, depth=0):
+        """嵌套压缩解压"""
         if os.path.isfile(src):
             suffix = os.path.splitext(src)[1]
             if suffix in EXCLUDE_SUFFIXES:
@@ -157,8 +169,8 @@ class Unzipper(object):
                 os.unlink(src)
                 return
 
-            if suffix == "":
-                _src = src[: -len(suffix)] + ".7z"
+            if suffix == "":  # 无后缀名的情况自动添加后缀
+                _src = src + ".7z"
                 os.renames(src, _src)
                 src = _src
 
@@ -170,16 +182,21 @@ class Unzipper(object):
                     self._run_recursive(src, move_to, parent, depth + 1)
                     return
 
+                # 如果解压出来的是文件夹组织的，则单独移动文件夹，否则一起移动
                 for file in os.listdir(src):
                     file = os.path.join(src, file)
                     if os.path.isdir(file):
                         shutil.move(file, move_to)
+
+                # 如果解压出来全是文件夹，则该目录可能已经空了，尝试删除
                 try:
                     os.removedirs(src)
                 except OSError:
                     shutil.move(src, move_to)
 
-        elif src != move_to and os.path.isdir(src):
+        elif not is_equal_path(src, move_to) and os.path.isdir(src):
+            # 多线程处理
+
             ts: List[Thread] = []
 
             for file in os.listdir(src):
@@ -194,7 +211,7 @@ class Unzipper(object):
                 t.join()
 
     def run(self, src, move_to="") -> bool:
-        begin = time.time()
+        begin = time.time()  # 计时器
 
         if move_to == "" or move_to == src:
             move_to = os.path.dirname(src) if os.path.isfile(src) else src
@@ -207,6 +224,8 @@ class Unzipper(object):
         while not self._successful_items.empty():
             file, password = self._successful_items.get()
             print(f"{file}: {password}")
+
+            # 删除已经解压成功的源文件
             file = os.path.join(src, file)
             if os.path.isfile(file):
                 os.unlink(file)
@@ -227,6 +246,7 @@ class Unzipper(object):
         return no_failure
 
     def create_7z_files_for_test(self, path=None):
+        """创建测试压缩包"""
         from random import choice
 
         if not path:

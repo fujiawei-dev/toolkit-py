@@ -25,15 +25,13 @@ def command_ucmd():
 @click.option(
     "--config",
     "-c",
-    type=bool,
-    default=False,
+    is_flag=True,
     help="Show the default path of configuration file.",
 )
 @click.option(
     "--test",
     "-t",
-    type=bool,
-    default=False,
+    is_flag=True,
     help="Create 7z files for test.",
 )
 def auto_unzip(config, test):
