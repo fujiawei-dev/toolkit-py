@@ -48,16 +48,6 @@ Options:
 
 ```shell
 $ ucmd uz -c
-C:\Users\Admin/.config/.passwords # 文件夹，当前路径下的所有文件都认为是字典文件，全部会读取
-C:\Users\Admin/.config/.passwords\customize.txt # 文件，优先级最高的字典文件
+C:\Users\Admin\.config\.passwords # 文件夹，当前路径下的所有文件都认为是字典文件，全部会读取
+C:\Users\Admin\.config\.passwords\customize.txt # 文件，优先级最高的字典文件
 ```
-
-```shell
-
-```
-
-```shell
-
-```
-
-

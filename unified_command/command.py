@@ -9,7 +9,7 @@ import os
 import click
 from click_aliases import ClickAliasedGroup
 
-from .auto_unzip import PASSWORDS_CUSTOMIZE_FILE, PASSWORDS_DEFAULT_DIR, Unzipper
+from .auto_unzip import PASSWORDS_DIR, PASSWORDS_FILE, Unzipper
 
 
 @click.group(cls=ClickAliasedGroup)
@@ -38,7 +38,7 @@ def auto_unzip(config, test):
     unzipper = Unzipper()
 
     if config:
-        click.echo(PASSWORDS_DEFAULT_DIR + "\n" + PASSWORDS_CUSTOMIZE_FILE)
+        click.echo(PASSWORDS_DIR + "\n" + PASSWORDS_FILE)
         return
 
     if test:

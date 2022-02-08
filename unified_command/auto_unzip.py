@@ -13,8 +13,8 @@ from shutil import which
 from threading import Thread
 from typing import List, Tuple
 
-PASSWORDS_DEFAULT_DIR = os.path.expanduser("~/.config/.passwords")
-PASSWORDS_CUSTOMIZE_FILE = os.path.join(PASSWORDS_DEFAULT_DIR, "customize.txt")
+PASSWORDS_DIR = os.path.normpath(os.path.expanduser("~/.config/.passwords"))
+PASSWORDS_FILE = os.path.normpath(os.path.join(PASSWORDS_DIR, "customize.txt"))
 
 EXCLUDE_SUFFIXES = {
     ".jpg",
@@ -127,20 +127,18 @@ class Unzipper(object):
         if self._passwords_loaded:
             return
 
-        if not os.path.exists(PASSWORDS_DEFAULT_DIR):
-            os.makedirs(PASSWORDS_DEFAULT_DIR)
+        if not os.path.exists(PASSWORDS_DIR):
+            os.makedirs(PASSWORDS_DIR)
 
-        if os.path.isfile(PASSWORDS_CUSTOMIZE_FILE):
-            with open(PASSWORDS_CUSTOMIZE_FILE, encoding="utf-8") as fp:
+        if os.path.isfile(PASSWORDS_FILE):
+            with open(PASSWORDS_FILE, encoding="utf-8") as fp:
                 self._passwords_dictionary.extend(fp.read().splitlines())
         else:
-            with open(PASSWORDS_CUSTOMIZE_FILE, "wb") as fp:
+            with open(PASSWORDS_FILE, "wb") as fp:
                 fp.write(b"\n")
 
-        for file in os.listdir(PASSWORDS_DEFAULT_DIR):
-            if os.path.isfile(file) and not is_equal_path(
-                file, PASSWORDS_CUSTOMIZE_FILE
-            ):
+        for file in os.listdir(PASSWORDS_DIR):
+            if os.path.isfile(file) and not is_equal_path(file, PASSWORDS_FILE):
                 with open(file, encoding="utf-8") as fp:
                     self._passwords_dictionary.extend(fp.read().splitlines())
 
