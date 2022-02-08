@@ -23,6 +23,12 @@ def command_ucmd():
     help="Automatically unzip files recursively.",
 )
 @click.option(
+    "--path",
+    "-p",
+    type=str,
+    help="The source path.",
+)
+@click.option(
     "--config",
     "-c",
     is_flag=True,
@@ -34,7 +40,7 @@ def command_ucmd():
     is_flag=True,
     help="Create 7z files for test.",
 )
-def auto_unzip(config, test):
+def auto_unzip(path, config, test):
     unzipper = Unzipper()
 
     if config:
@@ -45,4 +51,4 @@ def auto_unzip(config, test):
         click.echo(unzipper.create_7z_files_for_test())
         return
 
-    unzipper.run(os.getcwd())
+    unzipper.run(path if path and os.path.exists(path) else os.getcwd())

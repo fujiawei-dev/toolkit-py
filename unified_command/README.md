@@ -28,7 +28,7 @@ Commands:
 ### TODO
 
 - [ ] 处理分卷压缩包
-- [ ] 删除多余空目录
+- [x] 删除多余空目录
 
 ```shell
 $ ucmd uz -h

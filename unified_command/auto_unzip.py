@@ -4,6 +4,7 @@ Description: Automatically unzip files recursively.
 LastEditors: Rustle Karl
 LastEditTime: 2022.02.08 08:07:30
 """
+import contextlib
 import os.path
 import shutil
 import subprocess
@@ -15,6 +16,8 @@ from typing import List, Tuple
 
 PASSWORDS_DIR = os.path.normpath(os.path.expanduser("~/.config/.passwords"))
 PASSWORDS_FILE = os.path.normpath(os.path.join(PASSWORDS_DIR, "customize.txt"))
+
+INCLUDED_SUFFIXES = {".7z", ".zip", ".rar"}
 
 EXCLUDE_SUFFIXES = {
     ".jpg",
@@ -38,21 +41,25 @@ def is_equal_path(a, b):
 
 def _cmd_7zip_decompress(src, dst, password) -> bool:
     """解压"""
+    print("[debug] src=%s dst=%s password=%r" % (src, dst, password))
+
     cmd = ["7z", "x", src, "-o" + dst, "-p" + password, "-aou"]
 
     if not is_7zip_utf8_encoding(src):
         cmd.append("-mcp=936")
 
+    print(f"[debug] run: {' '.join(cmd)}")
+
     success = subprocess.run(cmd, capture_output=True).returncode == 0
     if not success:
-        shutil.rmtree(dst)
+        shutil.rmtree(dst, ignore_errors=True)
 
     return success
 
 
 def _cmd_7zip_list(src) -> bytes:
     """获取列表"""
-    p = subprocess.run(["7z", "l", "-ba", src], capture_output=True)
+    p = subprocess.run(["7z", "l", "-ba", src, "-p"], capture_output=True, timeout=1)
     return p.stdout or p.stderr
 
 
@@ -87,6 +94,7 @@ def cmd_7zip_decompress(
         passwords = [passwords]
 
     for password in passwords:
+        print(f"[debug] password={repr(password)}?")
         if _cmd_7zip_decompress(src, dst, password):
             return True, password, dst
 
@@ -99,9 +107,12 @@ def _need_continue(src, i=0, j=0) -> Tuple[int, int]:
         return 0, 1
 
     for file in os.listdir(src):
+        suffix = os.path.splitext(file)[1]
         file = os.path.join(src, file)
         if os.path.isfile(file):
-            if os.path.splitext(file)[1] in EXCLUDE_SUFFIXES:
+            if suffix in INCLUDED_SUFFIXES:
+                return 0, 1
+            if suffix in EXCLUDE_SUFFIXES:
                 i += 1  # 已经解压的可信度
             else:
                 j += 1  # 继续解压的可信度
@@ -172,11 +183,13 @@ class Unzipper(object):
                 os.renames(src, _src)
                 src = _src
 
+            print("[debug] unzip: %s" % src)
             success, _, src = self._cmd_7zip(src, "", parent)
 
             if success:
                 i, j = _need_continue(src)
                 if j > 0 and (i < j or i < 8):
+                    print("[debug] continue unzip: %s" % src)
                     self._run_recursive(src, move_to, parent, depth + 1)
                     return
 
@@ -201,6 +214,7 @@ class Unzipper(object):
                 t = Thread(
                     target=self._run_recursive,
                     args=(os.path.join(src, file), move_to, parent, depth + 1),
+                    daemon=True,
                 )
                 t.start()
                 ts.append(t)
@@ -219,6 +233,9 @@ class Unzipper(object):
 
         self._run_recursive(src, move_to, src)
 
+        if not self._successful_items.empty():
+            print("\n=========== INFO ============")
+
         while not self._successful_items.empty():
             file, password = self._successful_items.get()
             print(f"{file}: {password}")
@@ -227,6 +244,8 @@ class Unzipper(object):
             file = os.path.join(src, file)
             if os.path.isfile(file):
                 os.unlink(file)
+                with contextlib.suppress(OSError):
+                    os.removedirs(os.path.dirname(file))
             elif os.path.isdir(file):
                 os.removedirs(file)
 
@@ -295,3 +314,8 @@ class Unzipper(object):
             os.unlink(test_zip_file_1)
 
         return test_path
+
+
+if __name__ == "__main__":
+    unzipper = Unzipper()
+    unzipper.run("s:/cache/done/test")
