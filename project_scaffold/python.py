@@ -46,6 +46,7 @@ clean:
     rm -r build
     rm -r dist
     rm -r *egg-info
+   rm -r .pytest_cache
 
 tag:
     git tag v$(VERSION)
@@ -83,7 +84,13 @@ pip install -U {package} -i https://pypi.douban.com/simple
 PYTHON_VERSION_CONTENT = (
     GENERATOR_HEADER
     + """
+from pathlib import Path
+
+__project__= '{package}'
+
 __version__ = '0.0.1'
+
+__root__ = Path(__file__).parent
 """
 )
 
@@ -209,6 +216,12 @@ setup(
         author_email='fu.jiawei@outlook.com',
         install_requires=requires,
 
+        entry_points={
+            "console_scripts": [
+                "{underscores_package}={underscores_package}.command:main",
+            ],
+        },
+
         classifiers=[
             'Intended Audience :: Developers',
             'Environment :: Console',
@@ -222,12 +235,63 @@ setup(
 """
 )
 
+PYTHON_COMMAND_CONTENT = (
+    GENERATOR_HEADER
+    + """
+import click
+
+@click.group()
+def main():
+    pass
+"""
+)
+
+
+PYTHON_SETTINGS_CONTENT = (
+    GENERATOR_HEADER
+    + """
+from .version import __root__, __project__
+
+BASE_PATH = __root__.parent
+"""
+)
+
+
+PYTHON_LOGGER_CONTENT = (
+    GENERATOR_HEADER
+    + """
+import logging
+from logging.handlers import RotatingFileHandler
+
+from .version import __project__
+
+DEBUG = True
+
+log = logging.getLogger(__project__)
+
+if DEBUG:
+    console = logging.StreamHandler()
+    console.setLevel(logging.DEBUG)
+    log.addHandler(console)
+else:
+    file = logging.handlers.RotatingFileHandler(
+        mode="w",
+        encoding="utf-8",
+        maxBytes=(1 << 20) * 50,  # MB
+        backupCount=30,
+    )
+    file.setLevel(logging.INFO)
+    log.addHandler(file)
+"""
+)
+
 
 def python():
     Entity("requirements.txt", "\n").create()
 
-    package = Path.cwd().stem
-    underscores_package = package.replace("-", "_")
+    package = Path.cwd().stem  # camel-case
+    title = package.replace("-", " ").title()  # Camel Case
+    underscores_package = package.replace("-", "_")  # camel_case
 
     Entity(
         TEMPLATE_MAKEFILE.file,
@@ -239,23 +303,31 @@ def python():
 
     Entity(
         TEMPLATE_README.file,
-        PYTHON_README_CONTENT.format(
-            title=package.replace("-", " ").title(),
-            package=package,
-        ),
+        PYTHON_README_CONTENT.format(title=title, package=package),
     ).create()
 
     create_common_files([underscores_package, "tests", "tests/data"])
 
     Entity(
         f"{underscores_package}/version.py",
-        PYTHON_VERSION_CONTENT,
+        PYTHON_VERSION_CONTENT.format(package=package),
+    ).create()
+
+    Entity(
+        f"{underscores_package}/settings.py",
+        PYTHON_SETTINGS_CONTENT,
+    ).create()
+
+    Entity(
+        f"{underscores_package}/logger.py",
+        PYTHON_LOGGER_CONTENT,
     ).create()
 
     PYTHON_TEST.create()
     PYTHON_TEST_CONF.create()
 
     Entity("tests/__init__.py", GENERATOR_HEADER).create()
+    Entity(f"{underscores_package}/__init__.py", GENERATOR_HEADER).create()
 
     PYTHON_PUBLISH.create()
 
