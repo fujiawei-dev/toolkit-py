@@ -4,36 +4,13 @@ Description: Omit
 LastEditors: Rustle Karl
 LastEditTime: 2022.02.03 12:37
 """
-from .common import Entity, create_common_files
-
-TEMPLATE_ARTICLE_STATIC = Entity(
-    "assets/templates/article_static.yaml",
-    """\
-tags: ["标签"]
-series: [ "系列"]
-categories: [ "分类"]
-
-toc: true  # 目录
-draft: false  # 草稿
-""",
-)
-
-TEMPLATE_ARTICLE_CONTENT = Entity(
-    "assets/templates/article_content.md",
-    """\
-## 二级
-### 三级
-```shell
-```
-""".replace(
-        "\n", "\n\n"
-    ),
-)
+from .render import render_templates
 
 
 def notes():
-    create_common_files(
-        [
+    render_templates(
+        "notes",
+        folder=[
             "quickstart",  # 安装/卸载/基础用法
             "docs",  # 基础语法/知识/原理
             "libraries",  # 库
@@ -46,8 +23,5 @@ def notes():
             "src/quickstart",  # 源码示例
             "src/libraries/standard",  # 标准库源码示例
             "src/libraries/tripartite",  # 第三方库源码示例
-        ]
+        ],
     )
-
-    TEMPLATE_ARTICLE_STATIC.create()
-    TEMPLATE_ARTICLE_CONTENT.create()

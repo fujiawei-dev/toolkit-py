@@ -9,7 +9,6 @@ from click_aliases import ClickAliasedGroup
 
 from .c import c as _c
 from .common import create_common_files
-from .debug import debug as _debug
 from .golang import golang as _golang
 from .notes import notes as _notes
 from .python import python as _python
@@ -23,11 +22,6 @@ def command_cps():
 @command_cps.command(help="Create basic project scaffold.")
 def base():
     create_common_files()
-
-
-@command_cps.command(help="Create debug project scaffold.")
-def debug():
-    _debug()
 
 
 @command_cps.command(
