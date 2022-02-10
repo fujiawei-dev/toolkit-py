@@ -47,7 +47,7 @@ def new_article(path):
     )
 
     if os.path.isfile(TEMPLATE_ARTICLE_STATIC.file):
-        with open(TEMPLATE_ARTICLE_STATIC.file) as fp:
+        with open(TEMPLATE_ARTICLE_STATIC.file, encoding="utf-8") as fp:
             content = fp.read()
             if content:
                 template_article += content
@@ -57,7 +57,7 @@ def new_article(path):
     template_article += _separator + "\n"
 
     if os.path.isfile(TEMPLATE_ARTICLE_CONTENT.file):
-        with open(TEMPLATE_ARTICLE_CONTENT.file) as fp:
+        with open(TEMPLATE_ARTICLE_CONTENT.file, encoding="utf-8") as fp:
             content = fp.read()
             if content:
                 template_article += (content + "\n\n") * 5
