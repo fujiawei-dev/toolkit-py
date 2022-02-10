@@ -6,17 +6,27 @@ LastEditTime: 2022.02.02 19:08
 """
 import os
 from datetime import datetime
+from pathlib import Path
 
 from unified_command.version import GENERATOR_HEADER
 
 __all__ = [
     "create_common_files",
+    "get_package",
     "Entity",
+    "GENERATOR_HEADER",
     "TEMPLATE_LICENSE",
     "TEMPLATE_README",
     "TEMPLATE_GITIGNORE",
     "TEMPLATE_MAKEFILE",
 ]
+
+
+def get_package() -> [str, str, str]:
+    package = Path.cwd().stem.replace("_", "-").replace(" ", "-").lower()  # camel-case
+    package_title = package.replace("-", " ").title()  # Camel Case
+    package_underscore = package.replace("-", "_")  # camel_case
+    return package, package_title, package_underscore
 
 
 class Entity(object):
@@ -145,9 +155,10 @@ def create_common_files(folders: list = None):
 
     folders.extend(
         [
-            "scratches",
-            "examples",
             ".github/workflows",
+            "assets",
+            "examples",
+            "scratches",
         ]
     )
 

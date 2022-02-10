@@ -24,6 +24,11 @@ extras_require = {
     ],
 }
 
+
+def find_package_data(path):
+    return [os.path.join("..", p, f) for (p, d, fs) in os.walk(path) for f in fs]
+
+
 root = os.path.abspath(os.path.dirname(__file__))
 
 # Import the README and use it as the long-description.
@@ -42,10 +47,9 @@ setup(
     author_email="fujiawei@outlook.com",
     license="BSD",
     packages=find_packages(exclude=("tests", "tests.*")),
-    include_package_data=True,
-    zip_safe=False,
     install_requires=requires,
     extras_require=extras_require,
+    package_data={"": find_package_data("project_scaffold/templates")},
     entry_points={
         "console_scripts": [
             "gua=user_agent:command_gua",
