@@ -43,10 +43,10 @@ setup(
     packages=find_packages(exclude=("tests", "tests.*")),
     install_requires=requires,
     extras_require=extras_require,
-    package_data={"": find_package_data("{{PYTHON_MODULE}}/templates")},
+    package_data={"{{PYTHON_MODULE}}": find_package_data("{{PYTHON_MODULE}}/templates")},
     entry_points={
         "console_scripts": [
-            "{PYTHON_MODULE}={PYTHON_MODULE}.command:main",
+            "{{PYTHON_MODULE}}={{PYTHON_MODULE}}.command:main",
         ],
     },
     classifiers=[

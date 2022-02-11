@@ -95,4 +95,8 @@ Set-Alias -Name md5 -Value MD5File
 function RecorderServer { D:\OneDrive\Repositories\projects\edge-tts\RecorderClient\RecorderServer.exe }
 Set-Alias -Name rs -Value RecorderServer
 
+# viewer 启动浏览器
+function StartViewer { python D:\OneDrive\Repositories\projects\auto-sign-in\main.py viewer }
+Set-Alias -Name viewer -Value StartViewer
+
 #-------------------------------    Set Alias END     -------------------------------

@@ -21,7 +21,15 @@ __all__ = [
 
 
 def get_package() -> [str, str, str]:
-    package = Path.cwd().stem.replace("_", "-").replace(" ", "-").lower()  # camel-case
+    package = (
+        Path.cwd()
+        .stem.replace("_", "-")
+        .replace(" ", "-")
+        .lower()
+        .rstrip("-py")
+        .rstrip("-go")
+    )  # camel-case
+
     package_title = package.replace("-", " ").title()  # Camel Case
     package_underscore = package.replace("-", "_")  # camel_case
     return package, package_title, package_underscore

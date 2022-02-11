@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-__project__ = "{{PYTHON_MODULE}}"
+__project__ = "{{PYPI_PACKAGE}}"
 
 __version__ = "0.0.1"
 

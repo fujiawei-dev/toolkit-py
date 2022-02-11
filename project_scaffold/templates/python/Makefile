@@ -10,7 +10,7 @@
 
 PYPI_PACKAGE = {{PYPI_PACKAGE}}
 
-APP_VERSION := $(shell python -c "from unified_command.version import __version__; print(__version__, end='')")
+APP_VERSION := $(shell python -c "from {{PYTHON_MODULE}}.version import __version__; print(__version__, end='')")
 
 all: format reinstall tests
 
