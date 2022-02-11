@@ -16,6 +16,7 @@ make all-arch # All platforms golang supported
 ### Commands
 
 ```shell
+$ ./{{APP_NAME}} -h
 
 ```
 

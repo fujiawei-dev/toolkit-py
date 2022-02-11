@@ -103,6 +103,7 @@ def render_templates(
         special_paths=special_paths,
         include_suffixes=include_suffixes,
         **{
+            "STUDY_OBJECT": package_title,
             "PACKAGE_TITLE": package_title,
             "APP_NAME": package_underscore,
             "GOLANG_MODULE": package_underscore,

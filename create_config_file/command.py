@@ -9,7 +9,7 @@ from click_aliases import ClickAliasedGroup
 
 from .clash import clash as _clash
 from .hosts import hosts as _hosts
-from .notes import new_article as _new_article
+from .notes import new_note as _new_note
 from .python import python as _python
 
 
@@ -48,10 +48,10 @@ def clash():
 @command_ccf.command(
     aliases=["nn"],
     context_settings={"help_option_names": ["-h", "--help"]},
-    help="Create a new article for hugo.",
+    help="Create a new note for hugo.",
 )
 @click.option(
-    "--path", "-p", required=True, type=str, help="The file path for a new article."
+    "--path", "-p", required=True, type=str, help="The file path for a new note."
 )
-def notes(path):
-    _new_article(path)
+def new_note(path):
+    _new_note(path)

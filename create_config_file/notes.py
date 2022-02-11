@@ -7,24 +7,22 @@ LastEditTime: 2022.02.06 16:43
 import os
 import time
 
-from project_scaffold.notes import TEMPLATE_ARTICLE_CONTENT, TEMPLATE_ARTICLE_STATIC
+from project_scaffold.notes import TEMPLATE_ARTICLE_CONTENT, TEMPLATE_ARTICLE_SETTINGS
 
-_separator = "---\n"
+NOTE_HEADER_SEPARATOR = "---\n"
 
-_template_creator = """\
-date: {date}
+NOTE_HEADER_CREATOR = f"""\
+date: {time.strftime("%Y-%m-%dT%H:%M:%S+08:00")}
 author: "Rustle Karl"
-""".format(
-    date=time.strftime("%Y-%m-%dT%H:%M:%S+08:00")
-)
+"""
 
-_template_article_dynamic = """\
+NOTE_HEADER_TITLE = """\
 title: "{title}"
 url:  "{url}"  # 永久链接
 """
 
 
-def new_article(path):
+def new_note(path):
     if os.path.exists(path):
         return
 
@@ -40,21 +38,21 @@ def new_article(path):
     url = "/".join(["posts", prefix, uri])
 
     template_article = (
-        _separator
-        + _template_creator
+        NOTE_HEADER_SEPARATOR
+        + NOTE_HEADER_CREATOR
         + "\n"
-        + _template_article_dynamic.format(title=title, url=url)
+        + NOTE_HEADER_TITLE.format(title=title, url=url)
     )
 
-    if os.path.isfile(TEMPLATE_ARTICLE_STATIC.file):
-        with open(TEMPLATE_ARTICLE_STATIC.file, encoding="utf-8") as fp:
+    if os.path.isfile(TEMPLATE_ARTICLE_SETTINGS):
+        with open(TEMPLATE_ARTICLE_SETTINGS, encoding="utf-8") as fp:
             content = fp.read()
             if content:
                 template_article += content
             else:
-                template_article += TEMPLATE_ARTICLE_STATIC.content
+                template_article += TEMPLATE_ARTICLE_SETTINGS.content
 
-    template_article += _separator + "\n"
+    template_article += NOTE_HEADER_SEPARATOR + "\n"
 
     if os.path.isfile(TEMPLATE_ARTICLE_CONTENT.file):
         with open(TEMPLATE_ARTICLE_CONTENT.file, encoding="utf-8") as fp:
