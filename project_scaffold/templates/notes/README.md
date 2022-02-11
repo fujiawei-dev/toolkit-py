@@ -1,4 +1,19 @@
-{{NOTES_HEADER}}
+---
+date: {{CREATED_AT}}  # 创建日期
+author: "Rustle Karl"  # 作者
+
+# 文章
+title: "{{STUDY_OBJECT}} 学习笔记"  # 文章标题
+description: "纸上得来终觉浅，学到过知识点分分钟忘得一干二净，今后无论学什么，都做好笔记吧。"
+url:  "posts/{{STUDY_OBJECT.replace(' ', '_')|lower}}/README"  # 设置网页永久链接
+tags: [ "{{STUDY_OBJECT}}", "README" ]  # 标签
+series: [ "{{STUDY_OBJECT}} 学习笔记" ]  # 系列
+categories: [ "学习笔记" ]  # 分类
+
+index: true  # 是否可以被索引
+toc: true  # 是否自动生成目录
+draft: false  # 草稿
+---
 
 # {{STUDY_OBJECT}} 学习笔记
 

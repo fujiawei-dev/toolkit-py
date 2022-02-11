@@ -5,6 +5,7 @@ LastEditors: Rustle Karl
 LastEditTime: 2022.02.10 14:54
 """
 import os.path
+import time
 from pathlib import Path
 from typing import List, Tuple
 
@@ -110,6 +111,7 @@ def render_templates(
             "PYPI_PACKAGE": package,
             "PYTHON_MODULE": package_underscore,
             "MAKEFILE_HEADER": GENERATOR_HEADER,
+            "CREATED_AT": time.strftime("%Y-%m-%dT%H:%M:%S+08:00"),
             **kwargs,
         }
     )
