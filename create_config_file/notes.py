@@ -22,7 +22,7 @@ url:  "{url}"  # 永久链接
 """
 
 
-def new_note(path):
+def notes(path):
     if os.path.exists(path):
         return
 
@@ -44,8 +44,8 @@ def new_note(path):
         + NOTE_HEADER_TITLE.format(title=title, url=url)
     )
 
-    if os.path.isfile(TEMPLATE_ARTICLE_SETTINGS):
-        with open(TEMPLATE_ARTICLE_SETTINGS, encoding="utf-8") as fp:
+    if os.path.isfile(TEMPLATE_ARTICLE_SETTINGS.file):
+        with open(TEMPLATE_ARTICLE_SETTINGS.file, encoding="utf-8") as fp:
             content = fp.read()
             if content:
                 template_article += content

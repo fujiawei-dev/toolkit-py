@@ -9,7 +9,7 @@ from click_aliases import ClickAliasedGroup
 
 from .clash import clash as _clash
 from .hosts import hosts as _hosts
-from .notes import new_note as _new_note
+from .notes import notes as _notes
 from .python import python as _python
 
 
@@ -53,5 +53,5 @@ def clash():
 @click.option(
     "--path", "-p", required=True, type=str, help="The file path for a new note."
 )
-def new_note(path):
-    _new_note(path)
+def notes(path):
+    _notes(path)

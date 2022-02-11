@@ -38,7 +38,7 @@ def change_encoding(src, dst=None, encoding="utf-8"):
             content = fp.read().replace(b"\r\n", b"\n")
             original_encoding = chardet.detect(content)["encoding"]
             content = content.decode(original_encoding)
-            content = clean_characters(content).encode(encoding)
+            content = (clean_characters(content).strip() + "\n").encode(encoding)
 
             if dst == src:
                 fp.seek(0)
