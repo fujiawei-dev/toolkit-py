@@ -1,5 +1,7 @@
 # {{PACKAGE_TITLE}}
 
+> Please read `docs/swagger.json` or `docs/swagger.yaml` for more information.
+
 ## Usage
 
 ### Build
@@ -10,6 +12,16 @@ make linux-armv7 # Specify platform
 make builds # Most used
 make all-arch # All platforms golang supported
 ```
+
+### Commands
+
+```shell
+
+```
+
+## Makefile Default
+
+> Please read `Makefile` for more information.
 
 ### Start
 
