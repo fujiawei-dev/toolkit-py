@@ -25,8 +25,13 @@ extras_require = {
 }
 
 
-def find_package_data(path):
-    return [os.path.join("..", p, f) for (p, d, fs) in os.walk(path) for f in fs]
+def find_package_data(*paths):
+    return [
+        os.path.normpath(os.path.join("..", p, f))
+        for path in paths
+        for (p, d, fs) in os.walk(path)
+        for f in fs
+    ]
 
 
 root = os.path.abspath(os.path.dirname(__file__))
@@ -49,7 +54,10 @@ setup(
     packages=find_packages(exclude=("tests", "tests.*")),
     install_requires=requires,
     extras_require=extras_require,
-    package_data={"": find_package_data("project_scaffold/templates")},
+    package_data={
+        "create_config_file": find_package_data("create_config_file/templates"),
+        "project_scaffold": find_package_data("project_scaffold/templates"),
+    },
     entry_points={
         "console_scripts": [
             "gua=user_agent:command_gua",

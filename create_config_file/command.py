@@ -10,6 +10,7 @@ from click_aliases import ClickAliasedGroup
 from .clash import clash as _clash
 from .hosts import hosts as _hosts
 from .notes import notes as _notes
+from .powershell import powershell as _powershell
 from .python import python as _python
 
 
@@ -55,3 +56,18 @@ def clash():
 )
 def notes(path):
     _notes(path)
+
+
+@command_ccf.command(
+    aliases=["ps"],
+    context_settings={"help_option_names": ["-h", "--help"]},
+    help="Create or display configuration files about PowerShell.",
+)
+@click.option(
+    "--write/--read",
+    "-w/-r",
+    default=False,
+    help="Read only or create configuration files.",
+)
+def powershell(write):
+    _powershell(not write)

@@ -9,8 +9,10 @@ import sys
 
 import click
 
+SEPARATE = "--------------\n"
 
-def writer(conf, content="", read_only=True, official=""):
+
+def writer(conf, content="", read_only=True, official="", message=""):
     if not read_only and content != "":
         os.makedirs(os.path.dirname(conf), exist_ok=True)
         with open(conf, "w", encoding="utf8", newline="\n") as fp:
@@ -20,6 +22,9 @@ def writer(conf, content="", read_only=True, official=""):
         click.echo(official)
 
     click.echo(conf)
+
+    if message:
+        click.echo(message)
 
 
 def is_windows():
