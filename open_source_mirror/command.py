@@ -8,6 +8,7 @@ import click
 from click_aliases import ClickAliasedGroup
 
 from .python import python as _python
+from .raspberrypi import Version as raspberrypi_version, raspberrypi as _raspberrypi
 from .ubuntu import Version as ubuntu_version, ubuntu as _ubuntu, ubuntu_port
 
 
@@ -37,3 +38,13 @@ def ubuntu(port, version):
         ubuntu_port(version)
     else:
         _ubuntu(version)
+
+
+@command_cfm.command(
+    aliases=["pi"],
+    context_settings={"help_option_names": ["-h", "--help"]},
+    help="Change Raspberry Pi OS source minors.",
+)
+@click.option("--version", "-v", default=raspberrypi_version.Debian10)
+def raspberrypi():
+    _raspberrypi()
