@@ -60,10 +60,10 @@ Set-Alias -Name ll -Value Get-ChildItem
 Set-Alias -Name pwd -Value Get-Location
 
 # ffmpeg 默认覆盖文件，不输出标语
-function MFFmpeg { ffmpeg.exe $args -hide_banner -y }
+function MFFmpeg { ffmpeg $args -hide_banner -y }
 Set-Alias -Name ffmpeg -Value MFFmpeg
 
-function MFFprobe { ffprobe.exe -hide_banner $args }
+function MFFprobe { ffprobe -hide_banner $args }
 Set-Alias -Name ffprobe -Value MFFprobe
 
 # py 简写 python
@@ -73,16 +73,24 @@ Set-Alias -Name py -Value python
 function GitClone { git clone $args }
 Set-Alias -Name get -Value GitClone
 
+# gad 简写 git add
+function GitAdd { git add $args }
+Set-Alias -Name gad -Value GitAdd
+
 # gcmt 简写 git commit -m "args"
-function GitCommit { git.exe commit -m $args }
+function GitCommit { git commit -m $args }
 Set-Alias -Name gcmt -Value GitCommit
 
 # gst 简写 git status
-function GitStatus { git.exe status }
+function GitStatus { git status }
 Set-Alias -Name gst -Value GitStatus
 
+# gph 简写 git push
+function GitPush { git push }
+Set-Alias -Name gph -Value GitPush
+
 # gh 简写 git hist
-function GitHistory { git.exe hist }
+function GitHistory { git hist }
 Set-Alias -Name gh -Value GitHistory
 
 # md5
