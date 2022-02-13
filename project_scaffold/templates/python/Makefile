@@ -19,7 +19,7 @@ format:
 	black .
 
 version:
-	echo $(VERSION)
+	echo $(APP_VERSION)
 
 dep:
 	pip install -r requirements.txt
@@ -30,10 +30,10 @@ build:
 	#python -m build
 
 uninstall:
-	pip uninstall -y $(PACKAGE)
+	pip uninstall -y $(PYPI_PACKAGE)
 
 install: uninstall build
-	pip install --force-reinstall --no-deps dist/$(PACKAGE)-$(VERSION).tar.gz
+	pip install --force-reinstall --no-deps dist/$(PYPI_PACKAGE)-$(APP_VERSION).tar.gz
 
 reinstall: install clean
 
@@ -47,5 +47,5 @@ clean:
 	rm -r *egg-info
 
 tag:
-	git tag v$(VERSION)
-	git push origin v$(VERSION)
+	git tag v$(APP_VERSION)
+	git push origin v$(APP_VERSION)
