@@ -42,11 +42,14 @@ def render_templates_recursively(
     q = dst / (p.relative_to(src))
 
     if p.is_dir():
+        if len(p.suffixes) > 0:
+            q = q.parent.joinpath(*render(q.name, **kwargs).strip().partition("."))
         q.mkdir(parents=True, exist_ok=True)
+
         for e in p.iterdir():
             render_templates_recursively(
                 e,
-                dst,
+                q,
                 special_paths=special_paths,
                 render=render_by_format
                 if render != render_by_format
@@ -59,7 +62,7 @@ def render_templates_recursively(
                 )
                 else render,
                 include_suffixes=include_suffixes,
-                src=src,
+                src=p,
                 **kwargs
             )
 
@@ -71,8 +74,8 @@ def render_templates_recursively(
             last_suffix = suffixes[-1]
 
             if last_suffix == ".py":
-                qs = render(q.as_posix(), **kwargs).strip().partition(".")
-                q = Path(qs[0]) / qs[-1]
+                qs = render(q.name, **kwargs).strip().partition(".")
+                q = q.parent / qs[0] / qs[-1]
                 q.parent.mkdir(parents=True, exist_ok=True)
 
             elif include_suffixes and suffix in include_suffixes:
