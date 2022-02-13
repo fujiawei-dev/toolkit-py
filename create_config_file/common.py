@@ -12,16 +12,21 @@ import click
 SEPARATE = "--------------\n"
 
 
-def writer(conf, content="", read_only=True, official="", message=""):
+def writer(*confs, content="", read_only=True, official="", message="", append=False):
     if not read_only and content != "":
-        os.makedirs(os.path.dirname(conf), exist_ok=True)
-        with open(conf, "w", encoding="utf8", newline="\n") as fp:
-            fp.write(content)
+        for conf in confs:
+            os.makedirs(os.path.dirname(conf), exist_ok=True)
+            with open(
+                conf,
+                "a" if append else "w",
+                encoding="utf-8",
+                newline="\n",
+            ) as fp:
+                fp.write(content)
+            click.echo(conf)
 
     if official:
         click.echo(official)
-
-    click.echo(conf)
 
     if message:
         click.echo(message)

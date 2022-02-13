@@ -7,6 +7,7 @@ LastEditTime: 2022.02.02 18:14
 import click
 from click_aliases import ClickAliasedGroup
 
+from .alias import alias as _alias
 from .clash import clash as _clash
 from .hosts import hosts as _hosts
 from .notes import notes as _notes
@@ -71,3 +72,17 @@ def notes(path):
 )
 def powershell(write):
     _powershell(not write)
+
+
+@command_ccf.command(
+    context_settings={"help_option_names": ["-h", "--help"]},
+    help="Generate aliases for powershell or bash configuration files.",
+)
+@click.option(
+    "--write/--read",
+    "-w/-r",
+    default=False,
+    help="Read only or write to configuration files.",
+)
+def alias(write):
+    _alias(not write)

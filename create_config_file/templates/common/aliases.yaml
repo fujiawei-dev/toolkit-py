@@ -1,0 +1,18 @@
+common:
+  py: python
+
+  # Aliases for FFmpeg
+  ffmpeg: ffmpeg -hide_banner -y
+  ffprobe: ffprobe -hide_banner -y
+
+# Aliases for Git
+  get: git clone
+  gad: git add
+  gcmt: git commit
+  gst: git status
+  gph: git push
+  gpl: git pull
+  gh: git hist
+
+linux:
+  cls: clear

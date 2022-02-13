@@ -7,3 +7,5 @@ LastEditTime: 2022.02.09 11:18
 from pathlib import Path
 
 TEMPLATES_PATH = Path(__file__).parent
+
+COMMON_PATH = TEMPLATES_PATH / "common"
