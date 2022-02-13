@@ -6,17 +6,14 @@
 
 .IGNORE: dep clean test;            # ignore all errors, keep going
 
-ifeq ($(OS), Windows_NT)
-SHELL := pwsh.exe
-.SHELLFLAGS := -NoProfile -Command
-endif
+PACKAGE = toolkit-py
 
 VERSION := $(shell python -c "from unified_command.version import __version__; print(__version__, end='')")
-PACKAGE = toolkit-py
 
 all: format reinstall test
 
 format:
+	pip install -U black
 	black .
 
 version:
@@ -37,9 +34,6 @@ install: uninstall build
 	pip install --force-reinstall --no-deps dist/$(PACKAGE)-$(VERSION).tar.gz
 
 reinstall: install clean
-
-upload: build
-	twine upload dist/$(PACKAGE)-$(VERSION).tar.gz
 
 test:
 	pytest
