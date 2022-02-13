@@ -12,7 +12,7 @@ from create_config_file.common import writer
 class Version(str, Enum):
     LTS1604 = "xenial"
     LTS1804 = "bionic"
-    LTS2004 = "{version}"
+    LTS2004 = "focal"
 
 
 def ubuntu(version=Version.LTS2004):
