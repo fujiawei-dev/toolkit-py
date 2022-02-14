@@ -1,6 +1,6 @@
-tags: [ "标签" ]
-series: [ "系列" ]
-categories: [ "分类" ]
+tags: [ "{{STUDY_OBJECT}}", "README" ]  # 标签
+series: [ "{{STUDY_OBJECT}} 学习笔记" ]  # 系列
+categories: [ "学习笔记" ]  # 分类
 
 toc: true  # 目录
 draft: false  # 草稿

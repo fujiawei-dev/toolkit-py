@@ -35,7 +35,7 @@ TEMPLATE_ARTICLE_CONTENT = Entity(
 def notes():
     render_templates(
         "notes",
-        folder=[
+        folders=[
             "assets/images",  # 笔记配图
             "assets/templates",  # 笔记模板
             "docs",  # 基础语法
