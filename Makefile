@@ -36,7 +36,7 @@ install: uninstall build
 reinstall: install clean
 
 test:
-	pytest
+	pytest tests
 	rm -r .pytest_cache
 
 clean:
