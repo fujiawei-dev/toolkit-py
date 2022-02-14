@@ -38,7 +38,7 @@ username = <private-repository username>
 password = <private-repository password>
 """
 
-    writer(conf, content, read_only=read_only, official=official)
+    writer(conf, content=content, read_only=read_only, official=official)
 
 
 class Method(IntEnum):

@@ -107,4 +107,7 @@ Set-Alias -Name rs -Value RecorderServer
 function StartViewer { python D:\OneDrive\Repositories\projects\auto-sign-in\main.py viewer }
 Set-Alias -Name viewer -Value StartViewer
 
+Set-Alias -Name watcher -Value "D:\OneDrive\Market\Program\daily-stocks\watch.bat"
+Set-Alias -Name monitor -Value "D:\OneDrive\Market\Program\daily-stocks\monitor.bat"
+
 #-------------------------------    Set Alias END     -------------------------------

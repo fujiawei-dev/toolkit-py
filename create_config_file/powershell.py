@@ -9,11 +9,11 @@ from .templates import TEMPLATES_PATH
 
 
 def powershell(read_only=True):
+    template = TEMPLATES_PATH / "Microsoft.PowerShell_profile.ps1"
+
     writer(
         join_user("Documents/PowerShell/Microsoft.PowerShell_profile.ps1"),
-        (TEMPLATES_PATH / "Microsoft.PowerShell_profile.ps1").read_text(
-            encoding="utf-8"
-        ),
+        content=template.read_text(encoding="utf-8"),
         read_only=read_only,
         message=SEPARATE + "code $profile\n\n& $profile\n" + SEPARATE,
     )
