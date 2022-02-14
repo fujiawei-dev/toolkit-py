@@ -37,6 +37,11 @@ def change_encoding(src, dst=None, encoding="utf-8"):
             # CRLF -> LF
             content = fp.read().replace(b"\r\n", b"\n")
             original_encoding = chardet.detect(content)["encoding"]
+
+            if not original_encoding:
+                print(f"[error] {src} chardet.detect failed")
+                return
+
             content = content.decode(original_encoding)
             content = (clean_characters(content).strip() + "\n").encode(encoding)
 
