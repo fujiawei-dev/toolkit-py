@@ -30,16 +30,16 @@ BUILD_ARGS := "\
 
 BUILD_CMD := go build -trimpath -ldflags $(BUILD_ARGS)
 
-DEBUG_CMD := ./$(UNIFIED_NAME) -D -S -c storage/configs/settings-debug.yaml -d
-RELEASE_CMD := ./$(UNIFIED_NAME) -D -S -P -c storage/configs/settings-release.yaml -d
+DEBUG_CMD := ./$(UNIFIED_APP_NAME) -D -S -c storage/configs/settings-debug.yaml -d
+RELEASE_CMD := ./$(UNIFIED_APP_NAME) -D -S -P -c storage/configs/settings-release.yaml -d
 
 all: tidy swag start
 
-tidy:
+tidy dep:
 	go mod tidy
 
 swag:
-	go get -u github.com/swaggo/swag
+	go get github.com/swaggo/swag
 	-(export PATH=$(go env GOPATH)/bin:$PATH)
 	-(swag init)
 
@@ -65,64 +65,64 @@ BIN_DIR = bin
 builds: linux-amd64 darwin-amd64 windows-amd64 # Most used
 
 darwin-amd64:
-	GOARCH=amd64 GOOS=darwin $(GOBUILD) -o $(BINDIR)/$(NAME)-$@
+	GOARCH=amd64 GOOS=darwin $(BUILD_CMD) -o $(BIN_DIR)/$(APP_NAME)-$@
 
 darwin-arm64:
-	GOARCH=arm64 GOOS=darwin $(GOBUILD) -o $(BINDIR)/$(NAME)-$@
+	GOARCH=arm64 GOOS=darwin $(BUILD_CMD) -o $(BIN_DIR)/$(APP_NAME)-$@
 
 linux-386:
-	GOARCH=386 GOOS=linux $(GOBUILD) -o $(BINDIR)/$(NAME)-$@
+	GOARCH=386 GOOS=linux $(BUILD_CMD) -o $(BIN_DIR)/$(APP_NAME)-$@
 
 linux-amd64:
-	GOARCH=amd64 GOOS=linux $(GOBUILD) -o $(BINDIR)/$(NAME)-$@
+	GOARCH=amd64 GOOS=linux $(BUILD_CMD) -o $(BIN_DIR)/$(APP_NAME)-$@
 
 linux-armv5:
-	GOARCH=arm GOOS=linux GOARM=5 $(GOBUILD) -o $(BINDIR)/$(NAME)-$@
+	GOARCH=arm GOOS=linux GOARM=5 $(BUILD_CMD) -o $(BIN_DIR)/$(APP_NAME)-$@
 
 linux-armv6:
-	GOARCH=arm GOOS=linux GOARM=6 $(GOBUILD) -o $(BINDIR)/$(NAME)-$@
+	GOARCH=arm GOOS=linux GOARM=6 $(BUILD_CMD) -o $(BIN_DIR)/$(APP_NAME)-$@
 
 linux-armv7:
-	GOARCH=arm GOOS=linux GOARM=7 $(GOBUILD) -o $(BINDIR)/$(NAME)-$@
+	GOARCH=arm GOOS=linux GOARM=7 $(BUILD_CMD) -o $(BIN_DIR)/$(APP_NAME)-$@
 
 linux-armv8:
-	GOARCH=arm64 GOOS=linux $(GOBUILD) -o $(BINDIR)/$(NAME)-$@
+	GOARCH=arm64 GOOS=linux $(BUILD_CMD) -o $(BIN_DIR)/$(APP_NAME)-$@
 
 linux-mips-softfloat:
-	GOARCH=mips GOMIPS=softfloat GOOS=linux $(GOBUILD) -o $(BINDIR)/$(NAME)-$@
+	GOARCH=mips GOMIPS=softfloat GOOS=linux $(BUILD_CMD) -o $(BIN_DIR)/$(APP_NAME)-$@
 
 linux-mips-hardfloat:
-	GOARCH=mips GOMIPS=hardfloat GOOS=linux $(GOBUILD) -o $(BINDIR)/$(NAME)-$@
+	GOARCH=mips GOMIPS=hardfloat GOOS=linux $(BUILD_CMD) -o $(BIN_DIR)/$(APP_NAME)-$@
 
 linux-mipsle-softfloat:
-	GOARCH=mipsle GOMIPS=softfloat GOOS=linux $(GOBUILD) -o $(BINDIR)/$(NAME)-$@
+	GOARCH=mipsle GOMIPS=softfloat GOOS=linux $(BUILD_CMD) -o $(BIN_DIR)/$(APP_NAME)-$@
 
 linux-mipsle-hardfloat:
-	GOARCH=mipsle GOMIPS=hardfloat GOOS=linux $(GOBUILD) -o $(BINDIR)/$(NAME)-$@
+	GOARCH=mipsle GOMIPS=hardfloat GOOS=linux $(BUILD_CMD) -o $(BIN_DIR)/$(APP_NAME)-$@
 
 linux-mips64:
-	GOARCH=mips64 GOOS=linux $(GOBUILD) -o $(BINDIR)/$(NAME)-$@
+	GOARCH=mips64 GOOS=linux $(BUILD_CMD) -o $(BIN_DIR)/$(APP_NAME)-$@
 
 linux-mips64le:
-	GOARCH=mips64le GOOS=linux $(GOBUILD) -o $(BINDIR)/$(NAME)-$@
+	GOARCH=mips64le GOOS=linux $(BUILD_CMD) -o $(BIN_DIR)/$(APP_NAME)-$@
 
 freebsd-386:
-	GOARCH=386 GOOS=freebsd $(GOBUILD) -o $(BINDIR)/$(NAME)-$@
+	GOARCH=386 GOOS=freebsd $(BUILD_CMD) -o $(BIN_DIR)/$(APP_NAME)-$@
 
 freebsd-amd64:
-	GOARCH=amd64 GOOS=freebsd $(GOBUILD) -o $(BINDIR)/$(NAME)-$@
+	GOARCH=amd64 GOOS=freebsd $(BUILD_CMD) -o $(BIN_DIR)/$(APP_NAME)-$@
 
 freebsd-arm64:
-	GOARCH=arm64 GOOS=freebsd $(GOBUILD) -o $(BINDIR)/$(NAME)-$@
+	GOARCH=arm64 GOOS=freebsd $(BUILD_CMD) -o $(BIN_DIR)/$(APP_NAME)-$@
 
 windows-386:
-	GOARCH=386 GOOS=windows $(GOBUILD) -o $(BINDIR)/$(NAME)-$@.exe
+	GOARCH=386 GOOS=windows $(BUILD_CMD) -o $(BIN_DIR)/$(APP_NAME)-$@.exe
 
 windows-amd64:
-	GOARCH=amd64 GOOS=windows $(GOBUILD) -o $(BINDIR)/$(NAME)-$@.exe
+	GOARCH=amd64 GOOS=windows $(BUILD_CMD) -o $(BIN_DIR)/$(APP_NAME)-$@.exe
 
 windows-arm32v7:
-	GOARCH=arm GOOS=windows GOARM=7 $(GOBUILD) -o $(BINDIR)/$(NAME)-$@.exe
+	GOARCH=arm GOOS=windows GOARM=7 $(BUILD_CMD) -o $(BIN_DIR)/$(APP_NAME)-$@.exe
 
 PLATFORM_LIST = \
 	darwin-amd64 \
@@ -151,4 +151,4 @@ WINDOWS_ARCH_LIST = \
 all-arch: $(PLATFORM_LIST) $(WINDOWS_ARCH_LIST)
 
 clean:
-	rm $(BINDIR)/*
+	rm $(BIN_DIR)/*
