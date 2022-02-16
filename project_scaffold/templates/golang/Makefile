@@ -30,8 +30,8 @@ BUILD_ARGS := "\
 
 BUILD_CMD := go build -trimpath -ldflags $(BUILD_ARGS)
 
-DEBUG_CMD := ./$(UNIFIED_APP_NAME) -D -S -c storage/configs/settings-debug.yaml -d
-RELEASE_CMD := ./$(UNIFIED_APP_NAME) -D -S -P -c storage/configs/settings-release.yaml -d
+DEBUG_CMD := ./$(UNIFIED_NAME) -D -S -c storage/configs/settings-debug.yaml -d
+RELEASE_CMD := ./$(UNIFIED_NAME) -D -S -P -c storage/configs/settings-release.yaml -d
 
 all: tidy swag start
 
