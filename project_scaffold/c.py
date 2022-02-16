@@ -8,4 +8,10 @@ from .render import render_templates
 
 
 def c():
-    render_templates("c")
+    render_templates(
+        "c",
+        folders=[
+            "include",
+            "lib",
+        ],
+    )

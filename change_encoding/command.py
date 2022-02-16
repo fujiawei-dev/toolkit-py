@@ -32,8 +32,8 @@ TEXT_SUFFIXES = {
 }
 
 TEXT_FILES = {
-    "LICENSE",
-    "Makefile",
+    "license",
+    "makefile",
 }
 
 
@@ -41,7 +41,7 @@ def change_encoding(src: [Path, str], dst: Path = None, encoding="utf-8"):
     if not isinstance(src, Path):
         src = Path(src)
 
-    if src.suffix in TEXT_SUFFIXES or src.stem in TEXT_FILES:
+    if src.suffix.lower() in TEXT_SUFFIXES or src.stem.lower() in TEXT_FILES:
         dst = dst or src
         encoding = encoding or "utf-8"
 

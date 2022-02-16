@@ -43,6 +43,7 @@ def notes():
             "libraries/standard",  # 标准库
             "libraries/tripartite",  # 第三方库
             "quickstart",  # 基础用法
+            "refs",  # 参考中
             "src",  # 源码示例
             "src/docs",  # 基础语法源码示例
             "src/libraries/standard",  # 标准库源码示例
