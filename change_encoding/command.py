@@ -37,7 +37,10 @@ TEXT_FILES = {
 }
 
 
-def change_encoding(src: Path, dst: Path = None, encoding="utf-8"):
+def change_encoding(src: [Path, str], dst: Path = None, encoding="utf-8"):
+    if not isinstance(src, Path):
+        src = Path(src)
+
     if src.suffix in TEXT_SUFFIXES or src.stem in TEXT_FILES:
         dst = dst or src
         encoding = encoding or "utf-8"
