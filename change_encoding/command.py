@@ -12,26 +12,35 @@ import click
 
 from .whitespace import clean_characters
 
-TEXT_EXTENSIONS = {
-    ".txt",
-    ".py",
-    ".go",
-    ".js",
-    ".ts",
-    ".md",
-    ".ini",
-    ".json",
+TEXT_SUFFIXES = {
     ".asm",
+    ".bat",
+    ".c",
+    ".cmd",
+    ".cpp",
+    ".go",
+    ".h",
+    ".ini",
+    ".js",
+    ".json",
+    ".md",
+    ".py",
+    ".ts",
+    ".txt",
+    ".yaml",
+    ".yml",
+}
+
+TEXT_FILES = {
+    "LICENSE",
+    "Makefile",
 }
 
 
-def change_encoding(src, dst=None, encoding="utf-8"):
-    if os.path.splitext(src)[-1] in TEXT_EXTENSIONS:
-        if not dst:
-            dst = src
-
-        if not encoding:
-            encoding = "utf-8"
+def change_encoding(src: Path, dst: Path = None, encoding="utf-8"):
+    if src.suffix in TEXT_SUFFIXES or src.stem in TEXT_FILES:
+        dst = dst or src
+        encoding = encoding or "utf-8"
 
         with open(src, "rb+") as fp:
             # CRLF -> LF
@@ -57,7 +66,7 @@ def change_encoding(src, dst=None, encoding="utf-8"):
             print(f"{os.path.basename(src)}: {original_encoding} -> {encoding}")
 
 
-def change_all_files_encoding(directory=None, encoding="utf-8"):
+def change_all_files_encoding(directory: Path = None, encoding="utf-8"):
     if directory is None:
         directory = Path.cwd()
     elif not os.path.isdir(directory):
