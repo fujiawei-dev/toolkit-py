@@ -35,7 +35,7 @@ def notes(path):
 
     uri = os.path.splitext(path)[0]
     title = os.path.basename(uri)
-    url = "/".join(["posts", prefix, uri])
+    url = os.path.normpath("/".join(["posts", prefix, uri])).replace("\\", "/")
 
     template_article = (
         NOTE_HEADER_SEPARATOR
