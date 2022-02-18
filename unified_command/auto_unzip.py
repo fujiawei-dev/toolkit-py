@@ -110,7 +110,7 @@ def _need_continue(src, i=0, j=0) -> Tuple[int, int]:
         return 0, 1
 
     for file in os.listdir(src):
-        suffix = os.path.splitext(file)[1]
+        suffix = os.path.splitext(file)[1].lower()
         file = os.path.join(src, file)
         if os.path.isfile(file):
             if suffix in INCLUDED_SUFFIXES:
@@ -192,7 +192,7 @@ class Unzipper(object):
     def _run_recursive(self, src, move_to, parent, segment=False) -> bool:
         """嵌套压缩解压"""
         if os.path.isfile(src):
-            suffix = os.path.splitext(src)[1]
+            suffix = os.path.splitext(src)[1].lower()
 
             if suffix in EXCLUDE_SUFFIXES:
                 return True
