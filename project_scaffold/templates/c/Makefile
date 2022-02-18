@@ -5,7 +5,7 @@
 .ONESHELL: ;			 # recipes execute in same shell
 .NOTPARALLEL: ;		  # wait for target to finish
 .EXPORT_ALL_VARIABLES: ; # send all vars to shell
-.IGNORE: clean;			# ignore all errors, keep going
+.IGNORE: dep clean;			# ignore all errors, keep going
 
 ENTRY_POINT = {{ENTRY_POINT}}
 
@@ -20,7 +20,10 @@ UNIFIED_NAME := $(UNIFIED_NAME).exe
 INSTALL_PATH = c:/developer/bin/
 endif
 
-all: reinstall
+all: dep reinstall
+
+dep:
+	cp lib/* cmake-build-debug/
 
 build:
 	gcc -o $(UNIFIED_NAME) $(ENTRY_POINT)
