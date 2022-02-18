@@ -28,6 +28,7 @@ BUILD_ARGS := "\
 -w -s -buildid=\
 "
 
+# CGO cross is not supported (CGO_ENABLED=1)
 BUILD_CMD := go build -trimpath -ldflags $(BUILD_ARGS)
 
 DEBUG_CMD := ./$(UNIFIED_NAME) -D -S -c storage/configs/settings-debug.yaml -d
