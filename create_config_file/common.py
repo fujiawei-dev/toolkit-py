@@ -23,7 +23,9 @@ def writer(*confs, content="", read_only=True, official="", message="", append=F
                 newline="\n",
             ) as fp:
                 fp.write(content)
-            click.echo(conf)
+            click.echo(f"written to {conf}")
+    else:
+        click.echo(f"read only {', '.join(confs)}")
 
     if official:
         click.echo(official)

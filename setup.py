@@ -11,11 +11,12 @@ from unified_command.version import __version__
 
 # What packages are required for this module to be executed?
 requires = [
+    "chardet",
     "click",
     "click_aliases",
     "lxml",
+    "pyyaml",
     "requests",
-    "chardet",
 ]
 
 extras_require = {

@@ -46,5 +46,5 @@ def ubuntu(port, version):
     help="Change Raspberry Pi OS source minors.",
 )
 @click.option("--version", "-v", default=raspberrypi_version.Debian10)
-def raspberrypi():
-    _raspberrypi()
+def raspberrypi(version):
+    _raspberrypi(version)
