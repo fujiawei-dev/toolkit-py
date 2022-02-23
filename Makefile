@@ -20,7 +20,7 @@ version:
 	echo $(VERSION)
 
 dep:
-	pip install -r requirements.txt
+	pip install -i https://pypi.douban.com/simple -r requirements.txt
 
 build:
 	python setup.py sdist
