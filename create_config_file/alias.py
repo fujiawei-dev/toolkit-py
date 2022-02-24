@@ -13,7 +13,7 @@ from .templates import COMMON_PATH
 _powershell_template = """\
 {% for key, value in aliases.items() %}
 # {{key}} 简写 {{value}}
-function {{value.title().replace(' ', '')}} { {{value}} $args }
+function {{value.replace('_', ' ').replace('-', ' ').title().replace(' ', '')}} { {{value}} $args }
 Set-Alias -Name {{key}} -Value {{value.title().replace(' ', '')}}
 {% endfor %}
 """
