@@ -13,6 +13,7 @@ from .render import render_templates
 class HttpFramework(str, Enum):
     Iris = ".iris"
     Fiber = ".fiber"
+    Echo = ".echo"
 
 
 class LoggerFramework(str, Enum):
@@ -31,6 +32,7 @@ class ConfigurationManagementFramework(str, Enum):
 class Combinations(str, Enum):
     c1 = "1"
     c2 = "2"
+    c3 = "3"
 
     C1 = ";".join(
         [
@@ -50,12 +52,21 @@ class Combinations(str, Enum):
         ]
     )
 
+    C3 = ";".join(
+        [
+            HttpFramework.Echo,
+            CommandLineFramework.Cobra,
+            ConfigurationManagementFramework.Viper,
+        ]
+    )
+
     @staticmethod
     def shortcuts(m: str) -> str:
         if m.isalnum():
             return {
                 Combinations.c1: Combinations.C1,
                 Combinations.c2: Combinations.C2,
+                Combinations.c3: Combinations.C3,
             }.get(m, Combinations.C2)
 
         return m
