@@ -3,11 +3,11 @@
 package {{GOLANG_PACKAGE}}
 
 import (
+	"github.com/kataras/iris/v12"
+
 	"{{GOLANG_MODULE}}/internal/acl"
 	"{{GOLANG_MODULE}}/internal/entity"
 	"{{GOLANG_MODULE}}/internal/form"
-
-	"github.com/kataras/iris/v12"
 )
 
 func RegisterUser(router iris.Party) {
@@ -15,12 +15,12 @@ func RegisterUser(router iris.Party) {
 	UserLoginRefresh(router)
 	UserLogout(router)
 
-	CreateUser(router)
+	PostUser(router)
 }
 
-func CreateUser(router iris.Party) {
+func PostUser(router iris.Party) {
 	router.Post("/user", func(c iris.Context) {
-		var f form.UserCreate
+		var f form.User
 
 		if err := form.ShouldBind(c, &f); err != nil {
 			ErrorInvalidParams(c, err)

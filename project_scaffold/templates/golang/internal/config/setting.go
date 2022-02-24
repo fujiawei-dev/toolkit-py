@@ -31,7 +31,7 @@ type JWTSetting struct {
 	PrivateKey string        `mapstructure:"private_key" yaml:"private_key,omitempty"`
 	PublicKey  string        `mapstructure:"public_key" yaml:"public_key,omitempty"`
 
-	provider JWTProvider
+	JWTProvider
 }
 
 type DatabaseSetting struct {

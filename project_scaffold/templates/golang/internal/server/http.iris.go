@@ -64,10 +64,8 @@ func registerRoutes(app *iris.Application) {
 
 	api.RegisterUser(router)
 
-	api.GetVersion(router)
-
 	// For debug
-	api.RegisterDebug(router)
+	api.GetAppDescription(router)
 	api.RegisterSwagger(router)
 }
 

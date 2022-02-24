@@ -3,11 +3,37 @@
 package {{GOLANG_PACKAGE}}
 
 import (
+	"io"
+	"os"
+	"sync"
 	"time"
+
+	"gopkg.in/natefinch/lumberjack.v2"
 
 	"{{GOLANG_MODULE}}/internal/event"
 	"{{GOLANG_MODULE}}/pkg/fs"
 )
+
+var (
+	writer     io.Writer = os.Stdout
+	writerOnce sync.Once
+)
+
+func (c *config) LogWriter() io.Writer {
+	writerOnce.Do(func() {
+		if c.DetachServer() {
+			writer = &lumberjack.Logger{
+				Filename:   conf.LogFile(),
+				MaxSize:    conf.LogMaxSize(),
+				MaxAge:     conf.LogMaxAge(),
+				MaxBackups: conf.LogMaxBackups(),
+				LocalTime:  true,
+			}
+		}
+	})
+
+	return writer
+}
 
 func (c *config) LogPath() string {
 	if c.settings.Logger.SavePath != "" {

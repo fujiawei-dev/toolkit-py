@@ -15,8 +15,10 @@ import (
 	"{{GOLANG_MODULE}}/internal/query"
 )
 
-var log = event.Log
-var conf = config.Conf()
+var (
+	log  = event.Logger()
+	conf = config.Conf()
+)
 
 func SendJSON(c iris.Context, v interface{}) {
 	_, _ = c.JSON(query.NewResponse(http.StatusOK, nil, v))

@@ -3,20 +3,11 @@
 package {{GOLANG_PACKAGE}}
 
 import (
-	"io"
-	"os"
-	"sync"
-
 	"github.com/rs/zerolog"
-	"gopkg.in/natefinch/lumberjack.v2"
 
 	"{{GOLANG_MODULE}}/internal/event"
 )
 
-var (
-	writer     io.Writer = os.Stdout
-	writerOnce sync.Once
-)
 
 func (c *config) initLogger() {
 	writerOnce.Do(func() {
@@ -40,20 +31,4 @@ func (c *config) LogLevel() zerolog.Level {
 	}
 
 	return level
-}
-
-func (c *config) LogWriter() io.Writer {
-	writerOnce.Do(func() {
-		if c.DetachServer() {
-			writer = &lumberjack.Logger{
-				Filename:   conf.LogFile(),
-				MaxSize:    conf.LogMaxSize(),
-				MaxAge:     conf.LogMaxAge(),
-				MaxBackups: conf.LogMaxBackups(),
-				LocalTime:  true,
-			}
-		}
-	})
-
-	return writer
 }

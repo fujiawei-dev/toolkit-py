@@ -13,6 +13,10 @@ import (
 	"{{GOLANG_MODULE}}/internal/entity"
 )
 
+type JWTProvider struct{
+
+}
+
 func (c *config) JWTMiddleware() fiber.Handler {
 	// https://github.com/gofiber/jwt
 	if !c.JWTEnable() {
@@ -56,10 +60,6 @@ func (c *config) JWTParse(ctx *fiber.Ctx) (user entity.User, err error) {
 	}
 
 	return
-}
-
-type JWTProvider struct{
-
 }
 
 func (c *config) initJWT() {
