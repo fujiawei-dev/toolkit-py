@@ -3,8 +3,8 @@
 package {{GOLANG_PACKAGE}}
 
 import (
-	"{{GOLANG_MODULE}}/internal/config"
 	"{{GOLANG_MODULE}}/internal/entity"
+	"{{GOLANG_MODULE}}/internal/form"
 )
 
 func Examples(f form.Pager) (results entity.Examples, totalRows int64, err error) {
