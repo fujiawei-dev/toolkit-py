@@ -58,6 +58,7 @@ func registerRoutes(app *fiber.App) {
 	api.GetAppDescription(router)
 
 	// For debug
+	api.RegisterExample(router)
 	api.RegisterSwagger(router)
 }
 
