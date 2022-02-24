@@ -36,6 +36,7 @@ class Combinations(str, Enum):
     c2 = "2"
     c3 = "3"
     c4 = "4"
+    c5 = "5"
 
     C1 = ";".join(
         [
@@ -71,6 +72,15 @@ class Combinations(str, Enum):
         ]
     )
 
+    C5 = ";".join(
+        [
+            HttpFramework.Gin,
+            LoggerFramework.Zerolog,
+            CommandLineFramework.Cobra,
+            ConfigurationManagementFramework.Viper,
+        ]
+    )
+
     @staticmethod
     def shortcuts(m: str) -> str:
         if m.isalnum():
@@ -79,6 +89,7 @@ class Combinations(str, Enum):
                 Combinations.c2: Combinations.C2,
                 Combinations.c3: Combinations.C3,
                 Combinations.c4: Combinations.C4,
+                Combinations.c5: Combinations.C5,
             }.get(m, Combinations.C2)
 
         return m
