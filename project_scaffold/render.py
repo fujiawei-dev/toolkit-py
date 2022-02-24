@@ -110,6 +110,7 @@ def render_templates(
             "STUDY_OBJECT": package_title,
             "PACKAGE_TITLE": package_title,
             "APP_NAME": package_underscore,
+            "APP_NAME_UPPER": package_underscore.upper(),
             "GOLANG_MODULE": package,
             "PYPI_PACKAGE": package,
             "PYTHON_MODULE": package_underscore,
