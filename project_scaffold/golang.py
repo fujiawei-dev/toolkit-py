@@ -17,18 +17,54 @@ class HttpFramework(str, Enum):
 
 class LoggerFramework(str, Enum):
     Zerolog = ".zerolog"
+    Golog = ".golog"
 
 
-Combination1 = (HttpFramework.Iris, ".cobra", ".viper")
-Combination2 = (HttpFramework.Fiber, LoggerFramework.Zerolog, ".cobra", ".viper")
-
-Default = Combination2
+class CommandLineFramework(str, Enum):
+    Cobra = ".cobra"
 
 
-def golang(include_suffixes=Default):
+class ConfigurationManagementFramework(str, Enum):
+    Viper = ".viper"
+
+
+class Combinations(str, Enum):
+    c1 = "1"
+    c2 = "2"
+
+    C1 = ";".join(
+        [
+            HttpFramework.Iris,
+            LoggerFramework.Golog,
+            CommandLineFramework.Cobra,
+            ConfigurationManagementFramework.Viper,
+        ]
+    )
+
+    C2 = ";".join(
+        [
+            HttpFramework.Fiber,
+            LoggerFramework.Zerolog,
+            CommandLineFramework.Cobra,
+            ConfigurationManagementFramework.Viper,
+        ]
+    )
+
+    @staticmethod
+    def shortcuts(m: str) -> str:
+        if m.isalnum():
+            return {
+                Combinations.c1: Combinations.C1,
+                Combinations.c2: Combinations.C2,
+            }.get(m, Combinations.C2)
+
+        return m
+
+
+def golang(combination=Combinations.C2):
     render_templates(
         "golang",
-        include_suffixes=include_suffixes,
+        include_suffixes=Combinations.shortcuts(combination).split(";"),
         folders=["storage", "storage/configs"],
         GOLANG_HEADER=GENERATOR_HEADER.replace("#", "//"),
     )

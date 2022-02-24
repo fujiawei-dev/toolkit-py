@@ -9,7 +9,7 @@ from click_aliases import ClickAliasedGroup
 
 from .c import c as _c
 from .common import create_common_files
-from .golang import golang as _golang
+from .golang import Combinations, golang as _golang
 from .notes import notes as _notes
 from .python import python as _python
 
@@ -38,8 +38,14 @@ def python():
     context_settings={"help_option_names": ["-h", "--help"]},
     help="Create Golang project scaffold.",
 )
-def golang():
-    _golang()
+@click.option(
+    "--combination",
+    "-c",
+    type=click.Choice(Combinations),
+    help="Combination of frameworks.",
+)
+def golang(combination):
+    _golang(combination)
 
 
 @command_cps.command(help="Create notes project scaffold.")

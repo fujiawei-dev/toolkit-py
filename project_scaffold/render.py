@@ -95,7 +95,7 @@ def render_templates_recursively(
 def render_templates(
     relpath,
     special_paths: List[str] = None,
-    include_suffixes: Tuple[str] = None,
+    include_suffixes: List[str] = None,
     folders: List[str] = None,
     **kwargs
 ):
