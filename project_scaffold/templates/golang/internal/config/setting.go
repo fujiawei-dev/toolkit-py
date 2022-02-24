@@ -3,11 +3,8 @@
 package {{GOLANG_PACKAGE}}
 
 import (
-	"crypto/rsa"
-	"sync"
 	"time"
 
-	"github.com/kataras/iris/v12/middleware/jwt"
 	"gorm.io/gorm/logger"
 )
 
@@ -34,12 +31,7 @@ type JWTSetting struct {
 	PrivateKey string        `mapstructure:"private_key" yaml:"private_key,omitempty"`
 	PublicKey  string        `mapstructure:"public_key" yaml:"public_key,omitempty"`
 
-	once         sync.Once
-	signatureAlg jwt.Alg
-	signer       *jwt.Signer
-	verifier     *jwt.Verifier
-	privateKey   *rsa.PrivateKey
-	publicKey    *rsa.PublicKey
+	provider JWTProvider
 }
 
 type DatabaseSetting struct {

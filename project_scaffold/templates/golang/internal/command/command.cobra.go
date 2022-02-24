@@ -15,9 +15,10 @@ import (
 	"{{GOLANG_MODULE}}/pkg/fs"
 )
 
-var log = event.Log
-
-var conf = config.Conf()
+var (
+	log  = event.Logger()
+	conf = config.Conf()
+)
 
 var rootCommand = &cobra.Command{
 	Use:              conf.AppName(),

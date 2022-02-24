@@ -23,13 +23,14 @@ var stopCommand = &cobra.Command{
 
 func stopAction(cmd *cobra.Command, args []string) {
 	if err := conf.InitSettings(); err != nil {
-		log.Fatalf("config init failed: %v", err)
+		cmd.Printf("config init failed: %v", err)
+		return
 	}
 
-	log.Infof("looking for pid in %s", conf.PidFile())
+	cmd.Printf("looking for pid in %s", conf.PidFile())
 
 	if !fs.IsFile(conf.PidFile()) {
-		log.Errorf("%s does not exist or is not a file", conf.PidFile())
+		cmd.Printf("%s does not exist or is not a file", conf.PidFile())
 		return
 	}
 
@@ -38,13 +39,15 @@ func stopAction(cmd *cobra.Command, args []string) {
 	child, err := dc.Search()
 
 	if err != nil {
-		log.Fatal(err)
+		cmd.Print(err)
+		return
 	}
 
 	err = child.Signal(syscall.SIGTERM)
 
 	if err != nil && err != os.ErrProcessDone {
-		log.Fatal(err)
+		cmd.Print(err)
+		return
 	}
 
 	ps, err := child.Wait()
@@ -52,7 +55,7 @@ func stopAction(cmd *cobra.Command, args []string) {
 	if err != nil {
 		_ = fs.DeleteFile(conf.PidFile())
 
-		log.Infof("daemon exited successfully")
+		cmd.Print("daemon exited successfully")
 
 		if conf.DetachServer() {
 			color.Printf("⇨ https server stopped on %s\n", color.Green(conf.ExternalHttpHostPort()))
@@ -61,5 +64,5 @@ func stopAction(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	log.Infof("daemon[%v] exited[%v]? successfully[%v]?\n", ps.Pid(), ps.Exited(), ps.Success())
+	cmd.Print("daemon[%v] exited[%v]? successfully[%v]?\n", ps.Pid(), ps.Exited(), ps.Success())
 }

@@ -32,7 +32,7 @@ func NewPassword(userId uint, password string) Password {
 
 	if password != "" {
 		if err := m.SetPassword(password); err != nil {
-			log.Errorf("auth: failed setting password for %s", userId)
+			log.Printf("auth: failed setting password for %s", userId)
 		}
 	}
 

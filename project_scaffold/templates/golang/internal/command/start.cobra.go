@@ -28,18 +28,20 @@ var startCommand = &cobra.Command{
 
 func startAction(cmd *cobra.Command, args []string) {
 	if err := conf.Init(); err != nil {
-		log.Fatalf("config init failed: %v", err)
+		cmd.Printf("config init failed: %v", err)
+		return
 	}
 
 	if conf.HttpPort() < 1 || conf.HttpPort() > 65535 {
-		log.Fatal("server port must be a number between 1 and 65535")
+		cmd.Printf("server port must be a number between 1 and 65535")
+		return
 	}
 
 	if !daemon.WasReborn() && conf.DetachServer() {
 		color.Printf("⇨ https server started on %s\n", color.Green(conf.ExternalHttpHostPort()))
 
 		if pid, ok := childAlreadyRunning(conf.PidFile()); ok {
-			log.Infof("daemon already running with process id %v\n", pid)
+			cmd.Printf("daemon already running with process id %v\n", pid)
 			return
 		}
 
@@ -48,22 +50,24 @@ func startAction(cmd *cobra.Command, args []string) {
 		child, err := dc.Reborn()
 
 		if err != nil {
-			log.Fatalf("failed reborn %v", err)
+			cmd.Printf("failed reborn %v", err)
+			return
 		}
 
 		if child != nil {
 			if !fs.Overwrite(conf.PidFile(), []byte(strconv.Itoa(child.Pid))) {
-				log.Fatalf("failed writing process id to %s", conf.PidFile())
+				cmd.Printf("failed writing process id to %s", conf.PidFile())
+				return
 			}
 
-			log.Infof("daemon started with process id %v", child.Pid)
+			cmd.Printf("daemon started with process id %v", child.Pid)
 
 			return
 		}
 
 		defer func() {
 			if err = dc.Release(); err != nil {
-				log.Errorf("daemon release %v", err)
+				cmd.Printf("daemon release %v", err)
 			}
 		}()
 	}
@@ -71,10 +75,9 @@ func startAction(cmd *cobra.Command, args []string) {
 	// pass this context down the chain
 	ctx, cancel := context.WithCancel(context.Background())
 
-	ch := make(chan error)
-
 	// start web server
-	go server.Start(ctx, ch)
+	serverClosedSignal := make(chan error)
+	go server.Start(ctx, serverClosedSignal)
 
 	// set up proper shutdown of daemon and web server
 	quit := make(chan os.Signal)
@@ -91,15 +94,27 @@ func startAction(cmd *cobra.Command, args []string) {
 		syscall.SIGTERM,
 	)
 
-	<-quit
+	var serverError error
 
-	log.Info("http: shutting down web server...")
+	select {
+	case <-quit:
+		cancel()
 
-	cancel()
+		serverError = <-serverClosedSignal
 
-	if err := <-ch; err == http.ErrServerClosed || err == nil {
-		log.Info("http: web server shutdown complete")
-	} else {
-		log.Errorf("http: web server closed unexpect: %v", err)
+		log.Print("http: shutting down web server...")
+		
+		if serverError == http.ErrServerClosed || serverError == nil {
+			log.Print("http: web server shutdown complete")
+		} else {
+			log.Printf("http: web server closed unexpect: %v", serverError)
+		}
+
+	case serverError = <-serverClosedSignal:
+		cancel()
+
+		if serverError != nil {
+			cmd.Print(serverError)
+		}
 	}
 }

@@ -9,7 +9,7 @@ import (
 	"{{GOLANG_MODULE}}/internal/event"
 )
 
-var log = event.Log
+var log = event.Logger()
 
 type Types map[string]interface{}
 
@@ -30,14 +30,14 @@ func (list Types) WaitForMigration() {
 		for i := 0; i <= attempts; i++ {
 			count := RowCount{}
 			if err := Db().Raw(fmt.Sprintf("SELECT COUNT(*) AS count FROM %s", name)).Scan(&count).Error; err == nil {
-				// log.Debugf("entity: table %s migrated", name)
+				// log.Printf("entity: table %s migrated", name)
 				break
 			} else {
-				log.Debugf("entity: wait for migration %s (%s)", err.Error(), name)
+				log.Printf("entity: wait for migration %s (%s)", err.Error(), name)
 			}
 
 			if i == attempts {
-				panic("migration failed")
+				panic("entity: migration failed")
 			}
 
 			time.Sleep(50 * time.Millisecond)
@@ -49,10 +49,10 @@ func (list Types) WaitForMigration() {
 func (list Types) Truncate() {
 	for name := range list {
 		if err := Db().Exec(fmt.Sprintf("DELETE FROM %s WHERE 1", name)).Error; err == nil {
-			// log.Debugf("entity: removed all data from %s", name)
+			// log.Printf("entity: removed all data from %s", name)
 			break
 		} else if err.Error() != "record not found" {
-			log.Debugf("entity: %s in %s", err, name)
+			log.Printf("entity: %s in %s", err, name)
 		}
 	}
 }
@@ -61,7 +61,7 @@ func (list Types) Truncate() {
 func (list Types) Migrate() {
 	for _, entity := range list {
 		if err := UnscopedDb().AutoMigrate(entity); err != nil {
-			log.Errorf("entity: migrate %s (waiting 1s)", err.Error())
+			log.Printf("entity: migrate %s (waiting 1s)", err.Error())
 
 			time.Sleep(time.Second)
 

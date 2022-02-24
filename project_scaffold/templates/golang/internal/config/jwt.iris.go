@@ -3,14 +3,14 @@
 package {{GOLANG_PACKAGE}}
 
 import (
-	"{{GOLANG_MODULE}}/pkg/fs"
 	"strings"
 	"time"
-
+	
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/middleware/jwt"
-
+	
 	"{{GOLANG_MODULE}}/internal/entity"
+	"{{GOLANG_MODULE}}/pkg/fs"
 )
 
 const (

@@ -19,7 +19,7 @@ func init() {
 }
 
 func SetCache(key, value interface{}, ttl time.Duration) {
-	log.Debugf("query: cached %s", key)
+	log.Printf("query: cached %s", key)
 
 	cache.SetWithTTL(key, value, 1, ttl)
 }
@@ -28,9 +28,9 @@ func GetCache(key interface{}) (interface{}, bool) {
 	value, exist := cache.Get(key)
 
 	if exist {
-		log.Debugf("query: hit %s", key)
+		log.Printf("query: hit %s", key)
 	} else {
-		log.Debugf("query: not hit %s", key)
+		log.Printf("query: not hit %s", key)
 	}
 
 	return value, exist

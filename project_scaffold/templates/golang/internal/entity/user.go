@@ -85,7 +85,7 @@ func (m *User) Save() error {
 }
 
 // CreateWithPassword Creates User with Password in db transaction.
-func CreateWithPassword(f form.UserCreate) error {
+func CreateWithPassword(f form.User) error {
 	u := &User{Username: f.Username, LoginAt: time.Now()}
 
 	if len(f.Password) < 4 {
@@ -106,7 +106,8 @@ func CreateWithPassword(f form.UserCreate) error {
 			return err
 		}
 
-		log.Infof("user: created user %s with id %d", u.Username, u.Id)
+		log.Printf("user: created user %s with id %d", u.Username, u.Id)
+
 		return nil
 	})
 }
@@ -114,7 +115,7 @@ func CreateWithPassword(f form.UserCreate) error {
 // FirstOrCreateUser returns an existing row, inserts a new row, or nil in case of errors.
 func FirstOrCreateUser(m *User) *User {
 	if err := Db().Where("id = ?", m.Id).Attrs(m).FirstOrCreate(m).Error; err != nil {
-		log.Debugf("%s: %v", m.TableName(), err)
+		log.Printf("%s: %v", m.TableName(), err)
 		return nil
 	}
 	return m
@@ -163,16 +164,14 @@ func (m *User) InitPassword(password string) {
 		return
 	}
 
-	existing := FindPassword(m.Id)
-
-	if existing != nil {
+	if FindPassword(m.Id) != nil {
 		return
 	}
 
 	pw := NewPassword(m.Id, password)
 
 	if err := pw.Save(); err != nil {
-		log.Errorf("%s: %v", pw.TableName(), err)
+		log.Printf("%s: %v", pw.TableName(), err)
 	}
 }
 
@@ -183,7 +182,6 @@ func (m *User) InvalidPassword(password string) bool {
 	}
 
 	pw := FindPassword(m.Id)
-
 	if pw == nil {
 		return false
 	}
@@ -191,7 +189,7 @@ func (m *User) InvalidPassword(password string) bool {
 	if pw.InvalidPassword(password) {
 		if err := Db().Model(m).UpdateColumn("login_attempts",
 			gorm.Expr("login_attempts + ?", 1)).Error; err != nil {
-			log.Errorf("%s: %s (update login attempts)", m.TableName(), err)
+			log.Printf("%s: %s (update login attempts)", m.TableName(), err)
 		}
 
 		return true
@@ -200,7 +198,7 @@ func (m *User) InvalidPassword(password string) bool {
 	if err := Db().Model(m).Updates(map[string]interface{}{
 		"login_attempts": 0, "login_at": time.Now(),
 	}).Error; err != nil {
-		log.Errorf("%s: %s (update last login)", m.TableName(), err)
+		log.Printf("%s: %s (update last login)", m.TableName(), err)
 	}
 
 	return false

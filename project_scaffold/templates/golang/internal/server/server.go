@@ -7,5 +7,7 @@ import (
 	"{{GOLANG_MODULE}}/internal/event"
 )
 
-var log = event.Log
-var conf = config.Conf()
+var (
+	log  = event.Logger()
+	conf = config.Conf()
+)

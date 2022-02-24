@@ -43,6 +43,8 @@ clean:
 	rm -r build
 	rm -r dist
 	rm -r *egg-info
+	rm -r $(PACKAGE)-$(VERSION)
+	rm -r .pytest_cache
 
 tag:
 	git tag v$(VERSION)
