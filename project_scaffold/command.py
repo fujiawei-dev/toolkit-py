@@ -7,7 +7,7 @@ LastEditTime: 2022.02.02 18:14
 import click
 from click_aliases import ClickAliasedGroup
 
-from .c import c as _c
+from .c import c as _c, qt5 as _qt5
 from .common import create_common_files
 from .golang import Combinations, golang as _golang
 from .notes import notes as _notes
@@ -56,3 +56,8 @@ def notes():
 @command_cps.command(help="Create C/C++ project scaffold.")
 def c():
     _c()
+
+
+@command_cps.command(help="Create Qt5 project scaffold.")
+def qt5():
+    _qt5()

@@ -15,3 +15,13 @@ def c():
             "lib",
         ],
     )
+
+
+def qt5():
+    render_templates(
+        "qt5",
+        folders=[
+            "include",
+            "lib",
+        ],
+    )
