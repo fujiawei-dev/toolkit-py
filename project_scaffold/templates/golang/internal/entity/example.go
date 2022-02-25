@@ -21,27 +21,27 @@ type AnonymousEmbeddedExample struct {
 // Example https://gorm.io/docs/models.html
 // https://gorm.io/docs/models.html#Fields-Tags
 type Example struct {
-	Id uint `gorm:"primary_key" json:"id"`
+	Id uint `gorm:"primary_key" json:"id" example:"1024"`
 
 	// Index
-	IndexField int `gorm:"index"`
+	IndexField int `gorm:"index" example:"21"`
 	// UniqueField      int `gorm:"unique"`// SQLite doesn't support
-	UniqueIndexField int `gorm:"uniqueIndex"`
+	UniqueIndexField int `gorm:"uniqueIndex" example:"12"`
 
 	// Basic DataType
-	ShortStringField     string  `gorm:"column:short_string_field;size:8"`
-	LongStringField      string  `gorm:"column:long_string_field;size:256"` // specifies column data size/length
-	LongTextField        string  `gorm:"column:long_text_field;type:text"`
-	IntegerField         int     `gorm:"type:int"`
-	UnsignedIntegerField uint    `gorm:"type:uint"`
-	Float64Field         float64 `gorm:"type:float"`
-	Float32Field         float32 `gorm:"type:float"`
-	BinaryField          []byte  `gorm:"type:bytes"`
+	ShortStringField     string  `gorm:"column:short_string_field;size:8" example:"短字符串字段"`
+	LongStringField      string  `gorm:"column:long_string_field;size:256" example:"长字符串字段"` // specifies column data size/length
+	LongTextField        string  `gorm:"column:long_text_field;type:text" example:"超长文本字段"`
+	IntegerField         int     `gorm:"type:int" example:"3"`
+	UnsignedIntegerField uint    `gorm:"type:uint" example:"4"`
+	Float64Field         float64 `gorm:"type:float" example:"3.1415926535"`
+	Float32Field         float32 `gorm:"type:float" example:"3.14159"`
+	BinaryField          []byte  `gorm:"type:bytes" example:"255"`
 
-	DefaultField string       `gorm:"default:value"`
-	NotNullField sql.NullBool `gorm:"not null" json:"-"`
-	CheckField   int          `gorm:"check:integer_field > 5"` // https://gorm.io/docs/constraints.html
-	CommentField string       `gorm:"comment"`                 // add comment for field when migration
+	DefaultField string       `gorm:"default:value" example:"默认字段"`
+	NotNullField sql.NullBool `gorm:"not null" json:"-" example:"禁止空值字段"`
+	CheckField   string       `gorm:"check:integer_field > 5" example:"验证值字段"` // https://gorm.io/docs/constraints.html
+	CommentField string       `gorm:"comment" example:"数据库注释字段"`               // add comment for field when migration
 
 	// Embedded Struct
 	// For anonymous fields, GORM will include its fields into its parent struct
@@ -54,20 +54,20 @@ type Example struct {
 	EmbeddedExamplePrefix EmbeddedExample `gorm:"embedded;embeddedPrefix:embedded_"`
 
 	// Field-Level Permission
-	AllowReadAndCreate   string `gorm:"<-:create"`          // allow read and create
-	AllowReadAndUpdate   string `gorm:"<-:update"`          // allow read and update
-	AllowCreateAndUpdate string `gorm:"<-"`                 // allow read and write (create and update)
-	ReadOnly             string `gorm:"->"`                 // readonly (disable write permission unless it configured )
-	CreateOnly           string `gorm:"->:false;<-:create"` // create only (disabled read from db)
-	IgnoreWriteAndRead   string `gorm:"-"`                  // ignore this field when write and read with struct
-	IgnoreMigration      string `gorm:"migration"`          // // ignore this field when migration
+	AllowReadAndCreate   string `gorm:"<-:create" example:"允许读和创建"`         // allow read and create
+	AllowReadAndUpdate   string `gorm:"<-:update" example:"允许读和更新"`         // allow read and update
+	AllowCreateAndUpdate string `gorm:"<-" example:"允许创建和更新"`               // allow read and write (create and update)
+	ReadOnly             string `gorm:"->" example:"只读"`                    // readonly (disable write permission unless it configured )
+	CreateOnly           string `gorm:"->:false;<-:create" example:"只允许创建"` // create only (disabled read from db)
+	IgnoreWriteAndRead   string `gorm:"-" example:"忽略读写"`                   // ignore this field when write and read with struct
+	IgnoreMigration      string `gorm:"migration" example:"忽略迁移"`           // // ignore this field when migration
 
 	// Creating/Updating Time/Unix (Milli/Nano) Seconds Tracking
-	CreatedAt             time.Time      `json:"created_at"`           // Set to current time if it is zero on creating
-	UpdatedAt             int            `json:"updated_at"`           // Set to current unix seconds on updating or if it is zero on creating
-	UpdatedAtNanoSeconds  int64          `gorm:"autoUpdateTime:nano"`  // Use unix nano seconds as updating time
-	UpdatedAtMilliSeconds int64          `gorm:"autoUpdateTime:milli"` // Use unix milli seconds as updating time
-	CreatedAtSeconds      int64          `gorm:"autoCreateTime"`       // Use unix seconds as creating time
+	CreatedAt             time.Time      `json:"created_at" example:"2020-07-14T16:20:00+08:00"` // Set to current time if it is zero on creating
+	UpdatedAt             int            `json:"updated_at" example:"1678775400"`                // Set to current unix seconds on updating or if it is zero on creating
+	UpdatedAtNanoSeconds  int64          `gorm:"autoUpdateTime:nano" example:"1678775400"`       // Use unix nano seconds as updating time
+	UpdatedAtMilliSeconds int64          `gorm:"autoUpdateTime:milli" example:"1678775400"`      // Use unix milli seconds as updating time
+	CreatedAtSeconds      int64          `gorm:"autoCreateTime" example:"1678775400"`            // Use unix seconds as creating time
 	DeletedAt             gorm.DeletedAt `json:"-"`
 }
 

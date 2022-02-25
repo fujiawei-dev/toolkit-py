@@ -9,17 +9,17 @@ import (
 	"{{GOLANG_MODULE}}/internal/command"
 )
 
-// @title Swagger Example
-// @version 1.0.0
-// @description Automatically generate RESTful API documentation with Swagger 2.0 for Go.
+// @Title        Swagger Example API
+// @Version      1.0.0
+// @Description  Automatically generate RESTful API documentation with Swagger 2.0 for Go.
 
-// @schemes http
-// @host localhost:8080
-// @BasePath /api/v1
+// @Schemes   http
+// @Host      localhost:8080
+// @BasePath  /api/v1
 
-// @securityDefinitions.apikey ApiKeyAuth
-// @in header
-// @name Authorization
+// @SecurityDefinitions.ApiKey  ApiKeyAuth
+// @In                          header
+// @Name                        Authorization
 func main() {
 	onError := func(err error) {
 		_, _ = fmt.Fprintf(os.Stderr, "%s\n", err)

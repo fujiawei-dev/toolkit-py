@@ -9,10 +9,10 @@ import (
 
 // Response represents an error that occurred while handling a request.
 type Response struct {
-	Code   int         `json:"code"`
-	Err    string      `json:"error,omitempty"` // Stores the error returned by an external dependency
-	Msg    string      `json:"message,omitempty"`
-	Result interface{} `json:"result,omitempty"`
+	Code   int         `json:"code" example:"200"`             // 错误码/状态码，正常请求无错误的情况，值为 0 或者 200
+	Msg    string      `json:"message,omitempty" example:"OK"` // 错误码/状态码的文本描述
+	Err    string      `json:"error,omitempty" example:"错误详情，仅测试模式可见，前端可忽略该字段"`
+	Result interface{} `json:"result,omitempty"` // 请求结果数据
 }
 
 func NewResponse(code int, err error, result interface{}) Response {

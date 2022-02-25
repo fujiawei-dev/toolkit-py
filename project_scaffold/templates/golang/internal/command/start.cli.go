@@ -17,6 +17,7 @@ import (
 	"github.com/urfave/cli"
 
 	"{{GOLANG_MODULE}}/internal/server"
+	"{{GOLANG_MODULE}}/internal/service"
 	"{{GOLANG_MODULE}}/pkg/fs"
 )
 

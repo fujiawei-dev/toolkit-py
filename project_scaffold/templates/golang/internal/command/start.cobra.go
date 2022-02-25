@@ -15,6 +15,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"{{GOLANG_MODULE}}/internal/server"
+	"{{GOLANG_MODULE}}/internal/service"
 	"{{GOLANG_MODULE}}/pkg/fs"
 )
 

@@ -2,6 +2,8 @@
 
 package {{GOLANG_PACKAGE}}
 
+import "database/sql"
+
 // ExampleCreate 表单验证示例
 // https://github.com/go-playground/validator
 type ExampleCreate struct {
@@ -39,12 +41,16 @@ type ExampleCreate struct {
 	// 在 UnsignedIntegerField 或者 Float32Field 不存在时，必须存在
 	BinaryField []byte `binding:"required_without_all=UnsignedIntegerField Float32Field" json:"binary_field"`
 	// 必须不等于 UniqueField 的值
-	CheckField int `binding:"required,nefield=UniqueField" json:"check_field"`
+	CheckField string `binding:"required,nefield=UniqueField" json:"check_field"`
 
 	ExampleUpdate
 }
 
 type ExampleUpdate struct {
+	Ignored int `swaggerignore:"true"` // 排除字段
+
+	NotNullField sql.NullBool `binding:"required" swaggertype:"boolean" example:"1" json:"not_null_field"` // 禁止空值字段
+
 	// 必填项/条件可填
 	// omitempty 表示变量可以不填，但是填的时候必须满足条件
 	AllowReadAndCreate   string `binding:"required,ip4_addr" json:"allow_read_and_create"`
