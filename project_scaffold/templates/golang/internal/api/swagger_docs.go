@@ -9,7 +9,7 @@ import (
 // These structures defined below are only for generating Swagger API documentation, please do not use them elsewhere!
 
 type httpResponseBody struct {
-	Code   int    `json:"code" example:"0"`     // 错误码/状态码，正常请求无错误的情况，值为 0 或者 200
+	Code   int    `json:"code" example:"200"`     // 错误码/状态码，正常请求无错误的情况，值为 0 或者 200
 	Msg    string `json:"message" example:"OK"` // 错误码/状态码的文本描述
 	Err    string `json:"error" example:"错误详情，仅测试模式可见，前端可忽略该字段"`
 	Result string `json:"result" example:"请求结果数据"`

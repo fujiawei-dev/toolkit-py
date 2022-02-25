@@ -17,6 +17,7 @@ var (
 func Validator() *validator.Validate {
 	vOnce.Do(func() {
 		v = validator.New()
+		v.SetTagName("binding")
 	})
 
 	return v
@@ -43,4 +44,21 @@ func (v ValidatorErrors) Errors() []string {
 
 func (v ValidatorErrors) Error() string {
 	return strings.Join(v.Errors(), ", ")
+}
+
+func ValidateError(err error) error {
+	if errs, ok := err.(validator.ValidationErrors); ok {
+		validatorErrors := make(ValidatorErrors, 0, len(errs))
+
+		for _, e := range errs {
+			validatorErrors = append(validatorErrors, ValidatorError{
+				Key:     "error",
+				Message: e.Error(),
+			})
+		}
+
+		return validatorErrors
+	}
+
+	return err
 }

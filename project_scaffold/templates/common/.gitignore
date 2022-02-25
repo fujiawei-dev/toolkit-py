@@ -57,7 +57,7 @@ compile_commands.json
 
 ### Database
 # SQLite
-.db
+*.db
 
 ### C++ template
 # Prerequisites

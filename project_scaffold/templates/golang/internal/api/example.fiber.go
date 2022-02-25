@@ -10,7 +10,6 @@ import (
 	"{{GOLANG_MODULE}}/internal/query"
 )
 
-
 func RegisterExample(router fiber.Router) {
 	PostExample(router)
 	PutExample(router)
@@ -21,8 +20,8 @@ func RegisterExample(router fiber.Router) {
 }
 
 func PostExample(router fiber.Router) {
-	router.Post("/example", func(c *fiber.Ctx) error {
-		var f form.Example
+	router.Post("/example", conf.JWTMiddleware(), func(c *fiber.Ctx) error {
+		var f form.ExampleCreate
 
 		if err := form.ShouldBind(c, &f); err != nil {
 			return ErrorInvalidParams(c, err)
@@ -34,6 +33,8 @@ func PostExample(router fiber.Router) {
 			return ErrorUnexpected(c, err)
 		}
 
+		m.NotNullField = sql.NullBool{Bool: true, Valid: true}
+
 		if err := m.Create(); err != nil {
 			return ErrorUnexpected(c, err)
 		}
@@ -43,62 +44,75 @@ func PostExample(router fiber.Router) {
 }
 
 func PutExample(router fiber.Router) {
-	router.Put("/example", conf.JWTMiddleware(), func(c *fiber.Ctx) error {
-		f := form.Pager{}
-
-		if err := form.ShouldBind(c, &f); err != nil {
-			f = form.Pager{Page: 1, PageSize: 10}
+	router.Put("/example/:id", conf.JWTMiddleware(), func(c *fiber.Ctx) error {
+		id := cast.ToUint(c.Params("id"))
+		if id == 0 {
+			return ErrorInvalidParams(c, errors.New("id(uint) is required"))
 		}
 
-		list, totalRow, err := query.Examples(f)
+		var m entity.Example
+		if err := m.FindById(id); err != nil {
+			return ErrorExpectedOrUnexpected(c, err)
+		}
 
-		if err != nil {
+		// Handle null values, malicious injection, etc.
+		var f form.ExampleUpdate
+
+		if err := m.CopyTo(&f); err != nil {
 			return ErrorUnexpected(c, err)
 		}
 
-		f.TotalRows = totalRow
+		if err := form.ShouldBind(c, &f); err != nil {
+			return ErrorInvalidParams(c, err)
+		}
 
-		return SendList(c, list, f)
+		if err := m.CopyFrom(f); err != nil {
+			return ErrorUnexpected(c, err)
+		}
+
+		if err := m.Save(); err != nil {
+			return ErrorUnexpected(c, err)
+		}
+
+		return SendOK(c)
 	})
 }
 
 func DeleteExample(router fiber.Router) {
-	router.Delete("/example", conf.JWTMiddleware(), func(c *fiber.Ctx) error {
-		f := form.Pager{}
-
-		if err := form.ShouldBind(c, &f); err != nil {
-			f = form.Pager{Page: 1, PageSize: 10}
+	router.Delete("/example/:id", conf.JWTMiddleware(), func(c *fiber.Ctx) error {
+		id := cast.ToUint(c.Params("id"))
+		if id == 0 {
+			return ErrorInvalidParams(c, errors.New("id(uint) is required"))
 		}
 
-		list, totalRow, err := query.Examples(f)
+		var m entity.Example
 
-		if err != nil {
+		if err := m.FindById(id); err != nil {
+			return ErrorExpectedOrUnexpected(c, err)
+		}
+
+		if err := m.Delete(); err != nil {
 			return ErrorUnexpected(c, err)
 		}
 
-		f.TotalRows = totalRow
-
-		return SendList(c, list, f)
+		return SendOK(c)
 	})
 }
 
 func GetExample(router fiber.Router) {
-	router.Get("/example", conf.JWTMiddleware(), func(c *fiber.Ctx) error {
-		f := form.Pager{}
-
-		if err := form.ShouldBind(c, &f); err != nil {
-			f = form.Pager{Page: 1, PageSize: 10}
+	router.Get("/example/:id", conf.JWTMiddleware(), func(c *fiber.Ctx) error {
+		id := cast.ToUint(c.Params("id"))
+		if id == 0 {
+			return ErrorInvalidParams(c, errors.New("id(uint) is required"))
 		}
 
-		list, totalRow, err := query.Examples(f)
+		var m entity.Example
 
-		if err != nil {
-			return ErrorUnexpected(c, err)
+		if err := m.FindById(id); err != nil {
+			return ErrorExpectedOrUnexpected(c, err)
 		}
 
-		f.TotalRows = totalRow
-
-		return SendList(c, list, f)
+		return SendJSON(c, m)
 	})
 }
 

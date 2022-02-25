@@ -67,7 +67,7 @@ const (
 	// 命名方式：基础状态码 * 100，然后枚举
 
 	// 参数类错误
-	ErrInvalidParams       = 40001
+	ErrInvalidParameters   = 40001
 	ErrRecordNotFound      = 40401
 	ErrRecordAlreadyExists = 40901
 
@@ -80,7 +80,7 @@ const (
 )
 
 var Messages = map[int]string{
-	ErrInvalidParams:       "Invalid params, please try again later",
+	ErrInvalidParameters:   "Invalid parameters, please try again later",
 	ErrRecordNotFound:      "Record not found",
 	ErrRecordAlreadyExists: "Record already exists",
 

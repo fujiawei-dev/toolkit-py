@@ -16,6 +16,10 @@ import (
 // @schemes http
 // @host localhost:8080
 // @BasePath /api/v1
+
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 func main() {
 	onError := func(err error) {
 		_, _ = fmt.Fprintf(os.Stderr, "%s\n", err)
