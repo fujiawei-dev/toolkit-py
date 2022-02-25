@@ -41,7 +41,7 @@ tidy dep:
 
 swag:
 	go get github.com/swaggo/swag
-	-(export PATH=$(go env GOPATH)/bin:$PATH)
+	-(export PATH=$(shell go env GOPATH)/bin:$$PATH)
 	-(swag init)
 
 build:
