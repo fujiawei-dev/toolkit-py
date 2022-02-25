@@ -46,6 +46,7 @@ func registerRoutes(app *echo.Echo) {
 	api.GetAppDescription(router)
 
 	// For debug
+	api.RegisterExample(router)
 	api.RegisterSwagger(router)
 }
 

@@ -15,8 +15,9 @@ type Types map[string]interface{}
 
 // Entities List of database entities and their table names.
 var Entities = Types{
-	Password{}.TableName():  &Password{},
-	User{}.TableName():      &User{},
+	Password{}.TableName(): &Password{},
+	User{}.TableName():     &User{},
+	Example{}.TableName():  &Example{},
 }
 
 type RowCount struct {
