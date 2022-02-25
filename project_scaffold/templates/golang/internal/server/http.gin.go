@@ -54,6 +54,7 @@ func registerRoutes(app *gin.Engine) {
 	api.GetAppDescription(router)
 
 	// For debug
+	api.RegisterExample(router)
 	api.RegisterSwagger(router)
 }
 
