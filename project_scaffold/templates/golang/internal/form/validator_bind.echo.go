@@ -12,30 +12,17 @@ func ShouldBind(c echo.Context, ptr interface{}) (err error) {
 		return nil
 	}
 
-	if errs, ok := err.(validator.ValidationErrors); ok {
-		validatorErrors := make(ValidatorErrors, 0, len(errs))
-
-		for _, e := range errs {
-			validatorErrors = append(validatorErrors, ValidatorError{
-				Key:     "error",
-				Message: e.Error(),
-			})
-		}
-
-		return validatorErrors
-	}
-
-	return err
+	return ValidateError(err)
 }
 
-type EchoValidator struct {
+type ValidatorForEcho struct {
 	validator *validator.Validate
 }
 
-func NewValidator() *EchoValidator {
-	return &EchoValidator{validator: validator.New()}
+func NewValidatorForEcho() *ValidatorForEcho {
+	return &ValidatorForEcho{validator: Validator()}
 }
 
-func (v *EchoValidator) Validate(i interface{}) (err error) {
+func (v *ValidatorForEcho) Validate(i interface{}) (err error) {
 	return v.validator.Struct(i)
 }

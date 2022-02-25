@@ -10,7 +10,6 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
-
 	"{{GOLANG_MODULE}}/internal/api"
 	"{{GOLANG_MODULE}}/internal/event"
 	"{{GOLANG_MODULE}}/internal/form"
@@ -58,7 +57,7 @@ func newApp() (app *echo.Echo) {
 	app.Logger = event.Logger()
 	app.Debug = conf.Debug()
 
-	app.Validator = form.NewValidator()
+	app.Validator = form.NewValidatorForEcho()
 	app.HTTPErrorHandler = httpErrorHandler
 
 	app.Use(middleware.Logger(), middleware.Recover())
