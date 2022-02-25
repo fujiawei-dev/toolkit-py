@@ -4,6 +4,8 @@ Description: Omit
 LastEditors: Rustle Karl
 LastEditTime: 2022.02.02 18:14
 """
+import os
+
 import click
 from click_aliases import ClickAliasedGroup
 
@@ -22,6 +24,25 @@ def command_cps():
 @command_cps.command(help="Create basic project scaffold.")
 def base():
     create_common_files()
+
+
+@command_cps.command(
+    aliases=["rm", "clean", "clear", "release"],
+    help="Remove all example files for release.",
+)
+def clean():
+    for root, dirs, files in os.walk("."):
+        for f in files:
+            if f.find("example") != -1:
+                f = os.path.join(root, f)
+                click.echo(f"clean {f}")
+                os.unlink(f)
+
+        for d in dirs:
+            if d.find("example") != -1:
+                d = os.path.join(root, d)
+                click.echo(f"clean {d}")
+                os.rmdir(d)
 
 
 @command_cps.command(

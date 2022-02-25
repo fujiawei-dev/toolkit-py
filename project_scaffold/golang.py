@@ -83,6 +83,9 @@ class Combinations(str, Enum):
 
     @staticmethod
     def shortcuts(m: str) -> str:
+        if not m:
+            return Combinations.C1
+
         if m.isalnum():
             return {
                 Combinations.c1: Combinations.C1,
