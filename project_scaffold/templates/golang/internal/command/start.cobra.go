@@ -79,6 +79,9 @@ func startAction(cmd *cobra.Command, args []string) {
 	serverClosedSignal := make(chan error)
 	go server.Start(ctx, serverClosedSignal)
 
+	// start service
+	go service.Start(ctx)
+
 	// set up proper shutdown of daemon and web server
 	quit := make(chan os.Signal)
 
@@ -103,7 +106,7 @@ func startAction(cmd *cobra.Command, args []string) {
 		serverError = <-serverClosedSignal
 
 		log.Print("http: shutting down web server...")
-		
+
 		if serverError == http.ErrServerClosed || serverError == nil {
 			log.Print("http: web server shutdown complete")
 		} else {

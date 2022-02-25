@@ -50,3 +50,6 @@ clean:
 tag:
 	git tag v$(APP_VERSION)
 	git push origin v$(APP_VERSION)
+
+build-onefile:
+	pyinstaller --onefile -y --clean -n $(PYPI_PACKAGE) main.py
