@@ -3,6 +3,7 @@
 package {{GOLANG_PACKAGE}}
 
 import (
+	"database/sql"
 	"time"
 
 	"github.com/jinzhu/copier"

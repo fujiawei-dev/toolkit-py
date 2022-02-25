@@ -22,7 +22,7 @@ func PostUser(router *gin.RouterGroup) {
 		var f form.User
 
 		if err := form.ShouldBind(c, &f); err != nil {
-			ErrorInvalidParams(c, err)
+			ErrorInvalidParameters(c, err)
 			return
 		}
 
@@ -40,7 +40,7 @@ func UserLogin(router *gin.RouterGroup) {
 		var f form.UserLogin
 
 		if err := form.ShouldBind(c, &f); err != nil {
-			ErrorInvalidParams(c, err)
+			ErrorInvalidParameters(c, err)
 			return
 		}
 

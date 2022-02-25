@@ -23,7 +23,7 @@ func PostUser(router iris.Party) {
 		var f form.User
 
 		if err := form.ShouldBind(c, &f); err != nil {
-			ErrorInvalidParams(c, err)
+			ErrorInvalidParameters(c, err)
 			return
 		}
 
@@ -41,7 +41,7 @@ func UserLogin(router iris.Party) {
 		var f form.UserLogin
 
 		if err := form.ShouldBind(c, &f); err != nil {
-			ErrorInvalidParams(c, err)
+			ErrorInvalidParameters(c, err)
 			return
 		}
 

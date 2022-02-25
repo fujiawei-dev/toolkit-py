@@ -50,8 +50,8 @@ func Error(c *gin.Context, code int, err error) {
 	c.JSON(query.StatusCode(code), resp)
 }
 
-func ErrorInvalidParams(c *gin.Context, err error) {
-	Error(c, query.ErrInvalidParams, err)
+func ErrorInvalidParameters(c *gin.Context, err error) {
+	Error(c, query.ErrInvalidParameters, err)
 }
 
 func ErrorUnexpected(c *gin.Context, err error) {

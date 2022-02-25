@@ -50,8 +50,8 @@ func Error(c echo.Context, code int, err error) error {
 	return c.JSON(query.StatusCode(code), resp)
 }
 
-func ErrorInvalidParams(c echo.Context, err error) error {
-	return Error(c, query.ErrInvalidParams, err)
+func ErrorInvalidParameters(c echo.Context, err error) error {
+	return Error(c, query.ErrInvalidParameters, err)
 }
 
 func ErrorUnexpected(c echo.Context, err error) error {

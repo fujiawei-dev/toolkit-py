@@ -3,7 +3,11 @@
 package {{GOLANG_PACKAGE}}
 
 import (
+	"database/sql"
+	"errors"
+
 	"github.com/gofiber/fiber/v2"
+	"github.com/spf13/cast"
 
 	"{{GOLANG_MODULE}}/internal/entity"
 	"{{GOLANG_MODULE}}/internal/form"
@@ -24,7 +28,7 @@ func PostExample(router fiber.Router) {
 		var f form.ExampleCreate
 
 		if err := form.ShouldBind(c, &f); err != nil {
-			return ErrorInvalidParams(c, err)
+			return ErrorInvalidParameters(c, err)
 		}
 
 		var m entity.Example
@@ -47,7 +51,7 @@ func PutExample(router fiber.Router) {
 	router.Put("/example/:id", conf.JWTMiddleware(), func(c *fiber.Ctx) error {
 		id := cast.ToUint(c.Params("id"))
 		if id == 0 {
-			return ErrorInvalidParams(c, errors.New("id(uint) is required"))
+			return ErrorInvalidParameters(c, errors.New("id(uint) is required"))
 		}
 
 		var m entity.Example
@@ -63,7 +67,7 @@ func PutExample(router fiber.Router) {
 		}
 
 		if err := form.ShouldBind(c, &f); err != nil {
-			return ErrorInvalidParams(c, err)
+			return ErrorInvalidParameters(c, err)
 		}
 
 		if err := m.CopyFrom(f); err != nil {
@@ -82,7 +86,7 @@ func DeleteExample(router fiber.Router) {
 	router.Delete("/example/:id", conf.JWTMiddleware(), func(c *fiber.Ctx) error {
 		id := cast.ToUint(c.Params("id"))
 		if id == 0 {
-			return ErrorInvalidParams(c, errors.New("id(uint) is required"))
+			return ErrorInvalidParameters(c, errors.New("id(uint) is required"))
 		}
 
 		var m entity.Example
@@ -103,7 +107,7 @@ func GetExample(router fiber.Router) {
 	router.Get("/example/:id", conf.JWTMiddleware(), func(c *fiber.Ctx) error {
 		id := cast.ToUint(c.Params("id"))
 		if id == 0 {
-			return ErrorInvalidParams(c, errors.New("id(uint) is required"))
+			return ErrorInvalidParameters(c, errors.New("id(uint) is required"))
 		}
 
 		var m entity.Example

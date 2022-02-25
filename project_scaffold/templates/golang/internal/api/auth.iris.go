@@ -37,7 +37,7 @@ func UserLoginRefresh(router iris.Party) {
 		valid, token, err := conf.JWTRefresh(c, user)
 
 		if err != nil {
-			ErrorInvalidParams(c, err)
+			ErrorInvalidParameters(c, err)
 			return
 		}
 

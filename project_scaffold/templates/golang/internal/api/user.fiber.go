@@ -22,7 +22,7 @@ func PostUser(router fiber.Router) {
 		var f form.User
 
 		if err := form.ShouldBind(c, &f); err != nil {
-			return ErrorInvalidParams(c, err)
+			return ErrorInvalidParameters(c, err)
 		}
 
 		if err := entity.CreateWithPassword(f); err != nil {
@@ -38,7 +38,7 @@ func UserLogin(router fiber.Router) {
 		var f form.UserLogin
 
 		if err := form.ShouldBind(c, &f); err != nil {
-			return ErrorInvalidParams(c, err)
+			return ErrorInvalidParameters(c, err)
 		}
 
 		m, err := entity.FindUserByUsername(f.Username)

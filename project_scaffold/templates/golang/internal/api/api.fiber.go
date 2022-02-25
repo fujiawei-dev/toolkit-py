@@ -50,8 +50,8 @@ func Error(c *fiber.Ctx, code int, err error) error {
 	return c.JSON(resp)
 }
 
-func ErrorInvalidParams(c *fiber.Ctx, err error) error {
-	return Error(c, query.ErrInvalidParams, err)
+func ErrorInvalidParameters(c *fiber.Ctx, err error) error {
+	return Error(c, query.ErrInvalidParameters, err)
 }
 
 func ErrorUnexpected(c *fiber.Ctx, err error) error {
