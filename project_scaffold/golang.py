@@ -6,7 +6,7 @@ LastEditTime: 2022.02.09 10:07
 """
 from enum import Enum
 
-from .common import GENERATOR_HEADER
+from .common import Entity, GENERATOR_HEADER
 from .render import render_templates
 
 
@@ -102,3 +102,5 @@ def golang(combination=Combinations.C2):
         folders=["storage", "storage/configs"],
         GOLANG_HEADER=GENERATOR_HEADER.replace("#", "//"),
     )
+
+    Entity(file="internal/.gitignore", content="example.go\n*_example.go").create()

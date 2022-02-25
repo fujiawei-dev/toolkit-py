@@ -39,6 +39,11 @@ all: tidy swag start
 tidy dep:
 	go mod tidy
 
+init:
+	git init
+	git add .
+	git commit -m "first commit"
+
 swag:
 	go get github.com/swaggo/swag
 	-(export PATH=$(shell go env GOPATH)/bin:$$PATH)
