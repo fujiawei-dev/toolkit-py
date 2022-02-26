@@ -58,7 +58,7 @@ func PutExample(router iris.Party) {
 		}
 
 		var m entity.Example
-		if err := m.FindById(id); err != nil {
+		if err := m.FindByID(id); err != nil {
 			ErrorExpectedOrUnexpected(c, err)
 			return
 		}
@@ -100,7 +100,7 @@ func DeleteExample(router iris.Party) {
 
 		var m entity.Example
 
-		if err := m.FindById(id); err != nil {
+		if err := m.FindByID(id); err != nil {
 			ErrorExpectedOrUnexpected(c, err)
 			return
 		}
@@ -124,7 +124,7 @@ func GetExample(router iris.Party) {
 
 		var m entity.Example
 
-		if err := m.FindById(id); err != nil {
+		if err := m.FindByID(id); err != nil {
 			ErrorExpectedOrUnexpected(c, err)
 			return
 		}

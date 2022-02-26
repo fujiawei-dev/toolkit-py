@@ -14,7 +14,7 @@ import (
 
 // User represents a person that may optionally log in as user.
 type User struct {
-	Id uint `gorm:"primary_key" json:"id"`
+	ID uint `gorm:"primaryKey" json:"id"`
 
 	Username string `gorm:"column:username;size:128;" json:"username"`
 	Password string `gorm:"-" json:"-"`
@@ -39,7 +39,7 @@ type Users []User
 
 // Admin is the default admin user.
 var Admin = User{
-	Id:       1,
+	ID:       1,
 	Username: "admin",
 	Password: "admin",
 	Role:     acl.RoleAdmin,
@@ -49,7 +49,7 @@ var Admin = User{
 
 // Guest is the default guest user.
 var Guest = User{
-	Id:       2,
+	ID:       2,
 	Username: "guest",
 	Password: "guest",
 	Role:     acl.RoleGuest,
@@ -58,7 +58,7 @@ var Guest = User{
 }
 
 func (m User) Invalid() bool {
-	return m.Id == 0 || m.Username == "" || m.Disabled
+	return m.ID == 0 || m.Username == "" || m.Disabled
 }
 
 // CreateDefaultUsers initializes the database with default user accounts.
@@ -101,12 +101,12 @@ func CreateWithPassword(f form.User) error {
 			return err
 		}
 
-		pw := NewPassword(u.Id, f.Password)
+		pw := NewPassword(u.ID, f.Password)
 		if err := tx.Create(&pw).Error; err != nil {
 			return err
 		}
 
-		log.Printf("user: created user %s with id %d", u.Username, u.Id)
+		log.Printf("user: created user %s with id %d", u.Username, u.ID)
 
 		return nil
 	})
@@ -114,7 +114,7 @@ func CreateWithPassword(f form.User) error {
 
 // FirstOrCreateUser returns an existing row, inserts a new row, or nil in case of errors.
 func FirstOrCreateUser(m *User) *User {
-	if err := Db().Where("id = ?", m.Id).Attrs(m).FirstOrCreate(m).Error; err != nil {
+	if err := Db().Where("id = ?", m.ID).Attrs(m).FirstOrCreate(m).Error; err != nil {
 		log.Printf("%s: %v", m.TableName(), err)
 		return nil
 	}
@@ -127,15 +127,15 @@ func FindUserByUsername(username string) (result User, err error) {
 	return
 }
 
-// FindUserById returns an existing user or nil if not found.
-func FindUserById(id uint) (result User, err error) {
+// FindUserByID returns an existing user or nil if not found.
+func FindUserByID(id uint) (result User, err error) {
 	err = Db().Where("id = ?", id).First(&result).Error
 	return
 }
 
 // Delete marks the entity as deleted.
 func (m *User) Delete() error {
-	if m.Id <= 3 {
+	if m.ID <= 3 {
 		return fmt.Errorf("%s: can't delete default entity", m.TableName())
 	}
 
@@ -153,7 +153,7 @@ func (m *User) SetPassword(password string) error {
 		return fmt.Errorf("%s: new password for %s must be at least 4 characters", m.TableName(), m.Username)
 	}
 
-	pw := NewPassword(m.Id, password)
+	pw := NewPassword(m.ID, password)
 
 	return pw.Save()
 }
@@ -164,11 +164,11 @@ func (m *User) InitPassword(password string) {
 		return
 	}
 
-	if FindPassword(m.Id) != nil {
+	if FindPassword(m.ID) != nil {
 		return
 	}
 
-	pw := NewPassword(m.Id, password)
+	pw := NewPassword(m.ID, password)
 
 	if err := pw.Save(); err != nil {
 		log.Printf("%s: %v", pw.TableName(), err)
@@ -181,7 +181,7 @@ func (m *User) InvalidPassword(password string) bool {
 		return true
 	}
 
-	pw := FindPassword(m.Id)
+	pw := FindPassword(m.ID)
 	if pw == nil {
 		return false
 	}
@@ -217,7 +217,7 @@ func (m *User) Validate() error {
 	var err error
 	var resultName = User{}
 
-	if err = Db().Where("username = ? AND id <> ?", m.Username, m.Id).First(&resultName).Error; err == nil {
+	if err = Db().Where("username = ? AND id <> ?", m.Username, m.ID).First(&resultName).Error; err == nil {
 		return fmt.Errorf("%s: username already exists", m.TableName())
 	} else if err != gorm.ErrRecordNotFound {
 		return err

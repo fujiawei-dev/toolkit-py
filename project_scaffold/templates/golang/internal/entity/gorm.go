@@ -25,14 +25,11 @@ func Db() *gorm.DB {
 	if !HasDbProvider() {
 		panic("entity: database not connected")
 	}
+
 	return gProvider.Db()
 }
 
 // UnscopedDb returns an unscoped database connection.
 func UnscopedDb() *gorm.DB {
-	if !HasDbProvider() {
-		panic("entity: database not connected")
-	}
-
 	return Db().Unscoped()
 }

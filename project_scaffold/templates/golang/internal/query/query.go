@@ -16,35 +16,19 @@ var (
 )
 
 const (
-	MySQL  = "mysql"
-	SQLite = "sqlite3"
-	Or     = "|"
+	Or = "|"
 )
 
-// MaxResults Max result limit for queries.
-const MaxResults = 1000
+type Search struct {
+	LikeQ string `json:"like_q" form:"like_q" url:"like_q" example:"Fuzzy query words, multiple query words are separated by |, golang|cpp|rust"`
+	MustQ string `json:"must_q" form:"must_q" url:"must_q" example:"Precise query words, multiple query words are separated by |, golang|cpp|rust"`
+	NotQ  string `json:"not_q" form:"not_q" url:"not_q" example:"Not query words, multiple query words are separated by |, golang|cpp|rust"`
 
-// SearchRadius About 1km ('good enough' for now)
-const SearchRadius = 0.009
-
-// Query searches given an originals path and a db instance.
-type Query struct {
-	db *gorm.DB
-}
-
-// SearchCount is the total number of search hits.
-type SearchCount struct {
-	Total int
+	TimeBegin string `json:"time_begin" form:"time_begin" url:"time_begin" example:"2022-01-01"`
+	TimeEnd   string `json:"time_end" form:"time_end" url:"time_end" example:"2022-12-31"`
 }
 
 // New returns a new Query type with a given path and db instance.
-func New(db *gorm.DB) *Query {
-	q := &Query{
-		db: db,
-	}
-
-	return q
-}
 
 // Db returns a database connection instance.
 func Db() *gorm.DB {

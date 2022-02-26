@@ -10,7 +10,7 @@ import (
 
 // Password represents a password hash.
 type Password struct {
-	UserId uint   `gorm:"primary_key" json:"user_id"`
+	UserID uint   `gorm:"primaryKey" json:"user_id"`
 	Hash   string `copier:"-" gorm:"type:VARBINARY(255);" json:"hash"`
 
 	// https://stackoverflow.com/questions/64806478/save-is-trying-to-update-created-at-column
@@ -23,16 +23,16 @@ func (Password) TableName() string {
 }
 
 // NewPassword creates a new password instance.
-func NewPassword(userId uint, password string) Password {
-	if userId == 0 {
+func NewPassword(userID uint, password string) Password {
+	if userID == 0 {
 		panic("auth: can't set password without user_id.")
 	}
 
-	m := Password{UserId: userId}
+	m := Password{UserID: userID}
 
 	if password != "" {
 		if err := m.SetPassword(password); err != nil {
-			log.Printf("auth: failed setting password for %s", userId)
+			log.Printf("auth: failed setting password for %s", userID)
 		}
 	}
 
@@ -71,10 +71,10 @@ func (m *Password) Save() error {
 }
 
 // FindPassword returns an entity pointer if exists.
-func FindPassword(userId uint) *Password {
+func FindPassword(userID uint) *Password {
 	result := Password{}
 
-	if err := Db().Where("user_id = ?", userId).First(&result).Error; err == nil {
+	if err := Db().Where("user_id = ?", userID).First(&result).Error; err == nil {
 		return &result
 	}
 

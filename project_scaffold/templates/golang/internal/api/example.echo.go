@@ -55,7 +55,7 @@ func PutExample(router *echo.Group) {
 		}
 
 		var m entity.Example
-		if err := m.FindById(id); err != nil {
+		if err := m.FindByID(id); err != nil {
 			return ErrorExpectedOrUnexpected(c, err)
 		}
 
@@ -91,7 +91,7 @@ func DeleteExample(router *echo.Group) {
 
 		var m entity.Example
 
-		if err := m.FindById(id); err != nil {
+		if err := m.FindByID(id); err != nil {
 			return ErrorExpectedOrUnexpected(c, err)
 		}
 
@@ -112,7 +112,7 @@ func GetExample(router *echo.Group) {
 
 		var m entity.Example
 
-		if err := m.FindById(id); err != nil {
+		if err := m.FindByID(id); err != nil {
 			return ErrorExpectedOrUnexpected(c, err)
 		}
 
