@@ -7,8 +7,8 @@ message(STATUS "CMake Directory: ${CMAKE_SOURCE_DIR}")
 set(CMAKE_CXX_STANDARD 14)
 
 # 32-bit platforms
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
+# set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -16,7 +16,7 @@ set(CMAKE_AUTOUIC ON)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-set(CMAKE_PREFIX_PATH "C:/Developer/qt/5.12.6/mingw73_32")
+# set(CMAKE_PREFIX_PATH "C:/Developer/qt/5.12.6/mingw73_32")
 
 message(STATUS "CMake Prefix Path: ${CMAKE_PREFIX_PATH}")
 

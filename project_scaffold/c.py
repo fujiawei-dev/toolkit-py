@@ -17,9 +17,10 @@ def c():
     )
 
 
-def qt5():
+def qt5(console: bool = False):
     render_templates(
         "qt5",
+        include_suffixes=[".console"] if console else [".gui"],
         folders=[
             "include",
             "lib",

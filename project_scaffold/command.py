@@ -11,7 +11,7 @@ from click_aliases import ClickAliasedGroup
 
 from .c import c as _c, qt5 as _qt5
 from .common import create_common_files
-from .golang import Combinations, golang as _golang
+from .golang import GoCombinations, golang as _golang
 from .notes import notes as _notes
 from .python import python as _python
 
@@ -62,7 +62,7 @@ def python():
 @click.option(
     "--combination",
     "-c",
-    type=click.Choice(Combinations),
+    type=click.Choice(GoCombinations),
     help="Combination of frameworks.",
 )
 def golang(combination):
@@ -80,5 +80,11 @@ def c():
 
 
 @command_cps.command(help="Create Qt5 project scaffold.")
-def qt5():
-    _qt5()
+@click.option(
+    "--console/--gui",
+    "-c/-g",
+    default=False,
+    help="Read only or create configuration files.",
+)
+def qt5(console):
+    _qt5(console)

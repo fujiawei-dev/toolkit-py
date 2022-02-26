@@ -10,28 +10,28 @@ from .common import Entity, GENERATOR_HEADER
 from .render import render_templates
 
 
-class HttpFramework(str, Enum):
+class GoWebFramework(str, Enum):
     Echo = ".echo"
     Fiber = ".fiber"
     Gin = ".gin"
     Iris = ".iris"
 
 
-class LoggerFramework(str, Enum):
+class GoLogFramework(str, Enum):
     Golog = ".golog"
     Zerolog = ".zerolog"
 
 
-class CommandLineFramework(str, Enum):
+class GoCliFramework(str, Enum):
     Cli = ".cli"
     Cobra = ".cobra"
 
 
-class ConfigurationManagementFramework(str, Enum):
+class GoConfigFramework(str, Enum):
     Viper = ".viper"
 
 
-class Combinations(str, Enum):
+class GoCombinations(str, Enum):
     c1 = "1"
     c2 = "2"
     c3 = "3"
@@ -40,68 +40,68 @@ class Combinations(str, Enum):
 
     C1 = ";".join(
         [
-            HttpFramework.Iris,
-            LoggerFramework.Golog,
-            CommandLineFramework.Cobra,
-            ConfigurationManagementFramework.Viper,
+            GoWebFramework.Iris,
+            GoLogFramework.Golog,
+            GoCliFramework.Cobra,
+            GoConfigFramework.Viper,
         ]
     )
 
     C2 = ";".join(
         [
-            HttpFramework.Fiber,
-            LoggerFramework.Zerolog,
-            CommandLineFramework.Cobra,
-            ConfigurationManagementFramework.Viper,
+            GoWebFramework.Fiber,
+            GoLogFramework.Zerolog,
+            GoCliFramework.Cobra,
+            GoConfigFramework.Viper,
         ]
     )
 
     C3 = ";".join(
         [
-            HttpFramework.Echo,
-            CommandLineFramework.Cobra,
-            ConfigurationManagementFramework.Viper,
+            GoWebFramework.Echo,
+            GoCliFramework.Cobra,
+            GoConfigFramework.Viper,
         ]
     )
 
     C4 = ";".join(
         [
-            HttpFramework.Gin,
-            LoggerFramework.Zerolog,
-            CommandLineFramework.Cli,
+            GoWebFramework.Gin,
+            GoLogFramework.Zerolog,
+            GoCliFramework.Cli,
         ]
     )
 
     C5 = ";".join(
         [
-            HttpFramework.Gin,
-            LoggerFramework.Zerolog,
-            CommandLineFramework.Cobra,
-            ConfigurationManagementFramework.Viper,
+            GoWebFramework.Gin,
+            GoLogFramework.Zerolog,
+            GoCliFramework.Cobra,
+            GoConfigFramework.Viper,
         ]
     )
 
     @staticmethod
     def shortcuts(m: str) -> str:
         if not m:
-            return Combinations.C1
+            return GoCombinations.C1
 
         if m.isalnum():
             return {
-                Combinations.c1: Combinations.C1,
-                Combinations.c2: Combinations.C2,
-                Combinations.c3: Combinations.C3,
-                Combinations.c4: Combinations.C4,
-                Combinations.c5: Combinations.C5,
-            }.get(m, Combinations.C2)
+                GoCombinations.c1: GoCombinations.C1,
+                GoCombinations.c2: GoCombinations.C2,
+                GoCombinations.c3: GoCombinations.C3,
+                GoCombinations.c4: GoCombinations.C4,
+                GoCombinations.c5: GoCombinations.C5,
+            }.get(m, GoCombinations.C2)
 
         return m
 
 
-def golang(combination=Combinations.C2):
+def golang(combination=GoCombinations.C2):
     render_templates(
         "golang",
-        include_suffixes=Combinations.shortcuts(combination).split(";"),
+        include_suffixes=GoCombinations.shortcuts(combination).split(";"),
         folders=["storage", "storage/configs"],
         GOLANG_HEADER=GENERATOR_HEADER.replace("#", "//"),
     )
