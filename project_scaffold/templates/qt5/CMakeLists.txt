@@ -16,6 +16,7 @@ set(CMAKE_AUTOUIC ON)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+ set(CMAKE_PREFIX_PATH "C:/Developer/qt/5.12.6/mingw73_64")
 # set(CMAKE_PREFIX_PATH "C:/Developer/qt/5.12.6/mingw73_32")
 
 message(STATUS "CMake Prefix Path: ${CMAKE_PREFIX_PATH}")

@@ -3,11 +3,11 @@
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QFileInfo>
-#include <QPushButton>
 #include <QSettings>
 #include <QTextCodec>
 //#include <spdlog/sinks/rotating_file_sink.h>
 //#include <spdlog/spdlog.h>
+#include "widget.h"
 
 int main(int argc, char *argv[]) {
 //    spdlog::rotating_logger_mt("{{APP_NAME}}", "{{APP_NAME}}.log", 1048576 * 50, 30);
@@ -53,9 +53,8 @@ int main(int argc, char *argv[]) {
         settings->setValue("Remote/Port", "9876");
     }
 
-  QPushButton button("How are you!", nullptr);
-  button.resize(200, 100);
-  button.show();
+    Widget w;
+    w.show();
 
-  return QApplication::exec();
+    return QApplication::exec();
 }
