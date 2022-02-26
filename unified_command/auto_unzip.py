@@ -67,8 +67,11 @@ def _cmd_7zip_list(src) -> bytes:
 
 
 def is_7zip_utf8_encoding(src) -> bool:
-    content = _cmd_7zip_list(src)
-    return "�" not in content.decode("utf-8")
+    try:
+        content = _cmd_7zip_list(src)
+        return "�" not in content.decode("utf-8")
+    except TimeoutError:
+        return True
 
 
 def _cmd_7zip_compress(src, dst, password) -> bool:
@@ -133,7 +136,7 @@ def normalize_segment_zips(file, suffixes: list) -> list:
         src = os.path.normpath(file + suffix)
         suffix = ".7z.%03d" % int(re.sub(r"[^\d]", "0", suffix[suffix.rfind(".") :]))
         dst = os.path.normpath(file + suffix)
-        if src != dst:
+        if src != dst and not os.path.exists(dst):
             os.renames(src, dst)
         files.append(dst)
     files.sort()
@@ -205,7 +208,7 @@ class Unzipper(object):
             if not segment:
                 p = Path(src)
 
-                if len(p.suffixes) > 1:  # 多个后缀可能是分卷压缩
+                if len(p.suffixes) > 1 and " " not in p.suffixes[0]:  # 多个后缀可能是分卷压缩
                     stem = p.stem
                     pos = stem.find(".")
 
@@ -220,7 +223,8 @@ class Unzipper(object):
 
             if suffix == "":  # 无后缀名的情况自动添加后缀
                 _src = src + ".7z"
-                os.renames(src, _src)
+                if not os.path.exists(_src):
+                    os.renames(src, _src)
                 src = _src
 
             print("[debug] unzip: %s" % src)
