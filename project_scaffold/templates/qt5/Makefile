@@ -17,7 +17,7 @@ endif
 
 CMAKE_BUILD_DIR = cmake-build-debug
 
-all: build
+all: run
 
 build: clean
 	cd $(CMAKE_BUILD_DIR); cmake -G "Unix Makefiles" ..; make

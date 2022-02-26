@@ -4,6 +4,7 @@
 #define UNTITLED__WIDGET_H
 
 #include <QWidget>
+//#include <spdlog/spdlog.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -19,8 +20,14 @@ public:
     explicit Widget(QWidget *parent = nullptr);
     ~Widget() override;
 
+    void setSettings( QSettings*);
+//    void setLogger(std::shared_ptr<spdlog::logger>);
+
 private:
     Ui::Widget *ui;
+
+    QSettings *settings;
+//    std::shared_ptr<spdlog::logger> log;
 };
 
 

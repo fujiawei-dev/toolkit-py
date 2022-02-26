@@ -54,6 +54,7 @@ int main(int argc, char *argv[]) {
     }
 
     Widget w;
+    w.setSettings(settings);
     w.show();
 
     return QApplication::exec();
