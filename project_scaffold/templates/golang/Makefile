@@ -5,7 +5,7 @@
 .ONESHELL: ;             # recipes execute in same shell
 .NOTPARALLEL: ;          # wait for target to finish
 .EXPORT_ALL_VARIABLES: ; # send all vars to shell
-.IGNORE: clean;            # ignore all errors, keep going
+.IGNORE: clean swag;            # ignore all errors, keep going
 
 APP_VERSION = 0.0.1
 APP_NAME = {{APP_NAME}}

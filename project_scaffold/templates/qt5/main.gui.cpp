@@ -6,12 +6,12 @@
 #include <QPushButton>
 #include <QSettings>
 #include <QTextCodec>
-#include <spdlog/sinks/rotating_file_sink.h>
-#include <spdlog/spdlog.h>
+//#include <spdlog/sinks/rotating_file_sink.h>
+//#include <spdlog/spdlog.h>
 
 int main(int argc, char *argv[]) {
-    spdlog::rotating_logger_mt("{{APP_NAME}}", "{{APP_NAME}}.log", 1048576 * 50, 30);
-    spdlog::set_level(spdlog::level::debug);// Set global log level to debug
+//    spdlog::rotating_logger_mt("{{APP_NAME}}", "{{APP_NAME}}.log", 1048576 * 50, 30);
+//    spdlog::set_level(spdlog::level::debug);// Set global log level to debug
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
         settings->setValue("Remote/Host", "localhost");
         settings->setValue("Remote/Port", "9876");
     }
-  
+
   QPushButton button("How are you!", nullptr);
   button.resize(200, 100);
   button.show();

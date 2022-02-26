@@ -97,6 +97,7 @@ def render_templates(
     special_paths: List[str] = None,
     include_suffixes: List[str] = None,
     folders: List[str] = None,
+    common: bool = True,
     **kwargs
 ):
     package, package_title, package_underscore = get_package()
@@ -120,4 +121,8 @@ def render_templates(
         }
     )
 
-    create_common_files(folders)
+    if common:
+        create_common_files(folders)
+    else:
+        for folder in folders:
+            os.makedirs(folder, exist_ok=True)

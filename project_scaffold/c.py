@@ -22,7 +22,9 @@ def qt5(console: bool = False):
         "qt5",
         include_suffixes=[".console"] if console else [".gui"],
         folders=[
+            "cmake-build-debug",
             "include",
             "lib",
         ],
+        common=False,
     )
