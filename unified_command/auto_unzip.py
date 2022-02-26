@@ -23,11 +23,12 @@ PASSWORDS_FILE = os.path.normpath(os.path.join(PASSWORDS_DIR, "customize.txt"))
 INCLUDED_SUFFIXES = {".7z", ".zip", ".rar"}
 
 EXCLUDE_SUFFIXES = {
-    ".jpg",
-    ".jpeg",
-    ".png",
-    ".mp4",
     ".downloading",
+    ".jpeg",
+    ".jpg",
+    ".mp3",
+    ".mp4",
+    ".png",
     ".torrent",
 }
 
