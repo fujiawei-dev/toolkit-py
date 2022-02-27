@@ -112,6 +112,9 @@ def cmd_7zip_decompress(
 
 def _need_continue(src, i=0, j=0) -> Tuple[int, int]:
     """判断是否继续解压"""
+    if not os.path.exists(src):
+        return 1, 0
+
     if os.path.isfile(src):
         return 0, 1
 
@@ -206,11 +209,11 @@ class Unzipper(object):
                 return True
 
             if suffix in DELETE_SUFFIXES:
-                os.unlink(src)
+                Path(src).unlink(missing_ok=True)
                 return True
 
             # 已经确认是分卷压缩
-            if not segment:
+            if suffix not in INCLUDED_SUFFIXES and not segment:
                 p = Path(src)
 
                 if len(p.suffixes) > 1 and " " not in p.suffixes[0]:  # 多个后缀可能是分卷压缩
@@ -235,7 +238,7 @@ class Unzipper(object):
             print("[debug] unzip: %s" % src)
             success, _, src = self._cmd_7zip(src, "", parent)
 
-            if success:
+            if success and os.path.exists(src):
                 i, j = _need_continue(src)
                 if j > 0 and (i < j or i < 8):
                     print("[debug] continue unzip: %s" % src)
@@ -292,7 +295,7 @@ class Unzipper(object):
             files = normalize_segment_zips(k, list(v.queue))
             if self._run_recursive(files[0], move_to, src, segment=True):
                 for file in files:
-                    os.unlink(file)
+                    Path(file).unlink(missing_ok=True)
                 self._segment_zips[k] = Queue()
 
         if not self._successful_items.empty():
@@ -305,7 +308,7 @@ class Unzipper(object):
             # 删除已经解压成功的源文件
             file = os.path.join(src, file)
             if os.path.isfile(file):
-                os.unlink(file)
+                Path(file).unlink(missing_ok=True)
                 with contextlib.suppress(OSError):
                     os.removedirs(os.path.dirname(file))
             elif os.path.isdir(file):
