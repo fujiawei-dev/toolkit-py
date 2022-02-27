@@ -51,4 +51,4 @@ def auto_unzip(path, config, test):
         click.echo(unzipper.create_7z_files_for_test())
         return
 
-    unzipper.run(path if path and os.path.exists(path) else os.getcwd())
+    unzipper.run_with_history(path if path and os.path.exists(path) else os.getcwd())

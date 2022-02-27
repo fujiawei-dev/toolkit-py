@@ -6,6 +6,7 @@ LastEditTime: 2022.02.08 18:46:44
 """
 import contextlib
 import os.path
+import pickle
 import re
 import shutil
 import subprocess
@@ -20,7 +21,7 @@ from typing import Dict, List, Tuple
 PASSWORDS_DIR = os.path.normpath(os.path.expanduser("~/.config/.passwords"))
 PASSWORDS_FILE = os.path.normpath(os.path.join(PASSWORDS_DIR, "customize.txt"))
 
-INCLUDED_SUFFIXES = {".7z", ".zip", ".rar"}
+INCLUDED_SUFFIXES = {".7z", ".zip", ".rar", ".7zz"}
 
 EXCLUDE_SUFFIXES = {
     ".downloading",
@@ -30,6 +31,7 @@ EXCLUDE_SUFFIXES = {
     ".mp4",
     ".png",
     ".torrent",
+    ".pickle",
 }
 
 DELETE_SUFFIXES = {
@@ -71,7 +73,7 @@ def is_7zip_utf8_encoding(src) -> bool:
     try:
         content = _cmd_7zip_list(src)
         return "�" not in content.decode("utf-8")
-    except TimeoutError:
+    except subprocess.TimeoutExpired:
         return True
 
 
@@ -151,6 +153,7 @@ class Unzipper(object):
 
     _failed_items = Queue()  # 失败列队
     _successful_items = LifoQueue()  # 成功列队
+    _successful_items_dict = dict()  # 保存成功项目，以便从记录中恢复
 
     # 有可能是分卷压缩文件
     _segment_zips: Dict[str, Queue] = defaultdict(Queue)
@@ -182,11 +185,12 @@ class Unzipper(object):
 
     def _cmd_7zip(self, src, dst, parent) -> Tuple[bool, str, str]:
         """单文件解压"""
-        success, password, dst = cmd_7zip_decompress(
-            src, dst, self._passwords_dictionary
-        )
+        success, password, dst = self._successful_items_dict.get(
+            src
+        ) or cmd_7zip_decompress(src, dst, self._passwords_dictionary)
 
         if success:
+            self._successful_items_dict[src] = (True, password, dst)
             self._successful_items.put((os.path.relpath(src, parent), password))
         else:
             self._failed_items.put((os.path.relpath(src, parent)))
@@ -283,7 +287,8 @@ class Unzipper(object):
 
         self._run_recursive(src, move_to, src)
 
-        for k, v in self._segment_zips.items():
+        for k in list(self._segment_zips.keys()):
+            v = self._segment_zips[k]
             files = normalize_segment_zips(k, list(v.queue))
             if self._run_recursive(files[0], move_to, src, segment=True):
                 for file in files:
@@ -325,6 +330,15 @@ class Unzipper(object):
         print(f"\n\ncost {time.time() - begin:.02f}s")
 
         return no_failure
+
+    def run_with_history(self, src, move_to="", history_file="history.pickle") -> bool:
+        if os.path.exists(history_file):
+            self._successful_items_dict = pickle.load(file=open(history_file, "rb"))
+
+        try:
+            return self.run(src, move_to)
+        finally:
+            pickle.dump(self._successful_items_dict, file=open(history_file, "wb"))
 
     def create_7z_files_for_test(self, path=None):
         """创建测试压缩包"""
@@ -382,4 +396,4 @@ class Unzipper(object):
 
 if __name__ == "__main__":
     unzipper = Unzipper()
-    unzipper.run("s:/cache/done/test")
+    unzipper.run_with_history("s:/cache/done/test")
