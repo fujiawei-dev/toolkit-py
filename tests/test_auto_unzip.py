@@ -13,7 +13,8 @@ from unified_command.auto_unzip import Unzipper
 def test_auto_unzip():
     version = sys.version_info
 
-    if version.major < 3 or version.minor < 7:
+    if version.major < 3 or version.minor < 8:
+        # The missing_ok parameter was added to Path.unlink only on python 3.8.
         return
 
     unzipper = Unzipper()
