@@ -10,17 +10,15 @@ import (
 
 
 func (c *config) initLogger() {
-	writerOnce.Do(func() {
-		if c.DetachServer() {
-			event.SetLogger(zerolog.New(c.LogWriter()).
-				With().
-				CallerWithSkipFrameCount(3).
-				Logger(),
-			)
+	if c.DetachServer() {
+		event.SetLogger(zerolog.New(c.LogWriter()).
+			With().
+			CallerWithSkipFrameCount(3).
+			Logger(),
+		)
 
-			event.SetLevel(c.LogLevel())
-		}
-	})
+		event.SetLevel(c.LogLevel())
+	}
 }
 
 func (c *config) LogLevel() zerolog.Level {
