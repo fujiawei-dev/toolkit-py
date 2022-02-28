@@ -16,14 +16,13 @@ def writer(*confs, content="", read_only=True, official="", message="", append=F
     if not read_only and content != "":
         for conf in confs:
             os.makedirs(os.path.dirname(conf), exist_ok=True)
-            with open(
-                conf,
-                "a" if append else "w",
-                encoding="utf-8",
-                newline="\n",
-            ) as fp:
-                fp.write(content)
-            click.echo(f"written to {conf}")
+            conf_backup = conf + ".backup"
+            if os.path.exists(conf) and not os.path.exists(conf_backup):
+                os.renames(conf, conf_backup)
+            mode = "a" if append else "w"
+            with open(conf, mode, encoding="utf-8", newline="\n") as fp:
+                fp.write(content.strip() + "\n")
+            click.echo(f"written to {conf}, and backup to {conf_backup}")
     else:
         click.echo(f"read only {', '.join(confs)}")
 
