@@ -24,7 +24,9 @@ type JWTProvider struct{
 
 func (c *config) JWTMiddleware() iris.Handler {
 	if !c.JWTEnable() {
-		return nil
+		return func(ctx *context.Context) {
+			ctx.Next()
+		}
 	}
 
 	return c.jwtVerifier().Verify(func() interface{} {

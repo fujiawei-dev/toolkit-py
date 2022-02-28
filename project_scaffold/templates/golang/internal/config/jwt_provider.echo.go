@@ -25,7 +25,11 @@ type jwtUserClaims struct {
 
 func (c *config) JWTMiddleware() echo.MiddlewareFunc {
 	if !c.JWTEnable() {
-		return nil
+		return func(handlerFunc echo.HandlerFunc) echo.HandlerFunc {
+			return func(ctx echo.Context) error {
+				return handlerFunc(ctx)
+			}
+		}
 	}
 
 	c.settings.JWT.once.Do(func() {

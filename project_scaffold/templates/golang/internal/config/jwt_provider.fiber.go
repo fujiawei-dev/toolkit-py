@@ -20,7 +20,9 @@ type JWTProvider struct{
 func (c *config) JWTMiddleware() fiber.Handler {
 	// https://github.com/gofiber/jwt
 	if !c.JWTEnable() {
-		return nil
+		return func(ctx *fiber.Ctx) error {
+			return ctx.Next()
+		}
 	}
 
 	return jwt.New(jwt.Config{
