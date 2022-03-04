@@ -14,6 +14,13 @@ const (
 	ReleaseMode = "release"
 )
 
+type ServerSetting struct {
+	BasePath string `mapstructure:"base_path" yaml:"base_path,omitempty"`
+	HttpHost string `mapstructure:"http_host" yaml:"http_host,omitempty"`
+	HttpPort int    `mapstructure:"http_port" yaml:"http_port,omitempty"`
+	RunMode  string `mapstructure:"run_mode" yaml:"run_mode,omitempty"`
+}
+
 // HttpMode returns the server mode.
 func (c *config) HttpMode() string {
 	if c.flags.HttpMode != "" {

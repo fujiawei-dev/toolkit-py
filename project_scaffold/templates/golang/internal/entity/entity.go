@@ -30,7 +30,7 @@ func (list Types) WaitForMigration() {
 	for name := range list {
 		for i := 0; i <= attempts; i++ {
 			count := RowCount{}
-			if err := Db().Raw(fmt.Sprintf("SELECT COUNT(*) AS count FROM %s", name)).Scan(&count).Error; err == nil {
+			if err := Db().Debug().Raw(fmt.Sprintf("SELECT COUNT(*) AS count FROM %s", name)).Scan(&count).Error; err == nil {
 				// log.Printf("entity: table %s migrated", name)
 				break
 			} else {
@@ -49,7 +49,7 @@ func (list Types) WaitForMigration() {
 // Truncate removes all data from tables without dropping them.
 func (list Types) Truncate() {
 	for name := range list {
-		if err := Db().Exec(fmt.Sprintf("DELETE FROM %s WHERE 1", name)).Error; err == nil {
+		if err := Db().Debug().Exec(fmt.Sprintf("DELETE FROM %s WHERE 1", name)).Error; err == nil {
 			// log.Printf("entity: removed all data from %s", name)
 			break
 		} else if err.Error() != "record not found" {
@@ -61,7 +61,7 @@ func (list Types) Truncate() {
 // Migrate migrates all database tables of registered entities.
 func (list Types) Migrate() {
 	for _, entity := range list {
-		if err := UnscopedDb().AutoMigrate(entity); err != nil {
+		if err := UnscopedDb().Debug().AutoMigrate(entity); err != nil {
 			log.Printf("entity: migrate %s (waiting 1s)", err.Error())
 
 			time.Sleep(time.Second)
@@ -76,7 +76,7 @@ func (list Types) Migrate() {
 // Drop drops all database tables of registered entities.
 func (list Types) Drop() {
 	for _, entity := range list {
-		if err := UnscopedDb().Migrator().DropTable(entity).Error; err != nil {
+		if err := UnscopedDb().Debug().Migrator().DropTable(entity).Error; err != nil {
 			panic(err)
 		}
 	}

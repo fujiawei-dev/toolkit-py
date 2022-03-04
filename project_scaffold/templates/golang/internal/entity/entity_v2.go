@@ -29,7 +29,7 @@ func extendEntities(e Entity) {
 // Truncate removes all data from tables without dropping them.
 func (es Entities) Truncate() {
 	for _, entity := range es {
-		if err := Db().Exec("DELETE FROM ? WHERE 1", entity.TableName()).Error; err == nil {
+		if err := Db().Debug().Exec("DELETE FROM ? WHERE 1", entity.TableName()).Error; err == nil {
 			log.Printf("entity: truncated %s successfully", entity.TableName())
 		} else if !errors.Is(err, gorm.ErrRecordNotFound) {
 			log.Printf("entity: truncated %s failed (%s)", entity.TableName(), err)
@@ -40,10 +40,10 @@ func (es Entities) Truncate() {
 // Migrate migrates all database tables of registered entities.
 func (es Entities) Migrate() {
 	for _, entity := range es {
-		if err := UnscopedDb().AutoMigrate(entity); err != nil {
+		if err := UnscopedDb().Debug().AutoMigrate(entity); err != nil {
 			log.Printf("entity: migrate %s %s (waiting 1s)", entity.TableName(), err.Error())
 			time.Sleep(time.Second)
-			if err = UnscopedDb().AutoMigrate(entity); err != nil {
+			if err = UnscopedDb().Debug().AutoMigrate(entity); err != nil {
 				panic(err)
 			}
 		}
@@ -53,7 +53,7 @@ func (es Entities) Migrate() {
 // Drop drops all database tables of registered entities.
 func (es Entities) Drop() {
 	for _, entity := range es {
-		if err := UnscopedDb().Migrator().DropTable(entity).Error; err != nil {
+		if err := UnscopedDb().Debug().Migrator().DropTable(entity).Error; err != nil {
 			panic(err)
 		}
 	}

@@ -50,14 +50,14 @@ type Example struct {
 	LongStringField      string  `gorm:"column:long_string_field;size:256" example:"长字符串字段"` // specifies column data size/length
 	LongTextField        string  `gorm:"column:long_text_field;type:text" example:"超长文本字段"`
 	IntegerField         int     `gorm:"type:int" example:"3"`
-	UnsignedIntegerField uint    `gorm:"type:uint;autoIncrement" example:"4"` // specifies column auto incremental
+	// UnsignedIntegerField uint    `gorm:"type:uint;autoIncrement" example:"4"` // specifies column auto incremental
 	Float64Field         float64 `gorm:"type:float" example:"3.1415926535"`
 	Float32Field         float32 `gorm:"type:float" example:"3.14159"`
 	BinaryField          []byte  `gorm:"type:bytes" example:"255"`
 
-	DefaultField     string `gorm:"default:golang.org" example:"默认字段"`
-	DefaultUID       string `gorm:"column:default_uid;default:uuid_generate_v3()" json:"default_uid" example:"默认SQL函数字段"`
-	DefaultGenerated string `gorm:"->;type:GENERATED ALWAYS AS (concat(uid,' ',default_uid));default:(-);" example:"默认组合生成字段"`
+	// DefaultField     string `gorm:"default:golang.org" example:"默认字段"`
+	// DefaultUID       string `gorm:"column:default_uid;default:uuid_generate_v3()" json:"default_uid" example:"默认SQL函数字段"`
+	// DefaultGenerated string `gorm:"->;type:GENERATED ALWAYS AS (concat(uid,' ',default_uid));default:(-);" example:"默认组合生成字段"`
 
 	NotNullField sql.NullBool `gorm:"not null" json:"-" example:"禁止空值字段"`
 	CheckField   string       `gorm:"check:integer_field > 5" example:"验证值字段"` // https://gorm.io/docs/constraints.html
@@ -66,7 +66,7 @@ type Example struct {
 	// Embedded Struct
 	// When creating some data with associations, if its associations value is not zero-value,
 	// those associations will be upserted, and its Hooks methods will be invoked.
-	AssociationExample AssociationExample
+	// AssociationExample AssociationExample
 	// For anonymous fields, GORM will include its fields into its parent struct
 	AnonymousEmbeddedExample
 	// For a normal struct field, you can embed it with the tag embedded, for example:

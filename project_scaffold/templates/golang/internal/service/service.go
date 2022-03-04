@@ -24,7 +24,7 @@ type Service struct {
 func Start(ctx context.Context) {
 	srv := NewService()
 
-	srv.RegisterCornEvents(cornHttpGetExamples)
+	// srv.RegisterCornEvents(cornHttpGetExamples)
 
 	srv.Run()
 	<-ctx.Done()

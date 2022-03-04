@@ -10,6 +10,11 @@ import (
 	"{{GOLANG_MODULE}}/version"
 )
 
+type AppSetting struct {
+	Description string `mapstructure:"description" yaml:"description,omitempty"`
+	Title       string `mapstructure:"title" yaml:"title,omitempty"`
+}
+
 func (c *config) AppName() string {
 	if version.Name != version.LibraryImport {
 		return version.Name

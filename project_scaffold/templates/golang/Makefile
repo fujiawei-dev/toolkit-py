@@ -27,6 +27,8 @@ BUILD_ARGS := "\
 -X $(APP_MODULE)/version.BuildTime=$(BUILD_TIME) \
 -w -s -buildid=\
 "
+# The -w and -s flags reduce binary sizes by excluding unnecessary symbols and debug info
+# The -buildid= flag makes builds reproducible
 
 # CGO cross is not supported (CGO_ENABLED=1)
 BUILD_CMD := go build -trimpath -ldflags $(BUILD_ARGS)

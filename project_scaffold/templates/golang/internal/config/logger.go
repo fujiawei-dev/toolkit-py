@@ -19,6 +19,15 @@ var (
 	writerOnce sync.Once
 )
 
+type LoggerSetting struct {
+	Filename   string `mapstructure:"filename" yaml:"filename,omitempty"`       // 文件名
+	Level      string `mapstructure:"level" yaml:"level,omitempty"`             // 日志记录级别
+	MaxAge     int    `mapstructure:"max_age" yaml:"max_age,omitempty"`         // 文件保留时间限制
+	MaxBackups int    `mapstructure:"max_backups" yaml:"max_backups,omitempty"` // 文件保留数量限制
+	MaxSize    int    `mapstructure:"max_size" yaml:"max_size,omitempty"`       // 文件大小限制
+	SavePath   string `mapstructure:"save_path" yaml:"save_path,omitempty"`     // 保存路径
+}
+
 func (c *config) LogWriter() io.Writer {
 	writerOnce.Do(func() {
 		if c.DetachServer() {

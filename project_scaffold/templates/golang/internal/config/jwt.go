@@ -13,6 +13,20 @@ const (
 	JWTRefresh = "refresh"
 )
 
+type JWTSetting struct {
+	Enable     bool          `mapstructure:"enable" yaml:"enable,omitempty"`
+	Expire     time.Duration `mapstructure:"expire" yaml:"expire,omitempty"`
+	Field      string        `mapstructure:"field" yaml:"field,omitempty"` // Header 字段 Authorization
+	Issuer     string        `mapstructure:"issuer" yaml:"issuer,omitempty"`
+	Key        string        `mapstructure:"key" yaml:"key,omitempty"`
+	Mode       string        `mapstructure:"mode" yaml:"mode,omitempty"` // default/refresh
+	PrivateKey string        `mapstructure:"private_key" yaml:"private_key,omitempty"`
+	PublicKey  string        `mapstructure:"public_key" yaml:"public_key,omitempty"`
+	Scheme     string        `mapstructure:"scheme" yaml:"scheme,omitempty"` // 格式前缀
+
+	JWTProvider
+}
+
 func (c *config) JWTEnable() bool {
 	return c.settings.JWT.Enable
 }
