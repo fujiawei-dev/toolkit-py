@@ -29,12 +29,12 @@ var startCommand = &cobra.Command{
 
 func startAction(cmd *cobra.Command, args []string) {
 	if err := conf.Init(); err != nil {
-		cmd.Printf("config init failed: %v", err)
+		cmd.Printf("config init failed: %v\n", err)
 		return
 	}
 
 	if conf.HttpPort() < 1 || conf.HttpPort() > 65535 {
-		cmd.Printf("server port must be a number between 1 and 65535")
+		cmd.Println("server port must be a number between 1 and 65535")
 		return
 	}
 
@@ -51,24 +51,24 @@ func startAction(cmd *cobra.Command, args []string) {
 		child, err := dc.Reborn()
 
 		if err != nil {
-			cmd.Printf("failed reborn %v", err)
+			cmd.Printf("failed reborn %v\n", err)
 			return
 		}
 
 		if child != nil {
 			if !fs.Overwrite(conf.PidFile(), []byte(strconv.Itoa(child.Pid))) {
-				cmd.Printf("failed writing process id to %s", conf.PidFile())
+				cmd.Printf("failed writing process id to %s\n", conf.PidFile())
 				return
 			}
 
-			cmd.Printf("daemon started with process id %v", child.Pid)
+			cmd.Printf("daemon started with process id %v\n", child.Pid)
 
 			return
 		}
 
 		defer func() {
 			if err = dc.Release(); err != nil {
-				cmd.Printf("daemon release %v", err)
+				cmd.Printf("daemon release %v\n", err)
 			}
 		}()
 	}
@@ -106,10 +106,10 @@ func startAction(cmd *cobra.Command, args []string) {
 
 		serverError = <-serverClosedSignal
 
-		log.Print("http: shutting down web server...")
+		log.Println("http: shutting down web server...")
 
 		if serverError == http.ErrServerClosed || serverError == nil {
-			log.Print("http: web server shutdown complete")
+			log.Println("http: web server shutdown complete")
 		} else {
 			log.Printf("http: web server closed unexpect: %v", serverError)
 		}
@@ -118,7 +118,7 @@ func startAction(cmd *cobra.Command, args []string) {
 		cancel()
 
 		if serverError != nil {
-			cmd.Print(serverError)
+			cmd.Println(serverError)
 		}
 	}
 }

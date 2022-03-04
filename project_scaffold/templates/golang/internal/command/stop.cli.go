@@ -28,7 +28,7 @@ func stopAction(ctx *cli.Context) error {
 		return fmt.Errorf("config init failed: %v", err)
 	}
 
-	fmt.Printf("looking for pid in %s", conf.PidFile())
+	fmt.Printf("looking for pid in %s\n", conf.PidFile())
 
 	if !fs.IsFile(conf.PidFile()) {
 		return fmt.Errorf("%s does not exist or is not a file", conf.PidFile())
@@ -53,7 +53,7 @@ func stopAction(ctx *cli.Context) error {
 	if err != nil {
 		_ = fs.DeleteFile(conf.PidFile())
 
-		fmt.Print("daemon exited successfully")
+		fmt.Println("daemon exited successfully")
 
 		if conf.DetachServer() {
 			color.Printf("⇨ https server stopped on %s\n", color.Green(conf.ExternalHttpHostPort()))
