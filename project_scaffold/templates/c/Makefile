@@ -38,5 +38,5 @@ install:
 reinstall: uninstall install
 
 tag:
-	git tag v$(VERSION)
-	git push origin v$(VERSION)
+	git tag v$(APP_VERSION)
+	git push origin v$(APP_VERSION)

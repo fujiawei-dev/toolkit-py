@@ -161,3 +161,7 @@ all-arch: $(PLATFORM_LIST) $(WINDOWS_ARCH_LIST)
 
 clean:
 	rm $(BIN_DIR)/*
+
+tag:
+	git tag v$(APP_VERSION)
+	git push origin v$(APP_VERSION)
