@@ -70,7 +70,7 @@ def render_templates_recursively(
         suffixes = p.suffixes
 
         if len(suffixes) > 1:
-            suffix = suffixes[0]
+            suffix = suffixes[-2]
             last_suffix = suffixes[-1]
 
             if last_suffix == ".py":
