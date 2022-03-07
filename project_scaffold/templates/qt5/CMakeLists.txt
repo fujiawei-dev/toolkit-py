@@ -1,3 +1,5 @@
+{{MAKEFILE_HEADER}}
+
 cmake_minimum_required(VERSION 3.1)
 project({{APP_NAME}})
 
@@ -18,12 +20,15 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
  set(CMAKE_PREFIX_PATH "C:/Developer/qt/5.12.6/mingw73_64")
 # set(CMAKE_PREFIX_PATH "C:/Developer/qt/5.12.6/mingw73_32")
+message(STATUS "CMake Prefix Path: ${CMAKE_PREFIX_PATH}")
 
 # Set environment variables
-# PATH=C:/Developer/qt/5.12.6/mingw73_32/bin;C:/Developer/qt/Tools/mingw730_32/bin;%PATH%
-# QML2_IMPORT_PATH=C:/Developer/qt/5.12.6/mingw73_32/qml
-
-message(STATUS "CMake Prefix Path: ${CMAKE_PREFIX_PATH}")
+# set PATH=C:/Developer/qt/5.12.6/mingw73_32/bin;C:/Developer/qt/Tools/mingw730_32/bin;%PATH%
+# set QML2_IMPORT_PATH=C:/Developer/qt/5.12.6/mingw73_32/qml
+set(ENV{PATH} "C:/Developer/qt/5.12.6/mingw73_32/bin;C:/Developer/qt/Tools/mingw730_32/bin;%PATH%")
+message("Environment variable PATH: $ENV{PATH}")
+set(ENV{QML2_IMPORT_PATH} "C:/Developer/qt/5.12.6/mingw73_32/qml")
+message("Environment variable QML2_IMPORT_PATH: $ENV{QML2_IMPORT_PATH}")
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 link_directories(${CMAKE_SOURCE_DIR}/lib)
@@ -43,22 +48,30 @@ find_package(Qt5 COMPONENTS ${PACKAGES} REQUIRED)
 set(
         SOURCES
         main.cpp
+        {%- if template==".gui" %}
         widget.cpp
+        {%- endif %}
 )
 
 set(
         HEADERS
+        {%- if template==".gui" %}
         widget.h
+        {%- endif %}
 )
 
 set(
         FORMS
+        {%- if template==".gui" %}
         widget.ui
+        {%- endif %}
 )
 
 set(
-    QML_FILES
-    qml.qrc
+        QML_FILES
+        {%- if template==".qml" %}
+        qml.qrc
+        {%- endif %}
 )
 
 add_executable(
@@ -72,9 +85,12 @@ add_executable(
 target_link_libraries(
         ${PROJECT_NAME}
         Qt5::Core
+    {%- if template==".gui" %}
         Qt5::Gui
+    {%- elif template==".qml" %}
         Qt5::Quick
         Qt5::Qml
+    {%- endif %}
         Qt5::Widgets
         Qt5::Network
 )

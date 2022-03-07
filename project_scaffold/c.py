@@ -35,4 +35,5 @@ def qt5(template=Qt5Templates.Gui):
             "lib",
         ],
         common=False,
+        template=template,
     )
