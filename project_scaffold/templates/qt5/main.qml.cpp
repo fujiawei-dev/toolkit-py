@@ -1,3 +1,5 @@
+{{GOLANG_HEADER}}
+
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 

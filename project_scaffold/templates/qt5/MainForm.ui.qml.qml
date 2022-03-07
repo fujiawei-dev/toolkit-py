@@ -1,3 +1,5 @@
+{{GOLANG_HEADER}}
+
 /* import部分 */
 import QtQuick 2.3       //导入Qt Quick 2.3库
 /* 对象声明 */
