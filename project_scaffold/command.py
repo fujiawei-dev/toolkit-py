@@ -5,11 +5,12 @@ LastEditors: Rustle Karl
 LastEditTime: 2022.02.02 18:14
 """
 import os
+import shutil
 
 import click
 from click_aliases import ClickAliasedGroup
 
-from .c import c as _c, qt5 as _qt5
+from .c import Qt5Templates, c as _c, qt5 as _qt5
 from .common import create_common_files
 from .golang import GoCombinations, golang as _golang
 from .notes import notes as _notes
@@ -31,6 +32,8 @@ def base():
     help="Remove all example files for release.",
 )
 def clean():
+    shutil.rmtree("cmake-build-debug")
+
     for root, dirs, files in os.walk("."):
         for f in files:
             if f.find("example") != -1:
@@ -81,10 +84,11 @@ def c():
 
 @command_cps.command(help="Create Qt5 project scaffold.")
 @click.option(
-    "--console/--gui",
-    "-c/-g",
-    default=False,
+    "--template",
+    "-t",
+    type=click.Choice(Qt5Templates),
+    default=Qt5Templates.Gui,
     help="Read only or create configuration files.",
 )
-def qt5(console):
-    _qt5(console)
+def qt5(template=Qt5Templates.Gui):
+    _qt5(template)

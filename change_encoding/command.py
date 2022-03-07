@@ -25,8 +25,11 @@ TEXT_SUFFIXES = {
     ".json",
     ".md",
     ".py",
+    ".qml",
+    ".qrc",
     ".ts",
     ".txt",
+    ".ui",
     ".yaml",
     ".yml",
 }

@@ -19,6 +19,10 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
  set(CMAKE_PREFIX_PATH "C:/Developer/qt/5.12.6/mingw73_64")
 # set(CMAKE_PREFIX_PATH "C:/Developer/qt/5.12.6/mingw73_32")
 
+# Set environment variables
+# PATH=C:/Developer/qt/5.12.6/mingw73_32/bin;C:/Developer/qt/Tools/mingw730_32/bin;%PATH%
+# QML2_IMPORT_PATH=C:/Developer/qt/5.12.6/mingw73_32/qml
+
 message(STATUS "CMake Prefix Path: ${CMAKE_PREFIX_PATH}")
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
@@ -28,6 +32,8 @@ set(
         PACKAGES
         Core
         Gui
+        Quick
+        Qml
         Widgets
         Network
 )
@@ -50,17 +56,25 @@ set(
         widget.ui
 )
 
+set(
+    QML_FILES
+    qml.qrc
+)
+
 add_executable(
         ${PROJECT_NAME}
         ${SOURCES}
         ${HEADERS}
         ${FORMS}
+        ${QML_FILES}
 )
 
 target_link_libraries(
         ${PROJECT_NAME}
         Qt5::Core
         Qt5::Gui
+        Qt5::Quick
+        Qt5::Qml
         Qt5::Widgets
         Qt5::Network
 )

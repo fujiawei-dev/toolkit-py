@@ -4,6 +4,7 @@
 #define UNTITLED__WIDGET_H
 
 #include <QWidget>
+#include <QSettings>
 //#include <spdlog/spdlog.h>
 
 

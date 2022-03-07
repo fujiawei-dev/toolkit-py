@@ -109,7 +109,7 @@ Options:
 
 Commands:
   python (py)  Create or display configuration files about Python.
-  
+
  $ ccf py -h
  Usage: ccf py [OPTIONS]
 
