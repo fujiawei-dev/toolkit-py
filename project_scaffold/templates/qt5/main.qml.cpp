@@ -2,10 +2,61 @@
 
 #include <QApplication>
 #include <QCommandLineParser>
+#include <QDateTime>
+#include <QDebug>
+#include <QDir>
 #include <QFileInfo>
+#include <QMutex>
 #include <QQmlApplicationEngine>
 #include <QSettings>
 #include <QTextCodec>
+#include <QTextStream>
+#include <iostream>
+
+
+void logMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg) {
+    QString text;
+    static QMutex mutex;
+
+    switch (type) {
+        case QtDebugMsg:
+            text = QString("DEBUG:");
+            break;
+        case QtInfoMsg:
+            text = QString("INFO:");
+            break;
+        case QtWarningMsg:
+            text = QString("WARN:");
+            break;
+        case QtCriticalMsg:
+            text = QString("ERROR:");
+            break;
+        case QtFatalMsg:
+            text = QString("FATAL:");
+    }
+
+    QString contextInfo = QString("%1:%2").arg(context.file).arg(context.line);
+    QString currentDateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+    QString message = QString("%1 %2 %3 %4").arg(currentDateTime, text, contextInfo, text);
+
+    QString logsDir = QCoreApplication::applicationDirPath() + "/logs";
+    QFile logFile(logsDir + "/" + currentDateTime.left(10) + ".log");
+
+    QDir dir;
+    if (!dir.exists(logsDir) && !dir.mkpath(logsDir)) {
+        std::cerr << "Couldn't create logs directory'" << std::endl;
+        exit(1);
+    }
+
+    mutex.lock();
+    logFile.open(QIODevice::WriteOnly | QIODevice::Append);
+    QTextStream textStream(&logFile);
+    textStream << message << "\n";// '\r\n' is awful
+    logFile.flush();
+    logFile.close();
+
+    mutex.unlock();
+}
 
 int main(int argc, char *argv[]) {
 
@@ -29,6 +80,9 @@ int main(int argc, char *argv[]) {
     QTextCodec *codec = QTextCodec::codecForName("UTF-8");
     QTextCodec::setCodecForLocale(codec);
 #endif
+
+    // TODO print directly when debug
+    qInstallMessageHandler(logMessageHandler);
 
     QCommandLineParser parser;
     QCommandLineOption configFileOption("c", "Path to config file");
