@@ -87,8 +87,15 @@ def notes():
 
 
 @command_cps.command(help="Create C/C++ project scaffold.")
-def c():
-    _c()
+@click.option(
+    "--only-files",
+    "-o",
+    type=str,
+    default="",
+    help="Only create the specified C/C++ template files, split by semicolon.",
+)
+def c(only_files):
+    _c(only_files)
 
 
 @command_cps.command(help="Create Qt5 project scaffold.")

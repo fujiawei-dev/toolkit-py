@@ -9,13 +9,25 @@ from enum import Enum
 from .render import render_templates
 
 
-def c():
+def c(only_files: str = ""):
+    folders = [
+        "cmake-build-debug",
+        "cmake-build-release",
+    ]
+
+    if not only_files:
+        folders.extend(
+            [
+                "include",
+                "lib",
+            ]
+        )
+
     render_templates(
         "c",
-        folders=[
-            "include",
-            "lib",
-        ],
+        folders=folders,
+        common=False,
+        only_files=only_files.split(";"),
     )
 
 

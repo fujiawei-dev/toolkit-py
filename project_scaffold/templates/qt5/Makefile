@@ -15,9 +15,11 @@ ifeq ($(OS), Windows_NT)
 UNIFIED_NAME := $(UNIFIED_NAME).exe
 endif
 
-VCPKG_PATH = C:/Developer/vcpkg
 CMAKE_BUILD_PREFIX = cmake-build
-CMAKE_OPTIONS = -DCMAKE_TOOLCHAIN_FILE=$(VCPKG_PATH)/scripts/buildsystems/vcpkg.cmake -G "Unix Makefiles"
+CMAKE_OPTIONS = -G "Unix Makefiles"
+
+#VCPKG_PATH = C:/Developer/vcpkg
+#CMAKE_OPTIONS += -DCMAKE_TOOLCHAIN_FILE=$(VCPKG_PATH)/scripts/buildsystems/vcpkg.cmake
 
 all: run
 

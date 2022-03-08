@@ -11,7 +11,11 @@ from typing import List, Tuple
 
 from jinja2 import Template
 
-from .common import GENERATOR_HEADER, create_common_files, get_different_camel_case_styles
+from .common import (
+    GENERATOR_HEADER,
+    create_common_files,
+    get_different_camel_case_styles,
+)
 from .templates import TEMPLATES_PATH
 
 
@@ -36,6 +40,7 @@ def render_templates_recursively(
     include_suffixes: Tuple[str] = None,
     src: Path = None,
     render=render_by_jinja2,
+    only_files: Tuple[str] = None,
     **kwargs
 ):
     src = src or p
@@ -63,10 +68,14 @@ def render_templates_recursively(
                 else render,
                 include_suffixes=include_suffixes,
                 src=p,
+                only_files=only_files,
                 **kwargs
             )
 
     elif p.is_file():
+        if only_files and p.stem not in only_files:
+            return
+
         suffixes = p.suffixes
 
         if len(suffixes) > 1:
@@ -98,6 +107,7 @@ def render_templates(
     include_suffixes: List[str] = None,
     folders: List[str] = None,
     common: bool = True,
+    only_files: List[str] = None,
     **kwargs
 ):
     package, package_title, package_underscore = get_different_camel_case_styles()
@@ -107,6 +117,7 @@ def render_templates(
         Path.cwd(),
         special_paths=special_paths,
         include_suffixes=include_suffixes,
+        only_files=only_files,
         **{
             "STUDY_OBJECT": package_title,
             "PACKAGE_TITLE": package_title,
