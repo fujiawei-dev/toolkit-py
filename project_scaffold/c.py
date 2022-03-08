@@ -30,6 +30,9 @@ def qt5(template=Qt5Templates.Gui):
         "qt5",
         include_suffixes=[template],
         folders=[
+            "assets",
+            "assets/fonts",
+            "assets/images",
             "cmake-build-debug",
             "cmake-build-release",
             "include",
