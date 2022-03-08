@@ -17,6 +17,7 @@ endif
 
 CMAKE_BUILD_PREFIX = cmake-build
 CMAKE_OPTIONS = -G "Unix Makefiles"
+MAKE_OPTIONS = -j 64
 
 #VCPKG_PATH = C:/Developer/vcpkg
 #CMAKE_OPTIONS += -DCMAKE_TOOLCHAIN_FILE=$(VCPKG_PATH)/scripts/buildsystems/vcpkg.cmake
@@ -24,10 +25,10 @@ CMAKE_OPTIONS = -G "Unix Makefiles"
 all: run
 
 build-debug:
-	cd $(CMAKE_BUILD_PREFIX)-debug; cmake $(CMAKE_OPTIONS) -DCMAKE_BUILD_TYPE=Debug ..; make
+	cd $(CMAKE_BUILD_PREFIX)-debug; cmake $(CMAKE_OPTIONS) -DCMAKE_BUILD_TYPE=Debug ..; make $(MAKE_OPTIONS)
 
 build-release:
-	cd $(CMAKE_BUILD_PREFIX)-release; cmake $(CMAKE_OPTIONS) -DCMAKE_BUILD_TYPE=Release ..; make
+	cd $(CMAKE_BUILD_PREFIX)-release; cmake $(CMAKE_OPTIONS) -DCMAKE_BUILD_TYPE=Release ..; make $(MAKE_OPTIONS)
 
 build: clean build-release
 

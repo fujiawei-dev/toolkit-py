@@ -17,6 +17,10 @@ UNIFIED_NAME := $(UNIFIED_NAME).exe
 INSTALL_PATH = c:/developer/bin/
 endif
 
+CMAKE_BUILD_PREFIX = cmake-build
+CMAKE_OPTIONS = -G "Unix Makefiles"
+MAKE_OPTIONS = -j 64
+
 all: run
 
 uninstall:
@@ -28,10 +32,10 @@ install: build-release
 reinstall: uninstall install
 
 build-debug:
-	cd $(CMAKE_BUILD_PREFIX)-debug; cmake $(CMAKE_OPTIONS) -DCMAKE_BUILD_TYPE=Debug ..; make
+	cd $(CMAKE_BUILD_PREFIX)-debug; cmake $(CMAKE_OPTIONS) -DCMAKE_BUILD_TYPE=Debug ..; make $(MAKE_OPTIONS)
 
 build-release:
-	cd $(CMAKE_BUILD_PREFIX)-release; cmake $(CMAKE_OPTIONS) -DCMAKE_BUILD_TYPE=Release ..; make
+	cd $(CMAKE_BUILD_PREFIX)-release; cmake $(CMAKE_OPTIONS) -DCMAKE_BUILD_TYPE=Release ..; make $(MAKE_OPTIONS)
 
 build: clean build-release
 
