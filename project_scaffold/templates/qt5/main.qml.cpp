@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QFileInfo>
+#include <QFontDatabase>
 #include <QMutex>
 #include <QQmlApplicationEngine>
 #include <QSettings>
@@ -84,6 +85,7 @@ int main(int argc, char *argv[]) {
     // TODO print directly when debug
     qInstallMessageHandler(logMessageHandler);
 
+    // Parses the command line arguments
     QCommandLineParser parser;
     QCommandLineOption configFileOption("c", "Path to config file");
     parser.setApplicationDescription("{{APP_NAME}} Description");
@@ -103,6 +105,12 @@ int main(int argc, char *argv[]) {
         settings->setValue("Remote/Port", "9876");
     }
 
+    // Add fonts
+    QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Regular.ttf");
+    QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Bold.ttf");
+    QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Heavy.ttf");
+    QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Light.ttf");
+    QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Regular.ttf");
 
     QQmlApplicationEngine engine;
     const QUrl url("qrc:/main.qml");

@@ -43,6 +43,7 @@ set(
         Qml
         Widgets
         Network
+        WebSockets
 )
 
 find_package(Qt5 COMPONENTS ${PACKAGES} REQUIRED)
@@ -95,6 +96,7 @@ target_link_libraries(
     {%- endif %}
         Qt5::Widgets
         Qt5::Network
+        Qt5::WebSockets
 )
 
 add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD

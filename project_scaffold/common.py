@@ -5,7 +5,6 @@ LastEditors: Rustle Karl
 LastEditTime: 2022.02.02 19:08
 """
 import os
-import string
 from datetime import datetime
 from pathlib import Path
 from typing import List, Union
@@ -31,10 +30,12 @@ def get_different_camel_case_styles(
 
     s = s.rstrip("-py").rstrip("-go").rstrip("-cpp").rstrip("-c")
 
-    for i, j in zip(string.ascii_uppercase, string.ascii_lowercase):
-        s = s.replace(i, " " + j)
+    s = list(s)
+    for i in range(1, len(s)):
+        if s[i - 1].islower() and s[i].isupper():
+            s[i] = " " + s[i]
 
-    package = s.strip().replace("_", "-").replace(" ", "-")  # camel-case
+    package = "".join(s).lower().replace("_", "-").replace(" ", "-")  # camel-case
     package_title = package.replace("-", " ").title()  # Camel Case
     package_underscore = package.replace("-", "_")  # camel_case
 
