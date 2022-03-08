@@ -5,33 +5,39 @@ LastEditors: Rustle Karl
 LastEditTime: 2022.02.02 19:08
 """
 import os
+import string
 from datetime import datetime
 from pathlib import Path
-from typing import List
+from typing import List, Union
 
 from unified_command.version import GENERATOR_HEADER
 from .templates import TEMPLATES_COMMON_PATH
 
 __all__ = [
     "create_common_files",
-    "get_package",
+    "get_different_camel_case_styles",
     "Entity",
     "GENERATOR_HEADER",
 ]
 
 
-def get_package() -> [str, str, str]:
-    package = (
-        Path.cwd()
-        .stem.replace("_", "-")
-        .replace(" ", "-")
-        .lower()
-        .rstrip("-py")
-        .rstrip("-go")
-    )  # camel-case
+def get_different_camel_case_styles(
+    s: Union[str, Path] = Path.cwd()
+) -> [str, str, str]:
+    if isinstance(s, Path):
+        s = s.stem
+    else:
+        s = str(s)
 
+    s = s.rstrip("-py").rstrip("-go").rstrip("-cpp").rstrip("-c")
+
+    for i, j in zip(string.ascii_uppercase, string.ascii_lowercase):
+        s = s.replace(i, " " + j)
+
+    package = s.strip().replace("_", "-").replace(" ", "-")  # camel-case
     package_title = package.replace("-", " ").title()  # Camel Case
     package_underscore = package.replace("-", "_")  # camel_case
+
     return package, package_title, package_underscore
 
 

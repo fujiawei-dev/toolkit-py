@@ -11,7 +11,7 @@ from typing import List, Tuple
 
 from jinja2 import Template
 
-from .common import GENERATOR_HEADER, create_common_files, get_package
+from .common import GENERATOR_HEADER, create_common_files, get_different_camel_case_styles
 from .templates import TEMPLATES_PATH
 
 
@@ -100,7 +100,7 @@ def render_templates(
     common: bool = True,
     **kwargs
 ):
-    package, package_title, package_underscore = get_package()
+    package, package_title, package_underscore = get_different_camel_case_styles()
 
     render_templates_recursively(
         TEMPLATES_PATH / relpath,
