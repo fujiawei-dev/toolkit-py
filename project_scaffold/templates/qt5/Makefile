@@ -15,15 +15,17 @@ ifeq ($(OS), Windows_NT)
 UNIFIED_NAME := $(UNIFIED_NAME).exe
 endif
 
+VCPKG_PATH = C:/Developer/vcpkg
 CMAKE_BUILD_PREFIX = cmake-build
+CMAKE_OPTIONS = -DCMAKE_TOOLCHAIN_FILE=$(VCPKG_PATH)/scripts/buildsystems/vcpkg.cmake -G "Unix Makefiles"
 
 all: run
 
 build-debug:
-	cd $(CMAKE_BUILD_PREFIX)-debug; cmake -DCMAKE_BUILD_TYPE=Debug -G "Unix Makefiles" ..; make
+	cd $(CMAKE_BUILD_PREFIX)-debug; cmake $(CMAKE_OPTIONS) -DCMAKE_BUILD_TYPE=Debug ..; make
 
 build-release:
-	cd $(CMAKE_BUILD_PREFIX)-release; cmake -DCMAKE_BUILD_TYPE=Release -G "Unix Makefiles" ..; make
+	cd $(CMAKE_BUILD_PREFIX)-release; cmake $(CMAKE_OPTIONS) -DCMAKE_BUILD_TYPE=Release ..; make
 
 build: clean build-release
 

@@ -28,8 +28,6 @@ def get_different_camel_case_styles(
     else:
         s = str(s)
 
-    s = s.rstrip("-py").rstrip("-go").rstrip("-cpp").rstrip("-c")
-
     s = list(s)
     for i in range(1, len(s)):
         if s[i - 1].islower() and s[i].isupper():
