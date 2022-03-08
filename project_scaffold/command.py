@@ -32,7 +32,10 @@ def base():
     help="Remove all example files for release.",
 )
 def clean():
-    shutil.rmtree("cmake-build-debug")
+    build_dirs = {
+        "cmake-build-debug",  # Clion cmake build
+        "cmake-build-release",  # Makefile cmake build
+    }
 
     for root, dirs, files in os.walk("."):
         for f in files:
@@ -46,6 +49,12 @@ def clean():
                 d = os.path.join(root, d)
                 click.echo(f"clean {d}")
                 os.rmdir(d)
+
+            elif d in build_dirs:
+                d = os.path.join(root, d)
+                click.echo(f"clean {d}")
+                shutil.rmtree(d)
+                os.mkdir(d)
 
 
 @command_cps.command(

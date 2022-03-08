@@ -29,6 +29,8 @@ set(ENV{PATH} "C:/Developer/qt/5.12.6/mingw73_32/bin;C:/Developer/qt/Tools/mingw
 message("Environment variable PATH: $ENV{PATH}")
 set(ENV{QML2_IMPORT_PATH} "C:/Developer/qt/5.12.6/mingw73_32/qml")
 message("Environment variable QML2_IMPORT_PATH: $ENV{QML2_IMPORT_PATH}")
+set(ENV{QT_ASSUME_STDERR_HAS_CONSOLE} 1)
+message("Environment variable QT_ASSUME_STDERR_HAS_CONSOLE: $ENV{QT_ASSUME_STDERR_HAS_CONSOLE}")
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 link_directories(${CMAKE_SOURCE_DIR}/lib)

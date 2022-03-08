@@ -15,7 +15,7 @@ ifeq ($(OS), Windows_NT)
 UNIFIED_NAME := $(UNIFIED_NAME).exe
 endif
 
-CMAKE_BUILD_DIR = cmake-build-debug
+CMAKE_BUILD_DIR = cmake-build-release
 
 all: run
 
