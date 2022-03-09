@@ -1,4 +1,4 @@
-{{GOLANG_HEADER}}
+{{SLASH_COMMENTS}}
 
 #include "widget.h"
 #include "ui_Widget.h"

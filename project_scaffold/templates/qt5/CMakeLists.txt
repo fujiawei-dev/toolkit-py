@@ -1,4 +1,4 @@
-{{MAKEFILE_HEADER}}
+{{HASHTAG_COMMENTS}}
 
 cmake_minimum_required(VERSION 3.1)
 project({{APP_NAME}})

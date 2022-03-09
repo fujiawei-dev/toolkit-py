@@ -1,4 +1,4 @@
-{{MAKEFILE_HEADER}}
+{{HASHTAG_COMMENTS}}
 
 BasedOnStyle: LLVM
 AccessModifierOffset: -4

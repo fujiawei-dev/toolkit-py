@@ -1,4 +1,4 @@
-{{MAKEFILE_HEADER}}
+{{HASHTAG_COMMENTS}}
 
 .PHONY: ;
 .SILENT: ;               # no need for @

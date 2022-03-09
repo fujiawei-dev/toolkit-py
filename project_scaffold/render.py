@@ -126,7 +126,8 @@ def render_templates(
             "GOLANG_MODULE": package,
             "PYPI_PACKAGE": package,
             "PYTHON_MODULE": package_underscore,
-            "MAKEFILE_HEADER": GENERATOR_HEADER,
+            "HASHTAG_COMMENTS": GENERATOR_HEADER,
+            "SLASH_COMMENTS": GENERATOR_HEADER.replace("#", "//"),
             "CREATED_AT": time.strftime("%Y-%m-%dT%H:%M:%S+08:00"),
             **kwargs,
         }
