@@ -1,4 +1,4 @@
-{{GOLANG_HEADER}}
+{{SLASH_COMMENTS}}
 
 #include <QApplication>
 #include <QCommandLineParser>
