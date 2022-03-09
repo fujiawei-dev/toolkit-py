@@ -21,6 +21,9 @@ CMAKE_BUILD_PREFIX = cmake-build
 CMAKE_OPTIONS = -G "Unix Makefiles"
 MAKE_OPTIONS = -j 64
 
+#VCPKG_PATH = C:/Developer/vcpkg
+#CMAKE_OPTIONS += -DCMAKE_TOOLCHAIN_FILE=$(VCPKG_PATH)/scripts/buildsystems/vcpkg.cmake
+
 all: run
 
 uninstall:

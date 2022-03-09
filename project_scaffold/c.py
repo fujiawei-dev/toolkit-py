@@ -37,6 +37,11 @@ class Qt5Templates(str, Enum):
     Qml = ".qml"
 
 
+class Qt5MakeType(str, Enum):
+    QMake = ".qmake"
+    CMake = ".cmake"
+
+
 def qt5(template=Qt5Templates.Gui):
     render_templates(
         "qt5",
