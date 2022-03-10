@@ -97,8 +97,12 @@ def render_templates_recursively(
             return
 
         kwargs["GOLANG_PACKAGE"] = p.parent.stem
-        content = render(p.open(encoding="utf-8").read(), **kwargs)
-        q.open("w", encoding="utf-8", newline="\n").write(content)
+
+        try:
+            content = render(p.open(encoding="utf-8").read(), **kwargs)
+            q.open("w", encoding="utf-8", newline="\n").write(content)
+        except UnicodeDecodeError:
+            q.write_bytes(p.read_bytes())
 
 
 def render_templates(

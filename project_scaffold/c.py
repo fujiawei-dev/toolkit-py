@@ -27,7 +27,7 @@ def c(only_files: str = ""):
         "c",
         folders=folders,
         common=False,
-        only_files=only_files.split(";"),
+        only_files=only_files.split(";") if only_files else None,
     )
 
 
@@ -42,7 +42,7 @@ class Qt5MakeType(str, Enum):
     CMake = ".cmake"
 
 
-def qt5(template=Qt5Templates.Gui,only_files: str = ""):
+def qt5(template=Qt5Templates.Gui, only_files: str = ""):
     render_templates(
         "qt5",
         include_suffixes=[template],
@@ -57,5 +57,5 @@ def qt5(template=Qt5Templates.Gui,only_files: str = ""):
         ],
         common=False,
         template=template,
-            only_files=only_files.split(";"),
+        only_files=only_files.split(";") if only_files else None,
     )
