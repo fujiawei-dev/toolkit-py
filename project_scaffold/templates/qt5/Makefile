@@ -24,6 +24,9 @@ MAKE_OPTIONS = -j 64
 
 all: run
 
+info:
+	@echo $(SHELL)
+
 build-debug:
 	cd $(CMAKE_BUILD_PREFIX)-debug; cmake $(CMAKE_OPTIONS) -DCMAKE_BUILD_TYPE=Debug ..; make $(MAKE_OPTIONS)
 

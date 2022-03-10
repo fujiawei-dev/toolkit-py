@@ -22,12 +22,12 @@ if (IS_X86)
      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
 endif()
 
+# set(QT_PATH "C:/Qt/Qt5.12.6")
 set(QT_PATH "C:/Developer/qt")
 set(QT_VERSION "5.12.6")
 set(QT_COMPILE_VERSION "mingw73_64")
 
-set(CMAKE_PREFIX_PATH "C:/Developer/qt/5.12.6/mingw73_64")
-#set(CMAKE_PREFIX_PATH "${QT_PATH}/${QT_VERSION}/${QT_COMPILE_VERSION}")
+set(CMAKE_PREFIX_PATH "${QT_PATH}/${QT_VERSION}/${QT_COMPILE_VERSION}")
 message(STATUS "CMake Prefix Path: ${CMAKE_PREFIX_PATH}")
 
 # Set environment variables
