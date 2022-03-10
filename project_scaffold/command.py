@@ -104,7 +104,14 @@ def c(only_files):
     "-t",
     type=click.Choice(Qt5Templates),
     default=Qt5Templates.Gui,
-    help="Read only or create configuration files.",
+    help="Type of Qt5 template files.",
 )
-def qt5(template=Qt5Templates.Gui):
-    _qt5(template)
+@click.option(
+    "--only-files",
+    "-o",
+    type=str,
+    default="",
+    help="Only create the specified template files, split by semicolon.",
+)
+def qt5(template=Qt5Templates.Gui, only_files=""):
+    _qt5(template, only_files)

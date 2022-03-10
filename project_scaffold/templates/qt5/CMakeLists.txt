@@ -8,27 +8,42 @@ message(STATUS "CMake Directory: ${CMAKE_SOURCE_DIR}")
 
 set(CMAKE_CXX_STANDARD 14)
 
-# 32-bit platforms
-# set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
-
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
- set(CMAKE_PREFIX_PATH "C:/Developer/qt/5.12.6/mingw73_64")
-# set(CMAKE_PREFIX_PATH "C:/Developer/qt/5.12.6/mingw73_32")
+set(IS_X86 0)
+
+if (IS_X86)
+    # 32-bit platforms
+     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
+     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
+endif()
+
+set(QT_PATH "C:/Developer/qt")
+set(QT_VERSION "5.12.6")
+set(QT_COMPILE_VERSION "mingw73_64")
+
+set(CMAKE_PREFIX_PATH "C:/Developer/qt/5.12.6/mingw73_64")
+#set(CMAKE_PREFIX_PATH "${QT_PATH}/${QT_VERSION}/${QT_COMPILE_VERSION}")
 message(STATUS "CMake Prefix Path: ${CMAKE_PREFIX_PATH}")
 
 # Set environment variables
-# set PATH=C:/Developer/qt/5.12.6/mingw73_32/bin;C:/Developer/qt/Tools/mingw730_32/bin;%PATH%
-# set QML2_IMPORT_PATH=C:/Developer/qt/5.12.6/mingw73_32/qml
-set(ENV{PATH} "C:/Developer/qt/5.12.6/mingw73_32/bin;C:/Developer/qt/Tools/mingw730_32/bin;%PATH%")
+message(STATUS "Maybe you should set PATH=${CMAKE_PREFIX_PATH}/bin;${QT_PATH}/Tools/${QT_VERSION}/bin;%PATH%")
+message(STATUS "Maybe you should set QML2_IMPORT_PATH=${CMAKE_PREFIX_PATH}/qml")
+
+set(ENV{PATH} "${CMAKE_PREFIX_PATH}/bin;${QT_PATH}/Tools/${QT_VERSION}/bin;%PATH%")
 message("Environment variable PATH: $ENV{PATH}")
-set(ENV{QML2_IMPORT_PATH} "C:/Developer/qt/5.12.6/mingw73_32/qml")
+
+{%- if template==".qml" %}
+set(ENV{QML2_IMPORT_PATH} "${CMAKE_PREFIX_PATH}/qml")
 message("Environment variable QML2_IMPORT_PATH: $ENV{QML2_IMPORT_PATH}")
+{%- endif %}
+
+message(STATUS "Maybe you should set QT_ASSUME_STDERR_HAS_CONSOLE=1")
+
 set(ENV{QT_ASSUME_STDERR_HAS_CONSOLE} 1)
 message("Environment variable QT_ASSUME_STDERR_HAS_CONSOLE: $ENV{QT_ASSUME_STDERR_HAS_CONSOLE}")
 
@@ -102,6 +117,10 @@ target_link_libraries(
 add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/lib $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+
+add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/assets $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets)
 
 find_program(DEPLOYQT_EXECUTABLE NAMES windeployqt macdeployqt HINTS "${CMAKE_PREFIX_PATH}")
 

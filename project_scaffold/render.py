@@ -73,7 +73,7 @@ def render_templates_recursively(
             )
 
     elif p.is_file():
-        if only_files and p.stem not in only_files:
+        if only_files and (p.stem not in only_files or p.name not in only_files):
             return
 
         suffixes = p.suffixes

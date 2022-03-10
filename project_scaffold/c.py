@@ -42,7 +42,7 @@ class Qt5MakeType(str, Enum):
     CMake = ".cmake"
 
 
-def qt5(template=Qt5Templates.Gui):
+def qt5(template=Qt5Templates.Gui,only_files: str = ""):
     render_templates(
         "qt5",
         include_suffixes=[template],
@@ -57,4 +57,5 @@ def qt5(template=Qt5Templates.Gui):
         ],
         common=False,
         template=template,
+            only_files=only_files.split(";"),
     )
