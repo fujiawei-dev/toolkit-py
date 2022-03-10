@@ -9,6 +9,7 @@ import time
 from pathlib import Path
 from typing import List, Tuple
 
+import click
 from jinja2 import Template
 
 from .common import (
@@ -41,7 +42,7 @@ def render_templates_recursively(
     src: Path = None,
     render=render_by_jinja2,
     only_files: Tuple[str] = None,
-    **kwargs
+    **kwargs,
 ):
     src = src or p
     q = dst / (p.relative_to(src))
@@ -69,11 +70,13 @@ def render_templates_recursively(
                 include_suffixes=include_suffixes,
                 src=p,
                 only_files=only_files,
-                **kwargs
+                **kwargs,
             )
 
     elif p.is_file():
-        if only_files and (p.stem not in only_files or p.name not in only_files):
+        if only_files and (
+            p.stem.lower() not in only_files and p.name.lower() not in only_files
+        ):
             return
 
         suffixes = p.suffixes
@@ -104,6 +107,8 @@ def render_templates_recursively(
         except UnicodeDecodeError:
             q.write_bytes(p.read_bytes())
 
+        click.echo(f"created: {q.relative_to(Path.cwd())}")
+
 
 def render_templates(
     relpath,
@@ -111,8 +116,8 @@ def render_templates(
     include_suffixes: List[str] = None,
     folders: List[str] = None,
     common: bool = True,
-    only_files: List[str] = None,
-    **kwargs
+    only_files: str = "",
+    **kwargs,
 ):
     package, package_title, package_underscore = get_different_camel_case_styles()
 
@@ -121,7 +126,7 @@ def render_templates(
         Path.cwd(),
         special_paths=special_paths,
         include_suffixes=include_suffixes,
-        only_files=only_files,
+        only_files=only_files.lower().split(";") if only_files else None,
         **{
             "STUDY_OBJECT": package_title,
             "PACKAGE_TITLE": package_title,
@@ -134,7 +139,7 @@ def render_templates(
             "SLASH_COMMENTS": GENERATOR_HEADER.replace("#", "//"),
             "CREATED_AT": time.strftime("%Y-%m-%dT%H:%M:%S+08:00"),
             **kwargs,
-        }
+        },
     )
 
     if common:

@@ -27,7 +27,7 @@ def c(only_files: str = ""):
         "c",
         folders=folders,
         common=False,
-        only_files=only_files.split(";") if only_files else None,
+        only_files=only_files,
     )
 
 
@@ -57,5 +57,5 @@ def qt5(template=Qt5Templates.Gui, only_files: str = ""):
         ],
         common=False,
         template=template,
-        only_files=only_files.split(";") if only_files else None,
+        only_files=only_files,
     )
