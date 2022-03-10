@@ -10,11 +10,17 @@ import click
 from click_aliases import ClickAliasedGroup
 
 from .auto_unzip import PASSWORDS_DIR, PASSWORDS_FILE, Unzipper
+from .version import __version__
 
 
 @click.group(cls=ClickAliasedGroup)
 def command_ucmd():
     pass
+
+
+@command_ucmd.command()
+def version():
+    click.echo(__version__)
 
 
 @command_ucmd.command(
