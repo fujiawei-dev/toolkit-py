@@ -14,6 +14,14 @@ set(CMAKE_AUTOUIC ON)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+# Build settings
+
+# Qt default installation directory
+set(QT_PATH "C:/Qt/Qt5.12.6")
+set(QT_VERSION "5.12.6")
+set(QT_COMPILE_VERSION "mingw73_64")
+# set(QT_COMPILE_VERSION "mingw73_32")
+
 set(IS_X86 0)
 
 if (IS_X86)
@@ -22,33 +30,22 @@ if (IS_X86)
      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
 endif()
 
-# Qt default installation directory
-set(QT_PATH "C:/Qt/Qt5.12.6")
-
-set(QT_VERSION "5.12.6")
-
-set(QT_COMPILE_VERSION "mingw73_64")
-# set(QT_COMPILE_VERSION "mingw73_32")
-
 set(CMAKE_PREFIX_PATH "${QT_PATH}/${QT_VERSION}/${QT_COMPILE_VERSION}")
 message(STATUS "CMake Prefix Path: ${CMAKE_PREFIX_PATH}")
 
 # Set environment variables
-message(STATUS "Maybe you should set PATH=${CMAKE_PREFIX_PATH}/bin;${QT_PATH}/Tools/${QT_VERSION}/bin;%PATH%")
-message(STATUS "Maybe you should set QML2_IMPORT_PATH=${CMAKE_PREFIX_PATH}/qml")
-
 set(ENV{PATH} "${CMAKE_PREFIX_PATH}/bin;${QT_PATH}/Tools/${QT_VERSION}/bin;%PATH%")
-message("Environment variable PATH: $ENV{PATH}")
+message("PATH=$ENV{PATH}")
 
 {%- if template==".qml" %}
 set(ENV{QML2_IMPORT_PATH} "${CMAKE_PREFIX_PATH}/qml")
-message("Environment variable QML2_IMPORT_PATH: $ENV{QML2_IMPORT_PATH}")
+message("QML2_IMPORT_PATH=$ENV{QML2_IMPORT_PATH}")
 {%- endif %}
 
-message(STATUS "Maybe you should set QT_ASSUME_STDERR_HAS_CONSOLE=1")
-
 set(ENV{QT_ASSUME_STDERR_HAS_CONSOLE} 1)
-message("Environment variable QT_ASSUME_STDERR_HAS_CONSOLE: $ENV{QT_ASSUME_STDERR_HAS_CONSOLE}")
+message("QT_ASSUME_STDERR_HAS_CONSOLE=$ENV{QT_ASSUME_STDERR_HAS_CONSOLE}")
+
+message(STATUS "On Clion, you should set QT_ASSUME_STDERR_HAS_CONSOLE=$ENV{QT_ASSUME_STDERR_HAS_CONSOLE};PATH=${CMAKE_PREFIX_PATH}/bin;${QT_PATH}/Tools/${QT_VERSION}/bin;%PATH%;QML2_IMPORT_PATH=${CMAKE_PREFIX_PATH}/qml")
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 link_directories(${CMAKE_SOURCE_DIR}/lib)
