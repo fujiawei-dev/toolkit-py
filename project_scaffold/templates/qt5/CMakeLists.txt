@@ -52,13 +52,17 @@ link_directories(${CMAKE_SOURCE_DIR}/lib)
 
 set(
         PACKAGES
+        Concurrent
         Core
         Gui
-        Quick
-        Qml
-        Widgets
+        Multimedia
         Network
+        Qml
+        Quick
+        SerialBus
+        SerialPort
         WebSockets
+        Widgets
 )
 
 find_package(Qt5 COMPONENTS ${PACKAGES} REQUIRED)
@@ -100,18 +104,28 @@ add_executable(
         ${QML_FILES}
 )
 
+set(
+        QT_LIBRARIES
+        Qt5::Concurrent
+        Qt5::Core
+        Qt5::Multimedia
+        Qt5::Network
+        Qt5::Qml
+        Qt5::Quick
+        Qt5::SerialBus
+        Qt5::SerialPort
+        Qt5::WebSockets
+        Qt5::Widgets
+)
+
+set(
+        NON_QT_LIBRARIES
+)
+
 target_link_libraries(
         ${PROJECT_NAME}
-        Qt5::Core
-    {%- if template==".gui" %}
-        Qt5::Gui
-    {%- elif template==".qml" %}
-        Qt5::Quick
-        Qt5::Qml
-    {%- endif %}
-        Qt5::Widgets
-        Qt5::Network
-        Qt5::WebSockets
+        ${QT_LIBRARIES}
+        ${NON_QT_LIBRARIES}
 )
 
 add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
