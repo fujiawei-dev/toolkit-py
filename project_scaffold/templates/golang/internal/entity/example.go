@@ -281,6 +281,31 @@ func (m *Example) Save() error {
 	return Db().Save(m).Error
 }
 
+// Update single column
+// When updating a single column with Update, it needs to have any conditions,
+// or it will raise error ErrMissingWhereClause
+func (m *Example) Update(column string, value interface{}) (err error) {
+	err = Db().Where(m).Update(column, value).Error
+	return
+}
+
+func (m *Example) Updates(n Example) (err error) {
+	err = Db().Where(m).Updates(n).Error
+	return
+}
+
+// UpdateColumn Without Hooks/Time Tracking
+func (m *Example) UpdateColumn(column string, value interface{}) (err error) {
+	err = Db().Where(m).UpdateColumn(column, value).Error
+	return
+}
+
+// UpdateColumns Update multiple columns without Hooks/Time Tracking
+func (m *Example) UpdateColumns(n Example) (err error) {
+	err = Db().Where(m).UpdateColumns(n).Error
+	return
+}
+
 // Delete marks the entity as deleted.
 func (m *Example) Delete() error {
 	return Db().Delete(m).Error
