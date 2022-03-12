@@ -125,7 +125,7 @@ func GetExamples(router *echo.Group) {
 		f := form.Pager{}
 
 		if err := form.ShouldBind(c, &f); err != nil {
-			f = form.Pager{Page: 1, PageSize: 10}
+			return ErrorInvalidParameters(c, err)
 		}
 
 		list, totalRow, err := query.Examples(f)
