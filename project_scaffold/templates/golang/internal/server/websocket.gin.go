@@ -22,7 +22,7 @@ func WebsocketServer(router *gin.RouterGroup) {
 			return
 		}
 
-		client := &Client{hub: hub, conn: conn, send: make(chan []byte, 256)}
+		client := NewClient(hubServer, conn, nil)
 		client.hub.register <- client
 
 		// Allow collection of memory referenced by the caller by doing all work in new goroutines.

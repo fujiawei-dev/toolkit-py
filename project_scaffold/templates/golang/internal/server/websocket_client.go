@@ -27,8 +27,20 @@ type Client struct {
 	// The websocket connection.
 	conn *websocket.Conn
 
+	// The processing function after receiving the data
+	handleMessage func(messageType int, p []byte)
+
 	// Buffered channel of outbound messages.
 	send chan []byte
+}
+
+func NewClient(hub *Hub, conn *websocket.Conn, handleMessage func(messageType int, p []byte)) *Client {
+	return &Client{
+		hub:           hub,
+		conn:          conn,
+		handleMessage: handleMessage,
+		send:          make(chan []byte, 256),
+	}
 }
 
 // readPump pumps messages from the websocket connection to the hub.
@@ -46,7 +58,7 @@ func (c *Client) readPump() {
 	c.conn.SetPongHandler(func(string) error { c.conn.SetReadDeadline(time.Now().Add(pongWait)); return nil })
 
 	for {
-		_, message, err := c.conn.ReadMessage()
+		messageType, message, err := c.conn.ReadMessage()
 
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
@@ -55,7 +67,11 @@ func (c *Client) readPump() {
 			break
 		}
 
-		c.hub.broadcast <- message
+		if c.handleMessage != nil {
+			c.handleMessage(messageType, message)
+		} else {
+			c.hub.broadcast <- message
+		}
 	}
 }
 
@@ -75,13 +91,13 @@ func (c *Client) writePump() {
 	for {
 		select {
 		case message, ok := <-c.send:
-			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if !ok {
 				// The hub closed the channel.
 				c.conn.WriteMessage(websocket.CloseMessage, []byte{})
 				return
 			}
 
+			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 			w, err := c.conn.NextWriter(websocket.TextMessage)
 			if err != nil {
 				return
