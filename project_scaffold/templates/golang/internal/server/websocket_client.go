@@ -32,14 +32,17 @@ type Client struct {
 
 	// Buffered channel of outbound messages.
 	send chan []byte
+
+	afterClose func()
 }
 
-func NewClient(hub *Hub, conn *websocket.Conn, handleMessage func(messageType int, p []byte)) *Client {
+func NewClient(hub *Hub, conn *websocket.Conn, handleMessage func(messageType int, p []byte), afterClose func()) *Client {
 	return &Client{
 		hub:           hub,
 		conn:          conn,
 		handleMessage: handleMessage,
 		send:          make(chan []byte, 256),
+		afterClose:    afterClose,
 	}
 }
 
@@ -50,8 +53,11 @@ func NewClient(hub *Hub, conn *websocket.Conn, handleMessage func(messageType in
 // reads from this goroutine.
 func (c *Client) readPump() {
 	defer func() {
-		c.hub.unregister <- c
 		c.conn.Close()
+		c.hub.unregister <- c
+		if c.afterClose != nil {
+			c.afterClose()
+		}
 	}()
 
 	c.conn.SetReadDeadline(time.Now().Add(pongWait))
