@@ -10,12 +10,11 @@ import (
 	"{{GOLANG_MODULE}}/internal/form"
 )
 
-func RegisterUser(router iris.Party) {
-	UserLogin(router)
-	UserLoginRefresh(router)
-	UserLogout(router)
+func init() {
+	AddRouteRegistrar(UserLogin)
+	AddRouteRegistrar(UserLogout)
 
-	PostUser(router)
+	AddRouteRegistrar(PostUser)
 }
 
 func PostUser(router iris.Party) {

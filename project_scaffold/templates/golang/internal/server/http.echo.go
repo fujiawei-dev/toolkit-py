@@ -20,7 +20,7 @@ import (
 func Start(ctx context.Context, ch chan error) {
 	app := newApp()
 
-	registerRoutes(app)
+	api.RegisterRoutes(app)
 
 	go func() {
 		app.Logger.Infof("http: web server started on %s\n", conf.ExternalHttpHostPort())
@@ -36,18 +36,6 @@ func Start(ctx context.Context, ch chan error) {
 	if err := app.Close(); err != nil {
 		app.Logger.Errorf("http: web server shutdown failed: %v", err)
 	}
-}
-
-func registerRoutes(app *echo.Echo) {
-	router := app.Group(conf.BasePath())
-
-	api.RegisterUser(router)
-
-	api.GetAppDescription(router)
-
-	// For debug
-	api.RegisterExample(router)
-	api.RegisterSwagger(router)
 }
 
 func newApp() (app *echo.Echo) {

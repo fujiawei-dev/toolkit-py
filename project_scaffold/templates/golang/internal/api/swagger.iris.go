@@ -10,7 +10,11 @@ import (
 	"{{GOLANG_MODULE}}/docs"
 )
 
-func RegisterSwagger(router iris.Party) {
+func init() {
+	AddRouteRegistrar(Swagger)
+}
+
+func Swagger(router iris.Party) {
 	if !conf.Swagger() {
 		return
 	}

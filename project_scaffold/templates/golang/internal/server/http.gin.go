@@ -19,7 +19,7 @@ func Start(ctx context.Context, ch chan error) {
 	app := newApp()
 
 	// Register HTTP route handlers.
-	registerRoutes(app)
+	api.RegisterRoutes(app)
 
 	// Create new HTTP server instance.
 	server := &http.Server{
@@ -43,20 +43,6 @@ func Start(ctx context.Context, ch chan error) {
 	if err := server.Close(); err != nil {
 		log.Error().Msgf("http: web server shutdown failed: %v", err)
 	}
-}
-
-func registerRoutes(app *gin.Engine) {
-	router := app.Group(conf.BasePath())
-
-	WebsocketServer(router)
-
-	api.RegisterUser(router)
-
-	api.GetAppDescription(router)
-
-	// For debug
-	api.RegisterExample(router)
-	api.RegisterSwagger(router)
 }
 
 func newApp() (app *gin.Engine) {

@@ -9,7 +9,11 @@ import (
 	"{{GOLANG_MODULE}}/docs"
 )
 
-func RegisterSwagger(router fiber.Router) {
+func init() {
+	AddRouteRegistrar(Swagger)
+}
+
+func Swagger(router fiber.Router) {
 	if !conf.Swagger() {
 		return
 	}

@@ -2,7 +2,14 @@
 
 package {{GOLANG_PACKAGE}}
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"immigration-office-platform/internal/api"
+)
+
+func init() {
+	api.AddRouteRegistrar(WebsocketServer)
+}
 
 func WebsocketServer(router *gin.RouterGroup) {
 	hub := newHub()

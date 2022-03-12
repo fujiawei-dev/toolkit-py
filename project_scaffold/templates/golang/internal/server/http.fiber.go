@@ -53,13 +53,7 @@ func registerRoutes(app *fiber.App) {
 		ExposeHeaders:    "X-Request-ID",
 	}))
 
-	api.RegisterUser(router)
-
-	api.GetAppDescription(router)
-
-	// For debug
-	api.RegisterExample(router)
-	api.RegisterSwagger(router)
+	api.RegisterRoutes(app)
 }
 
 func newApp() (app *fiber.App) {

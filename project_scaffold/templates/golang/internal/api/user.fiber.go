@@ -10,11 +10,11 @@ import (
 	"{{GOLANG_MODULE}}/internal/form"
 )
 
-func RegisterUser(router fiber.Router) {
-	UserLogin(router)
-	UserLogout(router)
+func init() {
+	AddRouteRegistrar(UserLogin)
+	AddRouteRegistrar(UserLogout)
 
-	PostUser(router)
+	AddRouteRegistrar(PostUser)
 }
 
 func PostUser(router fiber.Router) {

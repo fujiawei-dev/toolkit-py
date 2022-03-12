@@ -14,13 +14,13 @@ import (
 	"{{GOLANG_MODULE}}/internal/query"
 )
 
-func RegisterExample(router fiber.Router) {
-	PostExample(router)
-	PutExample(router)
-	DeleteExample(router)
+func init() {
+	AddRouteRegistrar(PostExample)
+	AddRouteRegistrar(PutExample)
+	AddRouteRegistrar(DeleteExample)
 
-	GetExample(router)
-	GetExamples(router)
+	AddRouteRegistrar(GetExample)
+	AddRouteRegistrar(GetExamples)
 }
 
 func PostExample(router fiber.Router) {

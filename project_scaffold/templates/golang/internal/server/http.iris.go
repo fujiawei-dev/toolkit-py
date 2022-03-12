@@ -62,13 +62,7 @@ func registerRoutes(app *iris.Application) {
 	// origins with all standard methods with any header and credentials.
 	router.UseRouter(cors.AllowAll())
 
-	api.RegisterUser(router)
-
-	api.GetAppDescription(router)
-
-	// For debug
-	api.RegisterExample(router)
-	api.RegisterSwagger(router)
+	api.RegisterRoutes(app)
 }
 
 func newIrisApp() (app *iris.Application) {

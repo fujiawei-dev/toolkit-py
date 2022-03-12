@@ -9,7 +9,11 @@ import (
 	"{{GOLANG_MODULE}}/docs"
 )
 
-func RegisterSwagger(router *echo.Group) {
+func init() {
+	AddRouteRegistrar(Swagger)
+}
+
+func Swagger(router *echo.Group) {
 	if !conf.Swagger() {
 		return
 	}

@@ -10,7 +10,11 @@ import (
 	"{{GOLANG_MODULE}}/docs"
 )
 
-func RegisterSwagger(router *gin.RouterGroup) {
+func init() {
+	AddRouteRegistrar(Swagger)
+}
+
+func Swagger(router *gin.RouterGroup) {
 	if !conf.Swagger() {
 		return
 	}
