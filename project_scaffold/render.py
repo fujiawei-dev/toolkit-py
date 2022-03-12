@@ -42,7 +42,7 @@ def render_templates_recursively(
     src: Path = None,
     render=render_by_jinja2,
     only_files: Tuple[str] = None,
-    replace_list: Dict[str] = None,
+    replace_list: dict = None,
     **kwargs,
 ):
     src = src or p
@@ -121,7 +121,7 @@ def render_templates(
     folders: List[str] = None,
     common: bool = True,
     only_files: str = "",
-    replace_list: Dict[str] = None,
+    replace_list: dict = None,
     **kwargs,
 ):
     package, package_title, package_underscore = get_different_camel_case_styles()

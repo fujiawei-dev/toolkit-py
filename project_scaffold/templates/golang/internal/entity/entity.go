@@ -3,7 +3,7 @@
 package {{GOLANG_PACKAGE}}
 
 import (
-	"fmt"
+	"errors"
 	"time"
 
 	"gorm.io/gorm"
