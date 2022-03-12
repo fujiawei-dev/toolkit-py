@@ -8,6 +8,10 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+func init() {
+	AddEntity(Password{})
+}
+
 // Password represents a password hash.
 type Password struct {
 	UserID uint   `gorm:"primaryKey" json:"user_id"`

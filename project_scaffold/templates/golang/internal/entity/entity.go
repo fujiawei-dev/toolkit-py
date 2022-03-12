@@ -6,67 +6,44 @@ import (
 	"fmt"
 	"time"
 
+	"gorm.io/gorm"
+
 	"{{GOLANG_MODULE}}/internal/event"
 )
 
 var log = event.Logger()
 
-type Types map[string]interface{}
-
-// Entities List of database entities and their table names.
-var Entities = Types{
-	Password{}.TableName(): &Password{},
-	User{}.TableName():     &User{},
-	Example{}.TableName():  &Example{},
+type Entity interface {
+	TableName() string
 }
 
-type RowCount struct {
-	Count int
-}
+type Entities []Entity
 
-// WaitForMigration waits for the database migration to be successful.
-func (list Types) WaitForMigration() {
-	attempts := 100
-	for name := range list {
-		for i := 0; i <= attempts; i++ {
-			count := RowCount{}
-			if err := Db().Debug().Raw(fmt.Sprintf("SELECT COUNT(*) AS count FROM %s", name)).Scan(&count).Error; err == nil {
-				// log.Printf("entity: table %s migrated", name)
-				break
-			} else {
-				log.Printf("entity: wait for migration %s (%s)", err.Error(), name)
-			}
+// entities List of database entities.
+var entities Entities
 
-			if i == attempts {
-				panic("entity: migration failed")
-			}
-
-			time.Sleep(50 * time.Millisecond)
-		}
-	}
+func AddEntity(e Entity) {
+	entities = append(entities, e)
 }
 
 // Truncate removes all data from tables without dropping them.
-func (list Types) Truncate() {
-	for name := range list {
-		if err := Db().Debug().Exec(fmt.Sprintf("DELETE FROM %s WHERE 1", name)).Error; err == nil {
-			// log.Printf("entity: removed all data from %s", name)
-			break
-		} else if err.Error() != "record not found" {
-			log.Printf("entity: %s in %s", err, name)
+func (es Entities) Truncate() {
+	for _, entity := range es {
+		if err := Db().Debug().Exec("DELETE FROM ? WHERE 1", entity.TableName()).Error; err == nil {
+			log.Printf("entity: truncated %s successfully", entity.TableName())
+		} else if !errors.Is(err, gorm.ErrRecordNotFound) {
+			log.Printf("entity: truncated %s failed (%s)", entity.TableName(), err)
 		}
 	}
 }
 
 // Migrate migrates all database tables of registered entities.
-func (list Types) Migrate() {
-	for _, entity := range list {
+func (es Entities) Migrate() {
+	for _, entity := range es {
 		if err := UnscopedDb().Debug().AutoMigrate(entity); err != nil {
-			log.Printf("entity: migrate %s (waiting 1s)", err.Error())
-
+			log.Printf("entity: migrate %s %s (waiting 1s)", entity.TableName(), err.Error())
 			time.Sleep(time.Second)
-
-			if err = UnscopedDb().AutoMigrate(entity); err != nil {
+			if err = UnscopedDb().Debug().AutoMigrate(entity); err != nil {
 				panic(err)
 			}
 		}
@@ -74,8 +51,8 @@ func (list Types) Migrate() {
 }
 
 // Drop drops all database tables of registered entities.
-func (list Types) Drop() {
-	for _, entity := range list {
+func (es Entities) Drop() {
+	for _, entity := range es {
 		if err := UnscopedDb().Debug().Migrator().DropTable(entity).Error; err != nil {
 			panic(err)
 		}
@@ -84,8 +61,7 @@ func (list Types) Drop() {
 
 // MigrateDb creates all tables and inserts default entities as needed.
 func MigrateDb() {
-	Entities.Migrate()
-	Entities.WaitForMigration()
+	entities.Migrate()
 
 	CreateDefaultFixtures()
 }

@@ -12,6 +12,10 @@ import (
 	"{{GOLANG_MODULE}}/internal/form"
 )
 
+func init() {
+	AddEntity(User{})
+}
+
 // User represents a person that may optionally log in as user.
 type User struct {
 	ID uint `gorm:"primaryKey" json:"id"`

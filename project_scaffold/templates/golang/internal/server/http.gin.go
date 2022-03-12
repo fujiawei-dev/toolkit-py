@@ -10,7 +10,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/mattn/go-colorable"
 
-
 	"{{GOLANG_MODULE}}/internal/api"
 	"{{GOLANG_MODULE}}/internal/middleware"
 )
@@ -48,6 +47,8 @@ func Start(ctx context.Context, ch chan error) {
 
 func registerRoutes(app *gin.Engine) {
 	router := app.Group(conf.BasePath())
+
+	WebsocketServer(router)
 
 	api.RegisterUser(router)
 

@@ -14,6 +14,10 @@ import (
     "{{GOLANG_MODULE}}/pkg/rnd"
 )
 
+func init() {
+	AddEntity(Example{})
+}
+
 type EmbeddedExample struct {
 	Email string
 }

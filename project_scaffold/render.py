@@ -7,7 +7,7 @@ LastEditTime: 2022.02.10 14:54
 import os.path
 import time
 from pathlib import Path
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 import click
 from jinja2 import Template
@@ -42,6 +42,7 @@ def render_templates_recursively(
     src: Path = None,
     render=render_by_jinja2,
     only_files: Tuple[str] = None,
+    replace_list: Dict[str] = None,
     **kwargs,
 ):
     src = src or p
@@ -103,6 +104,9 @@ def render_templates_recursively(
 
         try:
             content = render(p.open(encoding="utf-8").read(), **kwargs)
+            if replace_list:
+                for k, v in replace_list.items():
+                    content.replace(k, v)
             q.open("w", encoding="utf-8", newline="\n").write(content)
         except UnicodeDecodeError:
             q.write_bytes(p.read_bytes())
@@ -117,6 +121,7 @@ def render_templates(
     folders: List[str] = None,
     common: bool = True,
     only_files: str = "",
+    replace_list: Dict[str] = None,
     **kwargs,
 ):
     package, package_title, package_underscore = get_different_camel_case_styles()
@@ -127,6 +132,7 @@ def render_templates(
         special_paths=special_paths,
         include_suffixes=include_suffixes,
         only_files=only_files.lower().split(";") if only_files else None,
+        replace_list=replace_list,
         **{
             "STUDY_OBJECT": package_title,
             "PACKAGE_TITLE": package_title,

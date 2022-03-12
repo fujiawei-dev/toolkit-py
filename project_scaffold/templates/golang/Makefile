@@ -48,9 +48,7 @@ init:
 
 swag:
 	go get github.com/swaggo/swag
-	-(export PATH=$(shell go env GOPATH)/bin:$$PATH)
-	-(swag init)
-	-(swag fmt)
+	-(swag init; swag fmt)
 
 build:
 	$(BUILD_CMD) -o $(UNIFIED_NAME) main.go

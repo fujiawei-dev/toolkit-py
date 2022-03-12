@@ -7,11 +7,6 @@
 
 package api
 
-import (
-	"{{GOLANG_MODULE}}/internal/entity"
-	"{{GOLANG_MODULE}}/internal/form"
-)
-
 // @Summary      创建示例
 // @Description  创建示例
 // @Tags         示例

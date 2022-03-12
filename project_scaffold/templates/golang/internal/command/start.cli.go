@@ -76,7 +76,7 @@ func startAction(ctx *cli.Context) error {
 	go server.Start(cctx, serverClosedSignal)
 
 	// start service
-	go service.Start(ctx)
+	go service.Start(cctx)
 
 	// set up proper shutdown of daemon and web server
 	quit := make(chan os.Signal)
