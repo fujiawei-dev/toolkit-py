@@ -54,11 +54,15 @@ set(
         PACKAGES
         Concurrent
         Core
+        {%- if template==".gui" %}
         Gui
+        {%- endif %}
         Multimedia
         Network
+        {%- if template==".qml" %}
         Qml
         Quick
+        {%- endif %}
         SerialBus
         SerialPort
         WebSockets
@@ -82,26 +86,30 @@ set(
         {%- endif %}
 )
 
+{%- if template==".gui" %}
 set(
         FORMS
-        {%- if template==".gui" %}
         widget.ui
-        {%- endif %}
 )
+{%- endif %}
 
+{%- if template==".qml" %}
 set(
         QML_FILES
-        {%- if template==".qml" %}
         qml.qrc
-        {%- endif %}
 )
+{%- endif %}
 
 add_executable(
         ${PROJECT_NAME}
         ${SOURCES}
         ${HEADERS}
+        {%- if template==".gui" %}
         ${FORMS}
+        {%- endif %}
+        {%- if template==".qml" %}
         ${QML_FILES}
+        {%- endif %}
 )
 
 set(
@@ -110,8 +118,10 @@ set(
         Qt5::Core
         Qt5::Multimedia
         Qt5::Network
+        {%- if template==".qml" %}
         Qt5::Qml
         Qt5::Quick
+        {%- endif %}
         Qt5::SerialBus
         Qt5::SerialPort
         Qt5::WebSockets
