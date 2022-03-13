@@ -32,6 +32,12 @@ pip install -U toolkit-py -i https://pypi.douban.com/simple
 
 ## Usage
 
+### Remove the ui ads of YoudaoNote
+
+```shell
+$ ucmd youdao
+```
+
 ### Automatically unzip files recursively
 
 [解压嵌套加密压缩文件](unified_command/README.md#解压嵌套加密压缩文件)
@@ -67,11 +73,14 @@ Mozilla/5.0 (iPhone; CPU iPhone OS 9_3_3 like Mac OS X) AppleWebKit/602.2.14 (KH
 ```shell
 $ cfm
 Usage: cfm [OPTIONS] COMMAND [ARGS]...
+
 Options:
   --help  Show this message and exit.
+
 Commands:
-  py      Change pypi & conda source minors.
-  python  Change pypi & conda source minors.
+  python (py)       Change pypi & conda source minors.
+  raspberrypi (pi)  Change Raspberry Pi OS source minors.
+  ubuntu (ubuntu)   Change ubuntu/ubuntu-port source minors.
 ```
 
 ### Create basic project scaffold
@@ -84,10 +93,13 @@ Options:
   --help  Show this message and exit.
 
 Commands:
-  base    Create basic project scaffold.
-  notes   Create notes project scaffold.
-  py      Create Python project scaffold.
-  python  Create Python project scaffold.
+  base                            Create basic project scaffold.
+  c                               Create C/C++ project scaffold.
+  clean (clean,clear,release,rm)  Remove all example files for release.
+  golang (go)                     Create Golang project scaffold.
+  notes                           Create notes project scaffold.
+  python (py)                     Create Python project scaffold.
+  qt5                             Create Qt5 project scaffold.
 ```
 
 ### Upload pictures to public image hosting server
@@ -108,8 +120,16 @@ Options:
   --help  Show this message and exit.
 
 Commands:
-  python (py)  Create or display configuration files about Python.
+  alias            Generate aliases for powershell or bash configuration
+                   files.
+  clash            Display configuration file of clash.
+  hosts            Display configuration file of hosts.
+  notes (nn)       Create a new note for hugo.
+  powershell (ps)  Create or display configuration files about PowerShell.
+  python (py)      Create or display configuration files about Python.
+```
 
+```shell
  $ ccf py -h
  Usage: ccf py [OPTIONS]
 

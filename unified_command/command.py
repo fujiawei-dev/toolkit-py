@@ -11,6 +11,7 @@ from click_aliases import ClickAliasedGroup
 
 from .auto_unzip import PASSWORDS_DIR, PASSWORDS_FILE, Unzipper
 from .version import __version__
+from .youdao import remove_youdao_note_ad
 
 
 @click.group(cls=ClickAliasedGroup)
@@ -58,3 +59,8 @@ def auto_unzip(path, config, test):
         return
 
     unzipper.run_with_history(path if path and os.path.exists(path) else os.getcwd())
+
+
+@command_ucmd.command(help="Remove the ui ads of YoudaoNote")
+def youdao():
+    remove_youdao_note_ad()
