@@ -3,6 +3,7 @@
 import QtQuick 2.12
 import QtQuick.Window 2.12
 import Qt.labs.settings 1.0
+import "main.js" as MainJS
 
 Window {
     id: window
@@ -37,5 +38,6 @@ Window {
 
     Component.onCompleted: {
         debugMode = core.debugMode
+        MainJS.httpRequestExample(0)
     }
 }
