@@ -1,7 +1,7 @@
 {{SLASH_COMMENTS}}
 
-#ifndef UNTITLED__WIDGET_H
-#define UNTITLED__WIDGET_H
+#ifndef {{APP_NAME_UPPER}}__WIDGET_H
+#define {{APP_NAME_UPPER}}__WIDGET_H
 
 #include <QWidget>
 #include <QSettings>
@@ -32,4 +32,4 @@ private:
 };
 
 
-#endif//UNTITLED__WIDGET_H
+#endif//{{APP_NAME_UPPER}}__WIDGET_H

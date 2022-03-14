@@ -100,18 +100,6 @@ set(
 )
 {%- endif %}
 
-add_executable(
-        ${PROJECT_NAME}
-        ${SOURCES}
-        ${HEADERS}
-        {%- if template==".gui" %}
-        ${FORMS}
-        {%- endif %}
-        {%- if template==".qml" %}
-        ${QML_FILES}
-        {%- endif %}
-)
-
 if (ANDROID)
     add_library(
             ${PROJECT_NAME}

@@ -12,7 +12,9 @@ Window {
     width: 640
     height: 480
 
-    title: qsTr("Hello World")
+    title: qsTr("{{PACKAGE_TITLE}}")
+
+    property bool debugMode: false
 
     // QML 尽可能界面与逻辑分离，跟 Flutter 差太多，写一起容易眼花
     MainForm {
@@ -31,5 +33,9 @@ Window {
         property alias y: window.y
         property alias width: window.width
         property alias height: window.height
+    }
+
+    Component.onCompleted: {
+        debugMode = core.DebugMode
     }
 }

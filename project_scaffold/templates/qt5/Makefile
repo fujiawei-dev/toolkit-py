@@ -29,6 +29,11 @@ all: run
 info:
 	@echo $(SHELL)
 
+init:
+	git init
+	git add .
+	git commit -m "first commit"
+
 build-debug:
 	cd $(CMAKE_BUILD_PREFIX)-debug; cmake $(CMAKE_OPTIONS) -DCMAKE_BUILD_TYPE=Debug ..; make $(MAKE_OPTIONS)
 

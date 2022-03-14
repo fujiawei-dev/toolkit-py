@@ -115,11 +115,17 @@ int main(int argc, char *argv[]) {
     }
 
     // Add fonts
-    QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Regular.ttf");
-    QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Bold.ttf");
-    QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Heavy.ttf");
-    QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Light.ttf");
-    QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Regular.ttf");
+    // QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Regular.ttf");
+    // QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Bold.ttf");
+    // QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Heavy.ttf");
+    // QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Light.ttf");
+    // QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Regular.ttf");
+
+    Core *core = new Core();
+    core->InitConfig(settings);
+    core->DebugMode = debugMode;
+
+    engine.rootContext()->setContextProperty("core", core);
 
     QQmlApplicationEngine engine;
     const QUrl url("qrc:/main.qml");
@@ -131,6 +137,8 @@ int main(int argc, char *argv[]) {
             },
             Qt::QueuedConnection);
     engine.load(url);
+
+    QObject::connect(&app, SIGNAL(aboutToQuit()), core, SLOT(onExit()));
 
     return QApplication::exec();
 }
