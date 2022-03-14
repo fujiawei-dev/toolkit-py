@@ -86,16 +86,21 @@ int main(int argc, char *argv[]) {
     QTextCodec::setCodecForLocale(codec);
 #endif
 
-    // TODO print directly when debug
-    qInstallMessageHandler(logMessageHandler);
-
     // Parses the command line arguments
     QCommandLineParser parser;
-    QCommandLineOption configFileOption("c", "Path to config file");
-    parser.setApplicationDescription("{{APP_NAME}} Description");
+    QCommandLineOption configFileOption("c", "Path to config file", "settings.ini");
+    QCommandLineOption debugFlag("D", "Enable debug output to console");
+    parser.setApplicationDescription("{{PACKAGE_TITLE}} Description");
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addOption(configFileOption);
+    parser.process(app);
+
+    bool debugMode = false;
+    if (parser.isSet(debugFlag)) {
+        debugMode = true;
+        qInstallMessageHandler(logMessageHandler);
+    }
 
     QString fileName = "settings.ini";
     if (parser.isSet(configFileOption)) { fileName = parser.value(configFileOption); }
