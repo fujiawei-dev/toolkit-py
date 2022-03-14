@@ -3,7 +3,10 @@
 cmake_minimum_required(VERSION 3.1)
 project({{APP_NAME}})
 
+# All problems are compilation problems
+
 # Compile Typescript
+# npm install -g typescript
 
 set(
         TYPESCRIPT_FILES
