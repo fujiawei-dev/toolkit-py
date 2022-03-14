@@ -2,13 +2,16 @@
 
 #include "core.h"
 #include <QUuid>
-#include <cryptopp/aes.h>
-#include <cryptopp/base64.h>
-#include <cryptopp/hex.h>
-#include <cryptopp/modes.h>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QEventLoop>
+//#include <cryptopp/aes.h>
+//#include <cryptopp/base64.h>
+//#include <cryptopp/hex.h>
+//#include <cryptopp/modes.h>
 #include <string>
 
-using namespace CryptoPP;
+//using namespace CryptoPP;
 
 Core::Core(QObject *parent) : QObject(parent) {
     websocketClient = new QWebSocket();
@@ -27,9 +30,9 @@ QString Core::getUuid() {
 
 void Core::InitConfig(QSettings *s) {
     settings = s;// Reserved, the settings may be dynamically modified in the future
-    remoteServerSocket = settings->value("Remote/Host").toString() + ":" settings->value("Remote/Port").toString();
-    websocketUri = settings->value("Remote/WebsocketUri").toString() ;
-    exportProperty = settings->value("Property/ExportProperty").toString() ;
+    remoteServerSocket = settings->value("Remote/Host").toString() + ":" + settings->value("Remote/Port").toString();
+    websocketUri = settings->value("Remote/WebsocketUri").toString();
+    exportProperty = settings->value("Property/ExportProperty").toString();
 
     qInfo() << "core: InitConfig OK";
     qInfo().noquote() << QString("core: remoteServerSocket=%1").arg(remoteServerSocket);
@@ -38,15 +41,15 @@ void Core::InitConfig(QSettings *s) {
 std::string Core::AESEncryptStr(const QString &msgStr, const QString &keyStr) {
     std::string msgStrOut;
 
-    std::string msgStdStr = msgStr.toStdString();
-    const char *plainText = msgStdStr.c_str();
-    QByteArray key = QCryptographicHash::hash(keyStr.toLocal8Bit(), QCryptographicHash::Sha1).mid(0, 16);
-
-    AES::Encryption aesEncryption((byte *) key.data(), 16);
-    ECB_Mode_ExternalCipher::Encryption ecbEncryption(aesEncryption);
-    StreamTransformationFilter ecbEncryptor(ecbEncryption, new Base64Encoder(new StringSink(msgStrOut), BlockPaddingSchemeDef::PKCS_PADDING));
-    ecbEncryptor.Put((byte *) plainText, strlen(plainText));
-    ecbEncryptor.MessageEnd();
+    //    std::string msgStdStr = msgStr.toStdString();
+    //    const char *plainText = msgStdStr.c_str();
+    //    QByteArray key = QCryptographicHash::hash(keyStr.toLocal8Bit(), QCryptographicHash::Sha1).mid(0, 16);
+    //
+    //    AES::Encryption aesEncryption((byte *) key.data(), 16);
+    //    ECB_Mode_ExternalCipher::Encryption ecbEncryption(aesEncryption);
+    //    StreamTransformationFilter ecbEncryptor(ecbEncryption, new Base64Encoder(new StringSink(msgStrOut), BlockPaddingSchemeDef::PKCS_PADDING));
+    //    ecbEncryptor.Put((byte *) plainText, strlen(plainText));
+    //    ecbEncryptor.MessageEnd();
 
     return msgStrOut;
 }
@@ -57,17 +60,17 @@ std::string Core::AESDecryptStr(const QString &msgStr, const QString &keyStr) {
     std::string msgStrBase64 = msgStr.toStdString();
     QByteArray key = QCryptographicHash::hash(keyStr.toLocal8Bit(), QCryptographicHash::Sha1).mid(0, 16);
 
-    std::string msgStrEnc;
-    CryptoPP::Base64Decoder base64Decoder;
-    base64Decoder.Attach(new CryptoPP::StringSink(msgStrEnc));
-    base64Decoder.Put(reinterpret_cast<const unsigned char *>(msgStrBase64.c_str()), msgStrBase64.length());
-    base64Decoder.MessageEnd();
-
-    CryptoPP::ECB_Mode<CryptoPP::AES>::Decryption ebcDescription((byte *) key.data(), 16);
-    CryptoPP::StreamTransformationFilter stf(ebcDescription, new CryptoPP::StringSink(msgStrOut), CryptoPP::BlockPaddingSchemeDef::PKCS_PADDING);
-
-    stf.Put(reinterpret_cast<const unsigned char *>(msgStrEnc.c_str()), msgStrEnc.length());
-    stf.MessageEnd();
+    //    std::string msgStrEnc;
+    //    CryptoPP::Base64Decoder base64Decoder;
+    //    base64Decoder.Attach(new CryptoPP::StringSink(msgStrEnc));
+    //    base64Decoder.Put(reinterpret_cast<const unsigned char *>(msgStrBase64.c_str()), msgStrBase64.length());
+    //    base64Decoder.MessageEnd();
+    //
+    //    CryptoPP::ECB_Mode<CryptoPP::AES>::Decryption ebcDescription((byte *) key.data(), 16);
+    //    CryptoPP::StreamTransformationFilter stf(ebcDescription, new CryptoPP::StringSink(msgStrOut), CryptoPP::BlockPaddingSchemeDef::PKCS_PADDING);
+    //
+    //    stf.Put(reinterpret_cast<const unsigned char *>(msgStrEnc.c_str()), msgStrEnc.length());
+    //    stf.MessageEnd();
 
     return msgStrOut;
 }
@@ -89,8 +92,6 @@ void Core::onWebsocketConnected() {
     connect(&websocketTimer, &QTimer::timeout, this, &Core::onWebsocketTimeout);
 
     websocketTimer.start(51.71 * 1000);
-
-    refreshSession();
 }
 
 void Core::onWebsocketDisconnected() {
@@ -142,7 +143,6 @@ void Core::onWebsocketTimeout() {
 void Core::onExit() {
     qDebug() << "core: exit";
 
-    readReady = false;
     QEventLoop quitLoop;
     QTimer::singleShot(1000, &quitLoop, SLOT(quit()));
     quitLoop.exec();

@@ -77,12 +77,18 @@ set(
         {%- if template==".gui" %}
         widget.cpp
         {%- endif %}
+        {%- if template==".qml" %}
+        core.cpp
+        {%- endif %}
 )
 
 set(
         HEADERS
         {%- if template==".gui" %}
         widget.h
+        {%- endif %}
+        {%- if template==".qml" %}
+        core.h
         {%- endif %}
 )
 

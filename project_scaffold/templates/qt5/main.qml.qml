@@ -36,6 +36,6 @@ Window {
     }
 
     Component.onCompleted: {
-        debugMode = core.DebugMode
+        debugMode = core.debugMode
     }
 }

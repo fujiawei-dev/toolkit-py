@@ -19,7 +19,7 @@ public:
 
     void InitConfig(QSettings *);
 
-    Q_PROPERTY(QString debugMode MEMBER debugMode);
+    Q_PROPERTY(bool debugMode MEMBER DebugMode);
     Q_PROPERTY(QString exportProperty MEMBER exportProperty);
 
     Q_INVOKABLE static QString getUuid();

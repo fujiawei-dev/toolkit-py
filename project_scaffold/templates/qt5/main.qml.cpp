@@ -1,14 +1,15 @@
 {{SLASH_COMMENTS}}
 
+#include "core.h"
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QDateTime>
-#include <QDebug>
 #include <QDir>
 #include <QFileInfo>
 #include <QFontDatabase>
 #include <QMutex>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 #include <QSettings>
 #include <QTextCodec>
 #include <QTextStream>
@@ -88,17 +89,19 @@ int main(int argc, char *argv[]) {
 
     // Parses the command line arguments
     QCommandLineParser parser;
-    QCommandLineOption configFileOption("c", "Path to config file", "settings.ini");
-    QCommandLineOption debugFlag("D", "Enable debug output to console");
-    parser.setApplicationDescription("{{PACKAGE_TITLE}} Description");
+    parser.setApplicationDescription("Qml Javascript Example Description");
     parser.addHelpOption();
     parser.addVersionOption();
+    QCommandLineOption configFileOption("c", "Path to config file", "settings.ini");
     parser.addOption(configFileOption);
+    QCommandLineOption debugFlag("D", "Enable debug output to console");
+    parser.addOption(debugFlag);
     parser.process(app);
 
     bool debugMode = false;
     if (parser.isSet(debugFlag)) {
         debugMode = true;
+    } else {
         qInstallMessageHandler(logMessageHandler);
     }
 
@@ -121,13 +124,14 @@ int main(int argc, char *argv[]) {
     // QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Light.ttf");
     // QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Regular.ttf");
 
+    QQmlApplicationEngine engine;
+
     Core *core = new Core();
     core->InitConfig(settings);
     core->DebugMode = debugMode;
 
     engine.rootContext()->setContextProperty("core", core);
 
-    QQmlApplicationEngine engine;
     const QUrl url("qrc:/main.qml");
     QObject::connect(
             &engine, &QQmlApplicationEngine::objectCreated,
