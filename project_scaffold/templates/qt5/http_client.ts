@@ -54,11 +54,15 @@ class HttpClient {
             url += "?" + query.join("&");
         }
 
+        console.log(method + " " + url);
+
         let client = new XMLHttpRequest();
 
         client.onreadystatechange = () => {
             if (client.readyState === client.DONE) {
-                callback(client.responseText);
+                let responseText = client.responseText.toString();
+                console.log("response=" + responseText);
+                callback(responseText);
             }
         }
 
@@ -68,6 +72,7 @@ class HttpClient {
             let requestBody = JSON.stringify(json);
             if (requestBody !== "{}") {
                 client.setRequestHeader("Content-Type", "application/json");
+                console.log("request=" + requestBody);
                 client.send(requestBody);
             } else {
                 client.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');

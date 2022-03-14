@@ -19,7 +19,7 @@ function httpPostExample() {
             console.log(responseText);
         },
         {"q": "typescript"},
-        {"image": "base64"},
+        {"image": "base64", "debug": debugMode},
         {"json": "This is a json object."}
     )
 }
