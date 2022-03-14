@@ -58,7 +58,9 @@ func startAction(ctx *cli.Context) error {
 				return fmt.Errorf("failed writing process id to %s", conf.PidFile())
 			}
 
-			return fmt.Errorf("daemon started with process id %v", child.Pid)
+			log.Printf("daemon started with process id %v", child.Pid)
+
+			return nil
 		}
 
 		defer func() {
