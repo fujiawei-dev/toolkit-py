@@ -35,7 +35,7 @@ BUILD_ARGS := "\
 # CGO cross is not supported (CGO_ENABLED=1)
 BUILD_CMD := go build -trimpath -ldflags $(BUILD_ARGS)
 
-DEBUG_CMD := ./$(UNIFIED_NAME) -D -S -c storage/configs/settings-debug.yaml -d
+DEBUG_CMD := ./$(UNIFIED_NAME) -D -S -c storage/configs/settings-debug.yaml
 RELEASE_CMD := ./$(UNIFIED_NAME) -D -S -P -c storage/configs/settings-release.yaml -d
 
 all: tidy swag start

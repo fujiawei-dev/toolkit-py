@@ -59,7 +59,7 @@ func stopAction(ctx *cli.Context) error {
 			color.Printf("⇨ https server stopped on %s\n", color.Green(conf.ExternalHttpHostPort()))
 		}
 
-		return err
+		return nil
 	}
 
 	fmt.Printf("daemon[%v] exited[%v]? successfully[%v]?\n", ps.Pid(), ps.Exited(), ps.Success())
