@@ -24,7 +24,7 @@ type JWTSetting struct {
 	PublicKey  string        `mapstructure:"public_key" yaml:"public_key,omitempty"`
 	Scheme     string        `mapstructure:"scheme" yaml:"scheme,omitempty"` // 格式前缀
 
-	JWTProvider
+	JWTProvider `mapstructure:"-" yaml:"-"`
 }
 
 func (c *config) JWTEnable() bool {
