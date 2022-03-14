@@ -124,11 +124,11 @@ int main(int argc, char *argv[]) {
     // QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Light.ttf");
     // QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Regular.ttf");
 
-    QQmlApplicationEngine engine;
-
     Core *core = new Core();
     core->InitConfig(settings);
     core->DebugMode = debugMode;
+
+    QQmlApplicationEngine engine;
 
     engine.rootContext()->setContextProperty("core", core);
 

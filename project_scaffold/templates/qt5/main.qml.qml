@@ -38,6 +38,7 @@ Window {
 
     Component.onCompleted: {
         debugMode = core.debugMode
-        MainJS.httpRequestExample(0)
+        MainJS.httpGetExample()
+        MainJS.httpPostExample()
     }
 }

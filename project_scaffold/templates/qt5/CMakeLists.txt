@@ -3,6 +3,30 @@
 cmake_minimum_required(VERSION 3.1)
 project({{APP_NAME}})
 
+# Compile Typescript
+
+set(
+        TYPESCRIPT_FILES
+        http_client.ts
+)
+
+execute_process(
+        COMMAND tsc.cmd ${TYPESCRIPT_FILES}
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+        TIMEOUT 3
+        RESULT_VARIABLE Result
+        OUTPUT_VARIABLE Output
+        ERROR_VARIABLE Error
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        ERROR_STRIP_TRAILING_WHITESPACE
+)
+
+message(STATUS "Result: ${Result}")
+message(STATUS "Output: ${Output}")
+message(STATUS "Error: ${Error}")
+
+# Main
+
 message(STATUS "Project Directory: ${PROJECT_SOURCE_DIR}")
 message(STATUS "CMake Directory: ${CMAKE_SOURCE_DIR}")
 

@@ -2,6 +2,7 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>main.js</file>
+        <file>http_client.js</file>
         <file>MainForm.ui.qml</file>
     </qresource>
 </RCC>

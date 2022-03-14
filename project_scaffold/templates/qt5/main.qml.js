@@ -1,29 +1,25 @@
 {{SLASH_COMMENTS}}
 
-function httpRequestExample(params) {
-    let router = "/debug"
-    let url = "http://" + "localhost:8080" + router
+Qt.include("http_client.js")
 
-    console.log("POST " + url)
+function httpGetExample() {
+    HttpClient.get(
+        "http://localhost:2780/get",
+        function (responseText) {
+            console.log(responseText);
+        },
+        {"q": "typescript"}
+    )
+}
 
-    let request = new XMLHttpRequest()
-    let responseBody
-
-    request.onreadystatechange = function () {
-        if (request.readyState === request.DONE) {
-            console.log("response=" + request.responseText.toString())
-            responseBody = JSON.parse(request.responseText.toString())
-        }
-    }
-
-    let requestBody = JSON.stringify({
-        "q": "JavaScript",
-        "params": params,
-    })
-
-    console.log("request=" + requestBody)
-
-    request.open("POST", url)
-    request.setRequestHeader("Content-Type", "application/json")
-    request.send(requestBody)
+function httpPostExample() {
+    HttpClient.post(
+        "http://localhost:2780/post",
+        function (responseText) {
+            console.log(responseText);
+        },
+        {"q": "typescript"},
+        {"image": "base64"},
+        {"json": "This is a json object."}
+    )
 }
