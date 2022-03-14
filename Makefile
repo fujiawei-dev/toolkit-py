@@ -6,6 +6,8 @@
 
 .IGNORE: dep clean test;            # ignore all errors, keep going
 
+SHELL = bash
+
 PACKAGE = toolkit-py
 
 VERSION := $(shell python -c "from unified_command.version import __version__; print(__version__, end='')")

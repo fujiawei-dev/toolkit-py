@@ -42,6 +42,8 @@ all: tidy swag start
 
 info:
 	@echo $(SHELL)
+	@echo $(GOPATH)
+	@echo $(GOROOT)
 
 tidy dep:
 	go mod tidy

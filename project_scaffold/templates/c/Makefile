@@ -7,6 +7,8 @@
 .EXPORT_ALL_VARIABLES: ; # send all vars to shell
 .IGNORE: clean;            # ignore all errors, keep going
 
+SHELL = bash
+
 APP_VERSION = 0.0.1
 APP_NAME = {{APP_NAME}}
 

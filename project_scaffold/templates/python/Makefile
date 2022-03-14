@@ -8,6 +8,8 @@
 
 .IGNORE: dep clean tests;            # ignore all errors, keep going
 
+SHELL = bash
+
 PYPI_PACKAGE = {{PYPI_PACKAGE}}
 
 APP_VERSION := $(shell python -c "from {{PYTHON_MODULE}}.version import __version__; print(__version__, end='')")
