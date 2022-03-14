@@ -163,3 +163,33 @@ clean:
 tag:
 	git tag v$(APP_VERSION)
 	git push origin v$(APP_VERSION)
+
+# ONLY FOR TESTING!
+
+INSTALL_PATH = ~/bin
+TARGET_PATH = $(INSTALL_PATH)/$(APP_NAME)
+TARGET_ARCH = linux-amd64
+
+USER = root
+HOST = raspberrypi
+USER_HOST = "$(USER)@$(HOST)"
+SSH_CMD = ssh $(USER_HOST)
+CD_INSTALL_PATH = cd $(INSTALL_PATH)
+
+# make -n deploy > scripts/deploy.sh
+deploy: deploy-stop deploy-clean $(TARGET_ARCH) deploy-upload deploy-start
+
+deploy-upload:
+	$(SSH_CMD) "mkdir -p $(INSTALL_PATH)"
+	scp bin/$(APP_NAME)-$(TARGET_ARCH) "$(USER)@$(HOST):$(TARGET_PATH)"
+	$(SSH_CMD) "chmod +x $(TARGET_PATH)"
+
+deploy-start:
+	$(SSH_CMD) "$(CD_INSTALL_PATH); $(TARGET_PATH) -D -S -P -d -c settings.yaml start"
+	$(SSH_CMD) "ps ax | grep $(APP_NAME)"
+
+deploy-stop:
+	-($(SSH_CMD) "$(CD_INSTALL_PATH); $(TARGET_PATH) stop")
+
+deploy-clean:
+	-($(SSH_CMD) "rm $(TARGET_PATH)")
