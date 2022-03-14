@@ -26,9 +26,9 @@ set(IS_X86 0)
 
 if (IS_X86)
     # 32-bit platforms
-     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
-     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
-endif()
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
+endif ()
 
 set(CMAKE_PREFIX_PATH "${QT_PATH}/${QT_VERSION}/${QT_COMPILE_VERSION}")
 message(STATUS "CMake Prefix Path: ${CMAKE_PREFIX_PATH}")
@@ -111,6 +111,33 @@ add_executable(
         ${QML_FILES}
         {%- endif %}
 )
+
+if (ANDROID)
+    add_library(
+            ${PROJECT_NAME}
+            SHARED
+            ${SOURCES}
+            ${HEADERS}
+            {%- if template==".gui" %}
+            ${FORMS}
+            {%- endif %}
+            {%- if template==".qml" %}
+            ${QML_FILES}
+            {%- endif %}
+    )
+else ()
+    add_executable(
+            ${PROJECT_NAME}
+            ${SOURCES}
+            ${HEADERS}
+            {%- if template==".gui" %}
+            ${FORMS}
+            {%- endif %}
+            {%- if template==".qml" %}
+            ${QML_FILES}
+            {%- endif %}
+    )
+endif ()
 
 set(
         QT_LIBRARIES

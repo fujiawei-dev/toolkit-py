@@ -39,7 +39,7 @@ def clean():
 
     for root, dirs, files in os.walk("."):
         for f in files:
-            if f.find("example") != -1:
+            if f.find("example") != -1 or f in {"ToolkitPy_logo.png"}:
                 f = os.path.join(root, f)
                 click.echo(f"clean {f}")
                 os.unlink(f)

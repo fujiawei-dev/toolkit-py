@@ -65,8 +65,12 @@ int main(int argc, char *argv[]) {
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
     QApplication app(argc, argv);
-    QCoreApplication::setApplicationName("{{APP_NAME}}");
-    QCoreApplication::setApplicationVersion("0.0.1");
+
+    // 告知程序 QML Settings 的具体位置，确保程序能够读到
+    QApplication::setOrganizationName("Toolkit-Py");
+    QApplication::setOrganizationDomain("Toolkit-Py.com");
+    QApplication::setApplicationName("{{APP_NAME}}");
+    QApplication::setApplicationVersion("0.0.1");
 
 #if (QT_VERSION <= QT_VERSION_CHECK(5, 0, 0))
 #if _MSC_VER
