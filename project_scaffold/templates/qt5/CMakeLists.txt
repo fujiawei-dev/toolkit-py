@@ -92,14 +92,12 @@ set(
         {%- endif %}
 )
 
-{%- if template==".gui" %}
+{% if template==".gui" -%}
 set(
         FORMS
         widget.ui
 )
-{%- endif %}
-
-{%- if template==".qml" %}
+{% elif template==".qml" -%}
 set(
         QML_FILES
         qml.qrc
@@ -166,6 +164,10 @@ add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
 add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/assets $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets)
+
+add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_SOURCE_DIR}/settings.ini $<TARGET_FILE_DIR:${PROJECT_NAME}>)
 
 find_program(DEPLOYQT_EXECUTABLE NAMES windeployqt macdeployqt HINTS "${CMAKE_PREFIX_PATH}")
 
