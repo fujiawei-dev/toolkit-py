@@ -49,7 +49,7 @@ setup(
     description="Personal toolkit implemented by Python.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    author="White Turing",
+    author="Rustle Karl",
     author_email="fujiawei@outlook.com",
     license="BSD",
     packages=find_packages(exclude=("tests", "tests.*")),
