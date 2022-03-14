@@ -7,6 +7,8 @@
 .EXPORT_ALL_VARIABLES: ; # send all vars to shell
 .IGNORE: clean swag;            # ignore all errors, keep going
 
+SHELL = bash
+
 APP_VERSION = 0.0.1
 APP_NAME = {{APP_NAME}}
 APP_MODULE = {{GOLANG_MODULE}}
@@ -37,6 +39,9 @@ DEBUG_CMD := ./$(UNIFIED_NAME) -D -S -c storage/configs/settings-debug.yaml -d
 RELEASE_CMD := ./$(UNIFIED_NAME) -D -S -P -c storage/configs/settings-release.yaml -d
 
 all: tidy swag start
+
+info:
+	@echo $(SHELL)
 
 tidy dep:
 	go mod tidy
