@@ -30,12 +30,12 @@ QString Core::getUuid() {
 
 void Core::InitConfig(QSettings *s) {
     settings = s;// Reserved, the settings may be dynamically modified in the future
-    remoteServerSocket = settings->value("Remote/Host").toString() + ":" + settings->value("Remote/Port").toString();
+    remoteServerHttp = settings->value("Remote/Host").toString() + ":" + settings->value("Remote/Port").toString();
     websocketUri = settings->value("Remote/WebsocketUri").toString();
     exportProperty = settings->value("Property/ExportProperty").toString();
 
     qInfo() << "core: InitConfig OK";
-    qInfo().noquote() << QString("core: remoteServerSocket=%1").arg(remoteServerSocket);
+    qInfo().noquote() << QString("core: remoteServerHttp=%1").arg(remoteServerHttp);
 }
 
 std::string Core::AESEncryptStr(const QString &msgStr, const QString &keyStr) {
@@ -77,7 +77,7 @@ std::string Core::AESDecryptStr(const QString &msgStr, const QString &keyStr) {
 
 void Core::connectToWebsocketServer(const QString &s) {
     if (websocketUrl.isEmpty()) {
-        websocketUrl = "ws://" + remoteServerSocket + websocketUri + "/" + s;
+        websocketUrl = "ws://" + remoteServerHttp + remoteServerHttpBasePath + websocketUri + "/" + s;
     }
 
     qInfo().noquote() << QString("ws: connecting to %1").arg(websocketUrl);
@@ -112,17 +112,11 @@ void Core::sendTextMessageToWebsocketServer(const QString &textMessage) {
 void Core::onWebsocketTextMessageReceived(const QString &message) {
     qInfo().noquote() << QString("ws: received '%1'").arg(message.trimmed());
 
-    QJsonObject obj;
-    auto bodyReceived = QJsonDocument::fromJson(message.toUtf8());
+    QJsonObject websocketMessageObject;
+    websocketMessageObject = QJsonDocument::fromJson(message.toUtf8()).object();
+    QString cmd = websocketMessageObject["cmd"].toString();
+    if (cmd == "KeepAlive") {
 
-    if (!bodyReceived.isNull()) {
-        if (bodyReceived.isObject()) {
-            obj = bodyReceived.object();
-            QString cmd = obj["cmd"].toString();
-            if (cmd == "Property") {
-                exportProperty = obj["exportProperty"].toString();
-            }
-        }
     }
 }
 

@@ -115,6 +115,7 @@ int main(int argc, char *argv[]) {
     if (!fi.isFile()) {
         settings->setValue("Remote/Host", "localhost");
         settings->setValue("Remote/Port", "9876");
+        settings->setValue("Remote/BasePath", "/api/v1");
     }
 
     // Add fonts

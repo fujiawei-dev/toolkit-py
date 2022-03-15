@@ -46,7 +46,8 @@ private:
     QSettings *settings{};
     QString exportProperty;
 
-    QString remoteServerSocket;
+    QString remoteServerHttp;
+    QString remoteServerHttpBasePath;
 
     QWebSocket *websocketClient;
     QString websocketUri;
