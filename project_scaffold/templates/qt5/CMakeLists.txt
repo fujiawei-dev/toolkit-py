@@ -31,8 +31,8 @@ message(STATUS "Error: ${Error}")
 
 # Main
 
-message(STATUS "Project Directory: ${PROJECT_SOURCE_DIR}")
-message(STATUS "CMake Directory: ${CMAKE_SOURCE_DIR}")
+message(STATUS "PROJECT_SOURCE_DIR=${PROJECT_SOURCE_DIR}")
+message(STATUS "CMAKE_SOURCE_DIR=${CMAKE_SOURCE_DIR}")
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -59,7 +59,7 @@ if (IS_X86)
 endif ()
 
 set(CMAKE_PREFIX_PATH "${QT_PATH}/${QT_VERSION}/${QT_COMPILE_VERSION}")
-message(STATUS "CMake Prefix Path: ${CMAKE_PREFIX_PATH}")
+message(STATUS "CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}")
 
 # Set environment variables
 set(ENV{PATH} "${CMAKE_PREFIX_PATH}/bin;${QT_PATH}/Tools/${QT_COMPILE_VERSION}/bin;%PATH%")

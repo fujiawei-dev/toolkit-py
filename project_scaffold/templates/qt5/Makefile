@@ -7,8 +7,6 @@
 .EXPORT_ALL_VARIABLES: ; # send all vars to shell
 .IGNORE: clean;            # ignore all errors, keep going
 
-SHELL = bash
-
 APP_VERSION = 0.0.1
 APP_NAME = {{APP_NAME}}
 
@@ -20,9 +18,6 @@ endif
 CMAKE_BUILD_PREFIX = cmake-build
 CMAKE_OPTIONS = -G "Unix Makefiles"
 MAKE_OPTIONS = -j 64
-
-#VCPKG_PATH = C:/Developer/vcpkg
-#CMAKE_OPTIONS += -DCMAKE_TOOLCHAIN_FILE=$(VCPKG_PATH)/scripts/buildsystems/vcpkg.cmake
 
 all: run
 
