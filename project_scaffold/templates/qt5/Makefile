@@ -47,7 +47,7 @@ run: clean run-release
 
 clean:
 	-(mkdir $(CMAKE_BUILD_PREFIX)-debug)
-	cd $(CMAKE_BUILD_PREFIX)-debug; rm -r *
+	-(cd $(CMAKE_BUILD_PREFIX)-debug; rm -r *)
 
 	-(mkdir $(CMAKE_BUILD_PREFIX)-release)
-	cd $(CMAKE_BUILD_PREFIX)-release; rm -r *
+	-(cd $(CMAKE_BUILD_PREFIX)-release; rm -r *)

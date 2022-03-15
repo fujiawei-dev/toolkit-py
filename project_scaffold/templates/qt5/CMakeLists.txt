@@ -82,7 +82,7 @@ set(
         PACKAGES
         Concurrent
         Core
-        {%- if template==".gui" %}
+        {%- if template!=".console" %}
         Gui
         {%- endif %}
         Multimedia
