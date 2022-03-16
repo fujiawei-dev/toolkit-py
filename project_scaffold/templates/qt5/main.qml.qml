@@ -17,7 +17,6 @@ Window {
 
     property bool debugMode: false
 
-    // QML 尽可能界面与逻辑分离，跟 Flutter 差太多，写一起容易眼花
     MainForm {
         anchors.fill: parent
         mouseArea.onClicked: {
@@ -28,8 +27,6 @@ Window {
     Settings {
         id:settings
 
-        // 保存了窗口的大小和位置信息，在第一次启动的时候是默认的，
-        // 第二次启动就是上次保存好的，这里的属性绑定自动完成
         property alias x: window.x
         property alias y: window.y
         property alias width: window.width
