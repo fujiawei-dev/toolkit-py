@@ -4,6 +4,7 @@ Description: Omit
 LastEditors: Rustle Karl
 LastEditTime: 2022.02.13 14:41
 """
+import click
 import yaml
 from jinja2 import Template
 
@@ -28,7 +29,8 @@ alias {{key}}='{{value}}'
 def alias(read_only=True):
     aliases = yaml.safe_load((COMMON_PATH / "aliases.yaml").open(encoding="utf-8"))
 
-    # For Window
+    click.echo("============ For Windows =================")
+
     confs = [join_user("Documents/PowerShell/Microsoft.PowerShell_profile.ps1")]
     content = Template(_powershell_template).render(
         aliases={
@@ -46,7 +48,8 @@ def alias(read_only=True):
         append=True,
     )
 
-    # For Linux
+    click.echo("============ For Linux =================")
+
     confs = [
         join_user(".config/fish/config.fish"),
         join_user(".profile"),

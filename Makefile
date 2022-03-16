@@ -14,7 +14,7 @@ all: format reinstall test
 
 format:
 	pip install -U black
-	black .
+	black --extend-exclude project_scaffold/templates .
 
 version:
 	echo $(VERSION)
