@@ -172,4 +172,26 @@ Rectangle {
             color: "blue"
         }
     }
+
+    ComboBox {
+        id: comboBoxSpecialty
+
+        x: 425
+        y: 15
+
+        Layout.fillWidth: true
+        currentIndex: 0 //初始选中项的索引为0
+        model: ListModel {
+            ListElement {
+                text: "计算机"
+            }
+            ListElement {
+                text: "通信工程"
+            }
+            ListElement {
+                text: "信息网络"
+            }
+        }
+        width: 200
+    }
 }
