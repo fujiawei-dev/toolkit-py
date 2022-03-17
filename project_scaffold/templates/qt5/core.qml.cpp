@@ -1,10 +1,11 @@
 {{SLASH_COMMENTS}}
 
 #include "core.h"
-#include <QUuid>
+#include <QEventLoop>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QEventLoop>
+#include <QUuid>
+#include <QFile>
 //#include <cryptopp/aes.h>
 //#include <cryptopp/base64.h>
 //#include <cryptopp/hex.h>
@@ -28,7 +29,71 @@ QString Core::getUuid() {
     return QUuid::createUuid().toString().remove("{").remove("}").remove("-");
 }
 
+void Core::parseJSON() {
+    QJsonParseError qJsonParseError{};
+
+    QFile provinceCityDistrictJson("assets/data/ProvinceCityDistrict.json");
+    if (provinceCityDistrictJson.open(QIODevice::ReadOnly)) {
+        QByteArray provinceCityDistrictBuf = provinceCityDistrictJson.readAll();
+        QJsonDocument provinceCityDistrictDocument = QJsonDocument::fromJson(provinceCityDistrictBuf, &qJsonParseError);
+        if (qJsonParseError.error == QJsonParseError::NoError && !provinceCityDistrictDocument.isNull()) {
+            //            qDebug() << provinceCityDistrictDocument;
+            auto provinceMap = provinceCityDistrictDocument.object().toVariantMap();
+            for (auto provinceCity = provinceMap.begin(); provinceCity != provinceMap.end(); provinceCity++) {
+                const QString &province = provinceCity.key();
+                auto cityMap = provinceCity.value().toMap();
+                for (auto cityDistrict = cityMap.begin(); cityDistrict != cityMap.end(); cityDistrict++) {
+                    QList<QString> districts;
+                    for (const auto &item: cityDistrict.value().toList()) {
+                        districts.append(item.toString());
+                    };
+                    provinceCityDistrictMap[province][cityDistrict.key()] = districts;
+                }
+            }
+            //            qDebug() << provinceCityDistrictMap;
+        } else {
+            qCritical() << qJsonParseError.error;
+        }
+    } else {
+        qCritical() << "can't open json";
+    };
+
+    QFile codeRegionJson("assets/data/CodeRegion.json");
+    if (codeRegionJson.open(QIODevice::ReadOnly)) {
+        QByteArray codeRegionBuf = codeRegionJson.readAll();
+        QJsonDocument codeRegionDocument = QJsonDocument::fromJson(codeRegionBuf, &qJsonParseError);
+        if (qJsonParseError.error == QJsonParseError::NoError && !codeRegionDocument.isNull()) {
+            //            qDebug() << codeRegionDocument;
+            auto codeRegionVariantMap = codeRegionDocument.object().toVariantMap();
+            for (auto iterator = codeRegionVariantMap.begin(); iterator != codeRegionVariantMap.end(); iterator++) {
+                codeRegionMap[iterator.key()] = iterator.value().toString();
+            }
+            //            qDebug() << codeRegionMap;
+        }
+    } else {
+        qCritical() << "can't open json";
+    };
+}
+
+QString Core::getRegion(QString code) {
+    return codeRegionMap[code];
+}
+
+QList<QString> Core::getProvinces() {
+    return provinceCityDistrictMap.keys();
+}
+
+QList<QString> Core::getCitiesByProvince(const QString &province) {
+    return provinceCityDistrictMap[province].keys();
+}
+
+QList<QString> Core::getDistrictsByProvinceCity(const QString &province, const QString &city) {
+    return provinceCityDistrictMap[province][city];
+}
+
 void Core::InitConfig(QSettings *s) {
+    parseJSON();
+
     settings = s;// Reserved, the settings may be dynamically modified in the future
     remoteServerHttp = settings->value("Remote/Host").toString() + ":" + settings->value("Remote/Port").toString();
     websocketUri = settings->value("Remote/WebsocketUri").toString();

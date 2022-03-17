@@ -7,7 +7,9 @@ import QtQuick.Layouts 1.0
 
 Rectangle {
     property alias mouseArea: mouseArea
+
     property alias comboBoxGenerator: comboBoxGenerator
+    property alias modelGenerator: modelGenerator
 
     MouseArea {
         id: mouseArea
@@ -205,7 +207,7 @@ Rectangle {
 
         Layout.fillWidth: true
         model: ListModel {
-            id: model
+            id: modelGenerator
         }
         width: 200
     }
