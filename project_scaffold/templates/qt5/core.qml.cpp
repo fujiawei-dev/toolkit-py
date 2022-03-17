@@ -34,6 +34,29 @@ void Core::InitConfig(QSettings *s) {
     websocketUri = settings->value("Remote/WebsocketUri").toString();
     exportProperty = settings->value("Property/ExportProperty").toString();
 
+    // 列表
+    QList<QString> users = {};
+    int usersSize = settings->beginReadArray("Users");
+    for (int i = 0; i < usersSize; i++) {
+        users.append(settings->value("user").toString());
+    }
+    settings->endArray();
+
+    // 对象列表
+    struct Account {
+        QString username;
+        QString password;
+    };
+    QList<Account> accounts;
+    int accountsSize = settings->beginReadArray("Accounts");
+    for (int i = 0; i < accountsSize; i++) {
+        Account account;
+        account.username = settings->value("username").toString();
+        account.password = settings->value("password").toString();
+        accounts.append(account);
+    }
+    settings->endArray();
+
     qInfo() << "core: InitConfig OK";
     qInfo().noquote() << QString("core: remoteServerHttp=%1").arg(remoteServerHttp);
 }

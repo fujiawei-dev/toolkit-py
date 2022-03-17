@@ -49,8 +49,36 @@ int main(int argc, char *argv[]) {
     settings->setIniCodec("UTF-8");
 
     if (!fi.isFile()) {
+        // 普通键值对
         settings->setValue("Remote/Host", "localhost");
         settings->setValue("Remote/Port", "9876");
+        settings->setValue("Remote/BasePath", "/api/v1");
+
+        // 列表
+        QList<QString> users = {"user1", "user2", "user3"};
+        settings->beginWriteArray("Users");
+        for (int i = 0; i < users.size(); i++) {
+            settings->setArrayIndex(i);
+            settings->setValue("user", users[i]);
+        }
+        settings->endArray();
+
+        // 对象列表
+        struct Account {
+            QString username;
+            QString password;
+        };
+        QList<Account> accounts = {
+                {"user1", "password1"},
+                {"user2", "password2"},
+                {"user3", "password3"}};
+        settings->beginWriteArray("Accounts");
+        for (int i = 0; i < accounts.size(); i++) {
+            settings->setArrayIndex(i);
+            settings->setValue("username", accounts[i].username);
+            settings->setValue("password", accounts[i].password);
+        }
+        settings->endArray();
     }
 
     Widget w;
