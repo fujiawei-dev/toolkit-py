@@ -7,6 +7,7 @@ import QtQuick.Layouts 1.0
 
 Rectangle {
     property alias mouseArea: mouseArea
+    property alias comboBoxGenerator: comboBoxGenerator
 
     MouseArea {
         id: mouseArea
