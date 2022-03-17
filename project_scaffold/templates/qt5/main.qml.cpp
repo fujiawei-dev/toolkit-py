@@ -119,11 +119,11 @@ int main(int argc, char *argv[]) {
         settings->setValue("Remote/BasePath", "/api/v1");
 
         // 列表
-        QList<QString> users = {"user1", "user2", "user3"};
-        settings->beginWriteArray("Users");
-        for (int i = 0; i < users.size(); i++) {
+        QList<QString> specialties = {"计算机", "通信工程", "信息网络", "软件工程", "物联网"};
+        settings->beginWriteArray("Specialty");
+        for (int i = 0; i < specialties.size(); i++) {
             settings->setArrayIndex(i);
-            settings->setValue("user", users[i]);
+            settings->setValue("specialty", specialties[i]);
         }
         settings->endArray();
 

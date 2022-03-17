@@ -53,6 +53,8 @@ private:
     QString websocketUri;
     QString websocketUrl;
     QTimer websocketTimer;
+
+    QList<QString> specialties = {};
 };
 
 #endif//{{APP_NAME_UPPER}}__CORE_H

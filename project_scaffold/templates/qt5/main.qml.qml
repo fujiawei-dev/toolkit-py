@@ -18,9 +18,10 @@ Window {
     property bool debugMode: false
 
     MainForm {
+        id: mainForm
         anchors.fill: parent
         mouseArea.onClicked: {
-            Qt.quit();
+            // Qt.quit();
         }
     }
 
@@ -39,5 +40,10 @@ Window {
             MainJS.httpGetExample()
             MainJS.httpPostExample()
         }
+
+        for (let i = 0; i < core.specialties.length; i++) {
+            mainForm.comboBoxGenerator.model.append({text: core.specialties[i]})
+        }
+        mainForm.comboBoxGenerator.currentIndex=0
     }
 }

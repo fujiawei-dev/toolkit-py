@@ -194,4 +194,18 @@ Rectangle {
         }
         width: 200
     }
+
+    // 初始化时生成选项
+    ComboBox {
+        id: comboBoxGenerator
+
+        x: 15
+        y: 285
+
+        Layout.fillWidth: true
+        model: ListModel {
+            id: model
+        }
+        width: 200
+    }
 }

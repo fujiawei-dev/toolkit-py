@@ -35,10 +35,10 @@ void Core::InitConfig(QSettings *s) {
     exportProperty = settings->value("Property/ExportProperty").toString();
 
     // 列表
-    QList<QString> users = {};
-    int usersSize = settings->beginReadArray("Users");
+    int usersSize = settings->beginReadArray("Specialty");
     for (int i = 0; i < usersSize; i++) {
-        users.append(settings->value("user").toString());
+        settings->setArrayIndex(i);
+        specialties.append(settings->value("specialty").toString());
     }
     settings->endArray();
 
@@ -51,6 +51,7 @@ void Core::InitConfig(QSettings *s) {
     int accountsSize = settings->beginReadArray("Accounts");
     for (int i = 0; i < accountsSize; i++) {
         Account account;
+        settings->setArrayIndex(i);
         account.username = settings->value("username").toString();
         account.password = settings->value("password").toString();
         accounts.append(account);
