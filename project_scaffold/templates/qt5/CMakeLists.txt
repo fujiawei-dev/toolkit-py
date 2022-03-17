@@ -5,7 +5,7 @@ project({{APP_NAME}})
 
 # All problems are compilation problems.
 # Better to forgo manual compilation.
-
+{% if template==".qml" -%}
 # Compile Typescript
 # npm install -g typescript
 
@@ -28,7 +28,7 @@ execute_process(
 message(STATUS "Result: ${Result}")
 message(STATUS "Output: ${Output}")
 message(STATUS "Error: ${Error}")
-
+{%- endif %}
 # Main
 
 message(STATUS "PROJECT_SOURCE_DIR=${PROJECT_SOURCE_DIR}")
@@ -80,19 +80,19 @@ link_directories(${CMAKE_SOURCE_DIR}/lib)
 
 set(
         PACKAGES
-        Concurrent
         Core
-        {%- if template!=".console" %}
-        Gui
-        {%- endif %}
-        Multimedia
         Network
+        {%- if template!=".console" %}
+        Concurrent
+        Gui
+        Multimedia
+        SerialBus
+        SerialPort
+        {%- endif %}
         {%- if template==".qml" %}
         Qml
         Quick
         {%- endif %}
-        SerialBus
-        SerialPort
         WebSockets
         Widgets
 )
@@ -161,16 +161,18 @@ endif ()
 
 set(
         QT_LIBRARIES
-        Qt5::Concurrent
         Qt5::Core
-        Qt5::Multimedia
         Qt5::Network
+        {%- if template!=".console" %}
+        Qt5::Concurrent
+        Qt5::Multimedia
+        Qt5::SerialBus
+        Qt5::SerialPort
+        {%- endif %}
         {%- if template==".qml" %}
         Qt5::Qml
         Qt5::Quick
         {%- endif %}
-        Qt5::SerialBus
-        Qt5::SerialPort
         Qt5::WebSockets
         Qt5::Widgets
 )
