@@ -10,7 +10,7 @@ import (
 	"gorm.io/gorm"
 )
 
-// Model 基本模型，以嵌入方式继承封装方法，减少复制
+// Model 基本模型
 type Model struct {
 	ID uint `gorm:"primary_key"`
 
