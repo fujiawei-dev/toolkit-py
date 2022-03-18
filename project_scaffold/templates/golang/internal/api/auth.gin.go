@@ -9,18 +9,27 @@ import (
 	"{{GOLANG_MODULE}}/internal/entity"
 )
 
-func Auth(c *gin.Context, resource acl.Resource, action acl.Action) (entity.User, bool) {
-	user := conf.JWTParse(c)
+func Auth(c *gin.Context, resource acl.Resource, action acl.Action) (user entity.User, allow bool) {
+	defer func() {
+		operationLog := entity.NewOperationLog(user.ID, resource, action, allow)
+		if err := operationLog.Create(); err != nil {
+			log.Error().Msgf("create operation log, %v", err)
+		}
+	}()
 
-	if user.Invalid() {
+	user = conf.JWTParse(c)
+
+	allow = !user.Invalid()
+	if !allow {
 		AbortUnauthorized(c)
-		return user, false
+		return
 	}
 
-	if acl.Permissions.Deny(resource, user.Role, action) {
+	allow = !acl.Permissions.Deny(resource, user.Role, action)
+	if !allow {
 		AbortPermissionDenied(c)
-		return user, false
+		return
 	}
 
-	return user, true
+	return
 }
