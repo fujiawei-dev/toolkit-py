@@ -1,1 +1,5 @@
-*.* linguist-language=python
+*.py linguist-language=python
+*.go linguist-language=golang
+*.c linguist-language=cpp
+*.cpp linguist-language=cpp
+
