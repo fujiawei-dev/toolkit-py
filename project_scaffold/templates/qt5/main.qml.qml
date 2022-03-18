@@ -53,14 +53,13 @@ Window {
             model: ListModel {
                 id: modelProvince
             }
-            onCurrentIndexChanged:{// 索引变了，但是文本值还是上一个，这是个大坑
-                console.log("province changed")
+            onCurrentIndexChanged:{
+                // The index has changed, but the text value is still the previous one, which is a big pit
                 cities = core.getCitiesByProvince(provinces[currentIndex])
                 modelCity.clear()
                 for ( let i = 0; i < cities.length; i++) {
                     modelCity.append({text: core.getRegion(cities[i])})
                 }
-                comboBoxCity.currentIndex=-1
                 comboBoxCity.currentIndex=0
             }
         }
@@ -70,17 +69,12 @@ Window {
             model: ListModel {
                 id: modelCity
             }
-            onCurrentIndexChanged:{// 索引变了，但是文本值还是上一个，这是个大坑
-                console.log("city changed")
-                console.log(comboBoxProvince.currentIndex,currentIndex)
-                console.log(provinces[comboBoxProvince.currentIndex], cities[currentIndex])
+            onCurrentIndexChanged:{
                 let districts = core.getDistrictsByProvinceCity(provinces[comboBoxProvince.currentIndex], cities[currentIndex])
-                console.log(districts)
                 modelDistrict.clear()
                 for (let i = 0; i < districts.length; i++) {
                     modelDistrict.append({text: core.getRegion(districts[i])})
                 }
-                comboBoxDistrict.currentIndex=-1
                 comboBoxDistrict.currentIndex=0
             }
         }
@@ -91,7 +85,7 @@ Window {
                 id: modelDistrict
             }
             onCurrentIndexChanged:{
-                console.log("district changed")
+
             }
         }
     }
