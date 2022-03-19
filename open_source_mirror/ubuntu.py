@@ -17,6 +17,14 @@ class Version(str, Enum):
 
 def ubuntu(version=Version.LTS2004):
     """x86 amd64"""
+    sources = open("/etc/apt/sources.list").read()
+
+    for version in Version:
+        if version in sources:
+            break
+
+    print(f"version: {version}")
+
     content = f"""deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ {version} main restricted universe multiverse
 # deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ {version} main restricted universe multiverse
 deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ {version}-updates main restricted universe multiverse
@@ -29,7 +37,7 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ {version}-security main restric
     conf = "/etc/apt/sources.list"
     writer(
         conf,
-        content,
+        content=content,
         read_only=False,
         official="https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/",
     )
@@ -37,6 +45,14 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ {version}-security main restric
 
 def ubuntu_port(version=Version.LTS2004):
     """arm64 armhf ppc64el riscv64 s390x"""
+    sources = open("/etc/apt/sources.list").read()
+
+    for version in Version:
+        if version in sources:
+            break
+
+    print(f"version: {version}")
+
     content = f"""deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ {version} main restricted universe multiverse
 # deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ {version} main restricted universe multiverse
 deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ {version}-updates main restricted universe multiverse
@@ -49,7 +65,7 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ {version}-security main r
     conf = "/etc/apt/sources.list"
     writer(
         conf,
-        content,
+        content=content,
         read_only=False,
         official="https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu-ports/",
     )

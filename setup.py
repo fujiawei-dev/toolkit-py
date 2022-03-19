@@ -14,6 +14,7 @@ requires = [
     "chardet",
     "click",
     "click_aliases",
+    "jinja2",
     "lxml",
     "pyyaml",
     "requests",

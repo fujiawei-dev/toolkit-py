@@ -27,7 +27,7 @@ def python():
 
 
 @command_cfm.command(
-    aliases=["ubuntu"],
+    aliases=["ub"],
     context_settings={"help_option_names": ["-h", "--help"]},
     help="Change ubuntu/ubuntu-port source minors.",
 )
