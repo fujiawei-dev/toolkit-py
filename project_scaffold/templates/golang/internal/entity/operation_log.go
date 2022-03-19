@@ -14,7 +14,7 @@ import (
 	"github.com/jinzhu/copier"
 	"gorm.io/gorm"
 
-	"immigration-office-platform/internal/acl"
+    "{{GOLANG_MODULE}}/internal/acl"
 )
 
 func init() {
@@ -40,7 +40,7 @@ func (OperationLog) TableName() string {
 	return "operation_logs"
 }
 
-type OperationLogs []DeviceMaintenance
+type OperationLogs []OperationLog
 
 func NewOperationLog(userID uint, resource acl.Resource, action acl.Action, allow bool) OperationLog {
 	return OperationLog{UserID: userID, Resource: resource, Action: action, Allow: allow}
@@ -54,13 +54,6 @@ func (m *OperationLog) CopyTo(dst interface{}) error {
 	return copier.Copy(dst, m)
 }
 
-// Create
-
-// Create inserts a new row to the database.
-func (m *OperationLog) Create() error {
-	return Db().Create(m).Error
-}
-
 // Query
 
 // First get the first record ordered by primary key
@@ -72,6 +65,17 @@ func (m *OperationLog) First() (err error) {
 // Last get the last record ordered by primary key
 func (m *OperationLog) Last() (err error) {
 	err = Db().Last(m).Error
+	return
+}
+
+// Take get one record, no specified order
+func (m *OperationLog) Take() (err error) {
+	err = Db().Take(m).Error
+	return
+}
+
+func (ms OperationLogs) FindAll() (err error) {
+	err = Db().Find(&ms).Error
 	return
 }
 
@@ -121,8 +125,8 @@ func (m *OperationLog) Update(column string, value interface{}) (err error) {
 	return
 }
 
-func (m *OperationLog) Updates(n OperationLog) (err error) {
-	err = Db().Where(m).Updates(n).Error
+func (m *OperationLog) Updates(values interface{}) (err error) {
+	err = Db().Where(m).Updates(values).Error
 	return
 }
 
@@ -133,8 +137,8 @@ func (m *OperationLog) UpdateColumn(column string, value interface{}) (err error
 }
 
 // UpdateColumns Update multiple columns without Hooks/Time Tracking
-func (m *OperationLog) UpdateColumns(n OperationLog) (err error) {
-	err = Db().Where(m).UpdateColumns(n).Error
+func (m *OperationLog) UpdateColumns(values interface{}) (err error) {
+	err = Db().Where(m).UpdateColumns(values).Error
 	return
 }
 
