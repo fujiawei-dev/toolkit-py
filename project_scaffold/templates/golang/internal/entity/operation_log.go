@@ -54,6 +54,13 @@ func (m *OperationLog) CopyTo(dst interface{}) error {
 	return copier.Copy(dst, m)
 }
 
+// Create
+
+// Create inserts a new row to the database.
+func (m *OperationLog) Create() error {
+	return Db().Create(m).Error
+}
+
 // Query
 
 // First get the first record ordered by primary key

@@ -9,8 +9,8 @@ import (
 	"{{GOLANG_MODULE}}/internal/form"
 )
 
-func Examples(f form.SearchPager) (results entity.Examples, totalRows int64, err error) {
-	query := Db().Model(&entity.Example{})
+func OperationLogs(f form.SearchPager) (results entity.OperationLogs, totalRows int64, err error) {
+	query := Db().Model(&entity.OperationLog{})
 
 	if f.LikeQ != "" {
 		for _, q := range strings.Split(f.LikeQ, form.Or) {

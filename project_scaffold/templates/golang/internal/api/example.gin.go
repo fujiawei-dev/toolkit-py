@@ -6,9 +6,10 @@ import (
 	"database/sql"
 	"errors"
 
-	"github.com/spf13/cast"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/cast"
 
+	"{{GOLANG_MODULE}}/internal/acl"
 	"{{GOLANG_MODULE}}/internal/entity"
 	"{{GOLANG_MODULE}}/internal/form"
 	"{{GOLANG_MODULE}}/internal/query"
@@ -25,6 +26,10 @@ func init() {
 
 func PostExample(router *gin.RouterGroup) {
 	router.POST("/example", conf.JWTMiddleware(), func(c *gin.Context) {
+		if _, pass := Auth(c, acl.ResourceDefault, acl.ActionCreate); !pass {
+			return
+		}
+
 		var f form.ExampleCreate
 
 		if err := form.ShouldBind(c, &f); err != nil {
@@ -52,6 +57,10 @@ func PostExample(router *gin.RouterGroup) {
 
 func PutExample(router *gin.RouterGroup) {
 	router.PUT("/example/:id", conf.JWTMiddleware(), func(c *gin.Context) {
+		if _, pass := Auth(c, acl.ResourceDefault, acl.ActionUpdate); !pass {
+			return
+		}
+
 		id := cast.ToUint(c.Param("id"))
 		if id == 0 {
 			ErrorInvalidParameters(c, errors.New("id(uint) is required"))
@@ -93,6 +102,10 @@ func PutExample(router *gin.RouterGroup) {
 
 func DeleteExample(router *gin.RouterGroup) {
 	router.DELETE("/example/:id", conf.JWTMiddleware(), func(c *gin.Context) {
+		if _, pass := Auth(c, acl.ResourceDefault, acl.ActionDelete); !pass {
+			return
+		}
+
 		id := cast.ToUint(c.Param("id"))
 		if id == 0 {
 			ErrorInvalidParameters(c, errors.New("id(uint) is required"))
@@ -117,6 +130,10 @@ func DeleteExample(router *gin.RouterGroup) {
 
 func GetExample(router *gin.RouterGroup) {
 	router.GET("/example/:id", conf.JWTMiddleware(), func(c *gin.Context) {
+		if _, pass := Auth(c, acl.ResourceDefault, acl.ActionRead); !pass {
+			return
+		}
+
 		id := cast.ToUint(c.Param("id"))
 		if id == 0 {
 			ErrorInvalidParameters(c, errors.New("id(uint) is required"))
@@ -136,6 +153,10 @@ func GetExample(router *gin.RouterGroup) {
 
 func GetExamples(router *gin.RouterGroup) {
 	router.GET("/examples", conf.JWTMiddleware(), func(c *gin.Context) {
+		if _, pass := Auth(c, acl.ResourceDefault, acl.ActionRead); !pass {
+			return
+		}
+
 		f := form.Pager{}
 
 		if err := form.ShouldBind(c, &f); err != nil {
@@ -152,6 +173,6 @@ func GetExamples(router *gin.RouterGroup) {
 
 		f.TotalRows = totalRow
 
-		SendList(c, list, f)
+		SendList(c, list, f.Pager)
 	})
 }

@@ -50,6 +50,13 @@ func UserLogin(router *gin.RouterGroup) {
 			return
 		}
 
+		defer func() {
+			operationLog := entity.NewOperationLog(m.ID, acl.ResourceUsers, acl.ActionLogin, err == nil)
+			if err = operationLog.Create(); err != nil {
+				log.Error().Msgf("create operation log, %v", err)
+			}
+		}()
+
 		if m.InvalidPassword(f.Password) {
 			AbortInvalidPassword(c)
 			return
@@ -67,7 +74,7 @@ func UserLogin(router *gin.RouterGroup) {
 
 func UserLogout(router *gin.RouterGroup) {
 	router.POST("/user/logout", conf.JWTMiddleware(), func(c *gin.Context) {
-		user, pass := Auth(c, acl.ResourceUsers, acl.ActionUpdate)
+		user, pass := Auth(c, acl.ResourceUsers, acl.ActionLogout)
 
 		if !pass {
 			return
