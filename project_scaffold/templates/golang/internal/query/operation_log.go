@@ -59,13 +59,13 @@ func OperationLogs(f form.SearchPager) (results []OperationLogResult, totalRows 
 		query = query.Order("id DESC")
 	}
 
-	var operationLogs entity.OperationLogs
+	var items entity.OperationLogs
 
-	if err = query.Offset(f.Offset()).Limit(f.PageSize).Preload("User").Find(&operationLogs).Error; err != nil {
+	if err = query.Offset(f.Offset()).Limit(f.PageSize).Preload("User").Find(&items).Error; err != nil {
 		return
 	}
 
-	err = copier.Copy(&results, operationLogs)
+	err = copier.Copy(&results, items)
 
 	return
 }
