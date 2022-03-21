@@ -74,7 +74,7 @@ func deleteOperationLogs() {}
 // @Security     ApiKeyAuth
 // @Param        id  path  int  true  "ID"
 // @Produce      json
-// @Success      200  {object}  entity.OperationLog  "操作成功"
+// @Success      200  {object}  query.OperationLogResult  "操作成功"
 // @Router       /operation_log/{id} [get]
 func getOperationLog() {}
 
@@ -83,11 +83,11 @@ func getOperationLog() {}
 // @Tags         操作日志
 // @Accept       json
 // @Security     ApiKeyAuth
-// @Param        page       query  int  false  "页码"    default(1)
-// @Param        page_size  query  int  false  "每页数量"  Enums(10, 20)  default(10)
+// @Param        page        query  int     false  "页码"    default(1)
+// @Param        page_size   query  int     false  "每页数量"  Enums(10, 20)  default(10)
 // @Param        time_begin  query  string  false  "开始时间，比如 2021-10-01"
-// @Param        time_end  query  string  false  "结束时间，比如 2022-10-01"
+// @Param        time_end    query  string  false  "结束时间，比如 2022-10-01"
 // @Produce      json
-// @Success      200  {object}  query.Response{result=Result{pager=form.Pager,list=entity.OperationLog}}  "操作成功"
+// @Success      200  {object}  query.Response{result=Result{pager=form.Pager,list=[]query.OperationLogResult}}  "操作成功"
 // @Router       /operation_logs [get]
 func getOperationLogs() {}

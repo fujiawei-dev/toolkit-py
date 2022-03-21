@@ -3,12 +3,12 @@
 package {{GOLANG_PACKAGE}}
 
 import (
-	"database/sql"
 	"errors"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 
+	"{{GOLANG_MODULE}}/internal/acl"
 	"{{GOLANG_MODULE}}/internal/entity"
 	"{{GOLANG_MODULE}}/internal/form"
 	"{{GOLANG_MODULE}}/internal/query"

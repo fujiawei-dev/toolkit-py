@@ -51,7 +51,7 @@ def qt5(template=Qt5Templates.Gui, only_files: str = ""):
             "assets/fonts",
             "assets/images",
             "cmake-build-debug",
-            "cmake-build-release",
+            # "cmake-build-release",
             "include",
             "lib",
         ],

@@ -4,12 +4,27 @@ package {{GOLANG_PACKAGE}}
 
 import (
 	"strings"
+	"time"
+
+	"github.com/jinzhu/copier"
 
 	"{{GOLANG_MODULE}}/internal/entity"
 	"{{GOLANG_MODULE}}/internal/form"
 )
 
-func OperationLogs(f form.SearchPager) (results entity.OperationLogs, totalRows int64, err error) {
+type OperationLogResult struct {
+	ID uint `json:"id" example:"1"` // 记录ID
+
+	User UserResult `json:"user"`
+
+	Resource string `json:"resource" example:"操作资源: 比如 users"`
+	Action   string `json:"action" example:"操作行为: 比如 login、delete、create"`
+	Allow    bool   `json:"allow"` // 操作是否被允许
+
+	CreatedAt time.Time `json:"created_at" example:"2022-03-21T08:57:19.4615214+08:00"` // 创建时间
+}
+
+func OperationLogs(f form.SearchPager) (results []OperationLogResult, totalRows int64, err error) {
 	query := Db().Model(&entity.OperationLog{})
 
 	if f.LikeQ != "" {
@@ -44,7 +59,13 @@ func OperationLogs(f form.SearchPager) (results entity.OperationLogs, totalRows 
 		query = query.Order("id DESC")
 	}
 
-	err = query.Offset(f.Offset()).Limit(f.PageSize).Find(&results).Error
+	var operationLogs entity.OperationLogs
+
+	if err = query.Offset(f.Offset()).Limit(f.PageSize).Preload("User").Find(&operationLogs).Error; err != nil {
+		return
+	}
+
+	err = copier.Copy(&results, operationLogs)
 
 	return
 }

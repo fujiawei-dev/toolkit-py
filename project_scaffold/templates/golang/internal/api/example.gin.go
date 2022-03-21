@@ -157,7 +157,7 @@ func GetExamples(router *gin.RouterGroup) {
 			return
 		}
 
-		f := form.Pager{}
+		f := form.SearchPager{}
 
 		if err := form.ShouldBind(c, &f); err != nil {
 			ErrorInvalidParameters(c, err)
