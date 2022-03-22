@@ -65,6 +65,9 @@ start: build
 stop:
 	$(DEBUG_CMD) stop
 
+reset:
+	$(DEBUG_CMD) reset
+
 config:
 	$(DEBUG_CMD) config
 
@@ -189,6 +192,9 @@ deploy-upload:
 	$(SSH_CMD) "mkdir -p $(INSTALL_PATH)"
 	scp bin/$(APP_NAME)-$(TARGET_ARCH) "$(USER)@$(HOST):$(TARGET_PATH)"
 	$(SSH_CMD) "chmod +x $(TARGET_PATH)"
+
+deploy-reset: deploy-stop
+	$(SSH_CMD) "$(CD_INSTALL_PATH); $(TARGET_PATH) -D -S -P -d -c settings.yaml reset"
 
 deploy-start:
 	$(SSH_CMD) "$(CD_INSTALL_PATH); $(TARGET_PATH) -D -S -P -d -c settings.yaml start"
