@@ -53,7 +53,9 @@ init:
 	git commit -m "first commit"
 
 swag:
-	go get github.com/swaggo/swag
+	-(go get github.com/swaggo/swag/cmd/swag)
+	# 1.16 or newer
+	-(go install github.com/swaggo/swag/cmd/swag@latest)
 	-(swag init; swag fmt)
 
 build:
