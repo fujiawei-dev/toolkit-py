@@ -4,7 +4,10 @@ package {{GOLANG_PACKAGE}}
 
 import (
 	"github.com/gin-gonic/gin"
-	"immigration-office-platform/internal/api"
+	"github.com/gorilla/websocket"
+
+    "{{GOLANG_MODULE}}/internal/api"
+    "{{GOLANG_MODULE}}/internal/service"
 )
 
 func init() {
@@ -12,7 +15,8 @@ func init() {
 }
 
 func WebsocketServer(router *gin.RouterGroup) {
-	hub := newHub()
+	hub := newHub("example")
+	hub.broadcast = service.RealTimeMessageBroadcast
 	go hub.run()
 
 	router.GET("/ws", func(c *gin.Context) {

@@ -130,6 +130,9 @@ func (c *Client) writePump() {
 
 // Hub maintains the set of active clients and broadcasts messages to the clients.
 type Hub struct {
+	// Used to distinguish
+	label string
+
 	// Registered clients.
 	clients map[*Client]bool
 
@@ -143,8 +146,9 @@ type Hub struct {
 	unregister chan *Client
 }
 
-func newHub() *Hub {
+func newHub(label string) *Hub {
 	return &Hub{
+		label:      label,
 		broadcast:  make(chan []byte),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
@@ -154,6 +158,8 @@ func newHub() *Hub {
 
 func (h *Hub) run() {
 	for {
+		log.Printf("hub<%s>: len(h.clients) = %d", h.label, len(h.clients))
+
 		select {
 		case client := <-h.register:
 			h.clients[client] = true

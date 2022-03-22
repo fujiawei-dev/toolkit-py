@@ -25,6 +25,18 @@ func getAppDescription() {}
 // @Router       /user [post]
 func postUser() {}
 
+// @Summary      用户列表
+// @Description  用户列表
+// @Tags         用户管理
+// @Accept       json
+// @Param        page       query  int     false  "页码"    default(1)
+// @Param        page_size  query  int     false  "每页数量"  Enums(10, 20)  default(10)
+// @Param        username   query  string  false  "用户名"
+// @Produce      json
+// @Success      200  {object}  query.Response{result=Result{pager=form.Pager,list=[]query.UserResult}}  "操作成功"
+// @Router       /users [get]
+func getUsers() {}
+
 // @Summary      用户登录
 // @Description  用户登录，获取 Authorization Token 参数
 // @Tags         用户管理

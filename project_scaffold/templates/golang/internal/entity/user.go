@@ -23,15 +23,15 @@ type User struct {
 	Username string `gorm:"column:username;size:128;" json:"username"`
 	Password string `gorm:"-" json:"-"`
 
-	Role acl.Role `gorm:"size:32;default:default;" json:"role"`
+	Role acl.Role `gorm:"size:32;default:default;" json:"-"`
 
 	Disabled bool `json:"disabled"`
 
 	LoginAttempts int       `json:"-" yaml:"-"` // 登录密码尝试次数
 	LoginAt       time.Time `json:"-"`          // 最近一次登录时间
 
-	CreatedAt time.Time      `json:"created_at"`
-	UpdatedAt time.Time      `json:"updated_at"`
+	CreatedAt time.Time      `json:"-"`
+	UpdatedAt time.Time      `json:"-"`
 	DeletedAt gorm.DeletedAt `json:"-"`
 }
 
