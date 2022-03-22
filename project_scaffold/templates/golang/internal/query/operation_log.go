@@ -22,7 +22,7 @@ type OperationLogResult struct {
 	Action   string `json:"action" example:"操作行为: 比如 login、delete、create"`
 	Allow    bool   `json:"allow"` // 操作是否被允许
 
-	CreatedAt time.Time `json:"created_at" example:"2022-03-21T08:57:19.4615214+08:00"` // 创建时间
+	CreatedAt JSONTime `json:"created_at" example:"2022-03-21 08:57:19"` // 创建时间
 }
 
 func OperationLogs(f form.SearchPager) (results []OperationLogResult, totalRows int64, err error) {
