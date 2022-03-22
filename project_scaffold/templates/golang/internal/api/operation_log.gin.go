@@ -56,20 +56,7 @@ func DeleteOperationLogs(router *gin.RouterGroup) {
 			return
 		}
 
-		id := cast.ToUint(c.Param("id"))
-		if id == 0 {
-			ErrorInvalidParameters(c, errors.New("id(uint) is required"))
-			return
-		}
-
-		var m entity.OperationLog
-
-		if err := m.FindByID(id); err != nil {
-			ErrorExpectedOrUnexpected(c, err)
-			return
-		}
-
-		if err := m.Delete(); err != nil {
+		if err := query.DeleteAllOperationLogs(); err != nil {
 			ErrorUnexpected(c, err)
 			return
 		}

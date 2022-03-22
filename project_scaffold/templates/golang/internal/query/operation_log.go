@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/jinzhu/copier"
+	"gorm.io/gorm"
 
 	"{{GOLANG_MODULE}}/internal/entity"
 	"{{GOLANG_MODULE}}/internal/form"
@@ -68,4 +69,8 @@ func OperationLogs(f form.SearchPager) (results []OperationLogResult, totalRows 
 	err = copier.Copy(&results, items)
 
 	return
+}
+
+func DeleteAllOperationLogs() (err error) {
+	return Db().Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&entity.OperationLog{}).Error
 }
