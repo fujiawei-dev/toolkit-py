@@ -5,6 +5,7 @@ LastEditors: Rustle Karl
 LastEditTime: 2022.02.02 19:08
 """
 import os
+import shutil
 from datetime import datetime
 from pathlib import Path
 from typing import List, Union
@@ -88,4 +89,8 @@ def create_common_files(folders: List[str] = None):
     )
 
     for folder in folders:
-        os.makedirs(folder, exist_ok=True)
+        common_folder = TEMPLATES_COMMON_PATH / folder
+        if common_folder.exists():
+            shutil.copytree(common_folder, folder, dirs_exist_ok=True)
+        else:
+            os.makedirs(folder, exist_ok=True)

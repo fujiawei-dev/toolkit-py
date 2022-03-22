@@ -55,6 +55,10 @@ func (c *config) Init(ctx *cli.Context)error {
 		return err
 	}
 
+	if err := c.InitService(); err != nil {
+		return err
+	}
+
 	if err := c.InitDb(); err != nil {
 		return err
 	}
