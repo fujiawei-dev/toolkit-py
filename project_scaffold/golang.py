@@ -6,7 +6,7 @@ LastEditTime: 2022.02.09 10:07
 """
 from enum import Enum
 
-from .common import Entity, GENERATOR_HEADER
+from .common import Entity, GENERATOR_HEADER, get_different_camel_case_styles
 from .render import render_templates
 
 
@@ -56,21 +56,9 @@ class GoCombinations(str, Enum):
         ]
     )
 
-    C3 = ";".join(
-        [
-            GoWebFramework.Echo,
-            GoCliFramework.Cobra,
-            GoConfigFramework.Viper,
-        ]
-    )
+    C3 = ";".join([GoWebFramework.Echo, GoCliFramework.Cobra, GoConfigFramework.Viper,])
 
-    C4 = ";".join(
-        [
-            GoWebFramework.Gin,
-            GoLogFramework.Zerolog,
-            GoCliFramework.Cli,
-        ]
-    )
+    C4 = ";".join([GoWebFramework.Gin, GoLogFramework.Zerolog, GoCliFramework.Cli,])
 
     C5 = ";".join(
         [
@@ -99,14 +87,31 @@ class GoCombinations(str, Enum):
 
 
 def golang(combination=GoCombinations.C2, entity=""):
+    only_files = ""
+    replace_list = {}
+
     if entity != "":
-        return
+        only_files = "entity_template"
+
+        (
+            package,  # camel-case
+            package_title,  # Camel Case
+            package_underscore,  # camel_case
+        ) = get_different_camel_case_styles(entity)
+
+        replace_list = {
+            "entity_template": package_underscore,
+            "EntityTemplate": package_title.replace(" ", ""),
+        }
 
     render_templates(
         "golang",
         include_suffixes=GoCombinations.shortcuts(combination).split(";"),
         folders=["storage", "storage/configs"],
+        only_files=only_files,
+        replace_list=replace_list,
         GOLANG_HEADER=GENERATOR_HEADER.replace("#", "//"),
     )
 
-    Entity(file="internal/.gitignore", content="example.go\n*_example.go").create()
+    if entity == "":
+        Entity(file="internal/.gitignore", content="example.go\n*_example.go").create()

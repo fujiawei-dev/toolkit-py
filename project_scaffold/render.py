@@ -7,7 +7,7 @@ LastEditTime: 2022.02.10 14:54
 import os.path
 import time
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 
 import click
 from jinja2 import Template
@@ -71,12 +71,15 @@ def render_templates_recursively(
                 include_suffixes=include_suffixes,
                 src=p,
                 only_files=only_files,
+                replace_list=replace_list,
                 **kwargs,
             )
 
     elif p.is_file():
         if only_files and (
-            p.stem.lower() not in only_files and p.name.lower() not in only_files
+            p.stem.lower() not in only_files
+            and p.stem.lower().partition(".")[0] not in only_files
+            and p.name.lower() not in only_files
         ):
             return
 
@@ -97,6 +100,12 @@ def render_templates_recursively(
             else:
                 return
 
+        if replace_list:
+            s = q.stem
+            for k, v in replace_list.items():
+                s = s.replace(k, v)
+            q = q.with_stem(s)
+
         if q.exists():
             return
 
@@ -106,7 +115,7 @@ def render_templates_recursively(
             content = render(p.open(encoding="utf-8").read(), **kwargs)
             if replace_list:
                 for k, v in replace_list.items():
-                    content.replace(k, v)
+                    content = content.replace(k, v)
             q.open("w", encoding="utf-8", newline="\n").write(content)
         except UnicodeDecodeError:
             q.write_bytes(p.read_bytes())
