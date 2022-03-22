@@ -2,6 +2,10 @@
 
 package {{GOLANG_PACKAGE}}
 
+import (
+	"encoding/json"
+	"time"
+)
 
 type WebsocketRealTimeMessage struct {
 	Type    int    `json:"type" example:"1"`
@@ -10,7 +14,6 @@ type WebsocketRealTimeMessage struct {
 
 // RealTimeMessageBroadcast 实时推送
 var RealTimeMessageBroadcast chan []byte
-
 
 func init() {
 	RealTimeMessageBroadcast = make(chan []byte)

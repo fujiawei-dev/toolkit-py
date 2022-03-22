@@ -54,6 +54,14 @@ func (c *config) StoragePath() string {
 	return fs.MustAbs("storage")
 }
 
+func (c *config) AssetsPath() string {
+	if c.settings.Static.AssetsPath != "" {
+		return fs.MustAbs(c.settings.Static.AssetsPath)
+	}
+
+	return fs.MustAbs("assets")
+}
+
 // BackupPath returns the backup storage path.
 func (c *config) BackupPath() string {
 	if fs.PathWritable(c.settings.Static.BackupPath) {

@@ -18,10 +18,10 @@ type DatabaseSetting struct {
 	Username string          `mapstructure:"username" yaml:"username,omitempty"`
 }
 
-
 type StaticSetting struct {
 	BackupPath  string `mapstructure:"backup_path" yaml:"backup_path,omitempty"`
 	StoragePath string `mapstructure:"storage_path" yaml:"storage_path,omitempty"`
+	AssetsPath  string `mapstructure:"assets_path" yaml:"assets_path,omitempty"`
 }
 
 type Settings struct {

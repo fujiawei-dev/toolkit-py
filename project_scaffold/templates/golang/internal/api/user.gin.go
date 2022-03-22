@@ -8,6 +8,7 @@ import (
 	"{{GOLANG_MODULE}}/internal/acl"
 	"{{GOLANG_MODULE}}/internal/entity"
 	"{{GOLANG_MODULE}}/internal/form"
+	"{{GOLANG_MODULE}}/internal/query"
 )
 
 func init() {

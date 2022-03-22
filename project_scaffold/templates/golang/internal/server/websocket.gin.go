@@ -4,7 +4,6 @@ package {{GOLANG_PACKAGE}}
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/gorilla/websocket"
 
     "{{GOLANG_MODULE}}/internal/api"
     "{{GOLANG_MODULE}}/internal/service"
@@ -26,7 +25,7 @@ func WebsocketServer(router *gin.RouterGroup) {
 			return
 		}
 
-		client := NewClient(hubServer, conn, nil)
+		client := NewClient(hub, conn, nil, nil)
 		client.hub.register <- client
 
 		// Allow collection of memory referenced by the caller by doing all work in new goroutines.

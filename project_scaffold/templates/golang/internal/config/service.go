@@ -2,6 +2,14 @@
 
 package {{GOLANG_PACKAGE}}
 
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+
+	"{{GOLANG_MODULE}}/pkg/fs"
+)
+
 type ServiceSetting struct {
 	RemoteUrl string `mapstructure:"remote_url" yaml:"remote_url,omitempty"`
 
