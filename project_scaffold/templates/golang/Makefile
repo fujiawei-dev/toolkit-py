@@ -48,6 +48,7 @@ tidy dep:
 	go mod tidy
 
 init:
+	-(rm internal/.gitignore)
 	git init
 	git add .
 	git commit -m "first commit"
