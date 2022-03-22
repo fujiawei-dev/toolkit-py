@@ -9,7 +9,6 @@ package entity
 
 import (
 	"errors"
-	"time"
 
 	"github.com/jinzhu/copier"
 	"gorm.io/gorm"

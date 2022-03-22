@@ -98,7 +98,10 @@ class GoCombinations(str, Enum):
         return m
 
 
-def golang(combination=GoCombinations.C2):
+def golang(combination=GoCombinations.C2, entity=""):
+    if entity != "":
+        return
+
     render_templates(
         "golang",
         include_suffixes=GoCombinations.shortcuts(combination).split(";"),

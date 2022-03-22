@@ -77,8 +77,15 @@ def python():
     type=click.Choice(GoCombinations),
     help="Combination of frameworks.",
 )
-def golang(combination):
-    _golang(combination)
+@click.option(
+    "--entity",
+    "-e",
+    type=str,
+    default="",
+    help="New entity instance.",
+)
+def golang(combination, entity):
+    _golang(combination, entity)
 
 
 @command_cps.command(help="Create notes project scaffold.")

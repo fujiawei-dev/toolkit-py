@@ -4,8 +4,8 @@ package {{GOLANG_PACKAGE}}
 
 import (
 	"fmt"
-	"time"
 
+	"github.com/jinzhu/copier"
 	"gorm.io/gorm"
 
 	"{{GOLANG_MODULE}}/internal/acl"
