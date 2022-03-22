@@ -4,7 +4,6 @@ package {{GOLANG_PACKAGE}}
 
 import (
 	"strings"
-	"time"
 
 	"github.com/jinzhu/copier"
 	"gorm.io/gorm"

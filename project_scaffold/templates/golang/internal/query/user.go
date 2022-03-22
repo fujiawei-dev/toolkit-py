@@ -4,7 +4,6 @@ package {{GOLANG_PACKAGE}}
 
 import (
 	"strings"
-	"time"
 
 	"github.com/jinzhu/copier"
 
@@ -13,9 +12,9 @@ import (
 )
 
 type UserResult struct {
-	ID        uint      `json:"id" example:"1"` // 记录ID
-	Username  string    `json:"username" example:"用户名"`
-	Enable    bool      `json:"enable"`                                                 // 是否启用
+	ID       uint   `json:"id" example:"1"` // 记录ID
+	Username string `json:"username" example:"用户名"`
+	Enable   bool   `json:"enable"` // 是否启用                                                // 是否启用
 
 	CreatedAt JSONTime `json:"created_at" example:"2022-03-21 08:57:19"` // 创建时间
 }
