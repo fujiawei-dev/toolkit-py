@@ -22,7 +22,7 @@ func init() {
 }
 
 type OperationLog struct {
-	ID uint `gorm:"primary_key"`
+	ID uint `gorm:"primary_key" json:"id"`
 
 	UserID uint `json:"-"`
 	User   User `gorm:"foreignkey:UserID;association_foreignkey:id" json:"-"`
@@ -81,8 +81,8 @@ func (m *OperationLog) Take() (err error) {
 	return
 }
 
-func (ms OperationLogs) FindAll() (err error) {
-	err = Db().Find(&ms).Error
+func (ms *OperationLogs) FindAll() (err error) {
+	err = Db().Find(ms).Error
 	return
 }
 

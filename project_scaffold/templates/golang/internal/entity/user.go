@@ -78,6 +78,14 @@ func CreateDefaultUsers() {
 	}
 }
 
+func (m *User) CopyFrom(src interface{}) error {
+	return copier.Copy(m, src)
+}
+
+func (m *User) CopyTo(dst interface{}) error {
+	return copier.Copy(dst, m)
+}
+
 // Create new entity in the database.
 func (m *User) Create() error {
 	return Db().Create(m).Error

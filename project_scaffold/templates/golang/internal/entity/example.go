@@ -224,8 +224,8 @@ func (ms Examples) FindByMap(where map[string]interface{}) (err error) {
 	return
 }
 
-func (ms Examples) FindAll() (err error) {
-	err = Db().Find(&ms).Error
+func (ms *Examples) FindAll() (err error) {
+	err = Db().Find(ms).Error
 	return
 }
 

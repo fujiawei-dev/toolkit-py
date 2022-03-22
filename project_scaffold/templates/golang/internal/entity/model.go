@@ -18,7 +18,7 @@ func init() {
 
 // BasicModel basic minimal model example
 type BasicModel struct {
-	ID uint `gorm:"primary_key"`
+	ID uint `gorm:"primary_key" json:"id"`
 
 	// ID easy to traverse, so UID is necessary when get/put/delete
 	UID string `gorm:"column:uid" json:"uid" example:"UID"`
@@ -80,8 +80,8 @@ func (m *BasicModel) Take() (err error) {
 	return
 }
 
-func (ms BasicModels) FindAll() (err error) {
-	err = Db().Find(&ms).Error
+func (ms *BasicModels) FindAll() (err error) {
+	err = Db().Find(ms).Error
 	return
 }
 

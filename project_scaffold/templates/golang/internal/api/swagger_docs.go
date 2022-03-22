@@ -25,6 +25,30 @@ func getAppDescription() {}
 // @Router       /user [post]
 func postUser() {}
 
+// @Summary      修改用户
+// @Description  修改用户角色、用户名等
+// @Tags         用户管理
+// @Accept       json
+// @Security     ApiKeyAuth
+// @Param        id      path  int                      true   "ID"
+// @Param        object  body  form.UserUpdate  false  "参数"
+// @Produce      json
+// @Success      200  {object}  query.Response  "操作成功"
+// @Router       /user/{id} [put]
+func putUser() {}
+
+// @Summary      修改用户密码
+// @Description  修改用户密码
+// @Tags         用户管理
+// @Accept       json
+// @Security     ApiKeyAuth
+// @Param        id      path  int              true   "ID"
+// @Param        object  body  form.UserChangePassword  false  "参数"
+// @Produce      json
+// @Success      200  {object}  query.Response  "操作成功"
+// @Router       /user/{id}/password [put]
+func putUserPassword() {}
+
 // @Summary      用户列表
 // @Description  用户列表
 // @Tags         用户管理
