@@ -52,11 +52,15 @@ func (es Entities) Migrate() {
 
 // Drop drops all database tables of registered entities.
 func (es Entities) Drop() {
+	Db().Exec("PRAGMA foreign_keys = OFF;")
+
 	for _, entity := range es {
-		if err := UnscopedDb().Debug().Migrator().DropTable(entity).Error; err != nil {
+		if err := Db().Debug().Migrator().DropTable(&entity); err != nil {
 			panic(err)
 		}
 	}
+
+	Db().Exec("PRAGMA foreign_keys = ON;")
 }
 
 // MigrateDb creates all tables and inserts default entities as needed.
@@ -66,7 +70,26 @@ func MigrateDb() {
 	CreateDefaultFixtures()
 }
 
+func DropEntities() {
+	entities.Drop()
+}
+
 // CreateDefaultFixtures inserts default fixtures for test and production.
 func CreateDefaultFixtures() {
 	CreateDefaultUsers()
+}
+
+// ResetDatabase resets the database schema.
+func ResetDatabase() error {
+	start := time.Now()
+
+	log.Print("entity: dropping existing tables")
+	DropEntities()
+
+	log.Print("entity: restoring default schema")
+	MigrateDb()
+
+	log.Printf("entity: database reset completed in %s", time.Since(start))
+
+	return nil
 }

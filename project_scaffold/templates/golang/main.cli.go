@@ -31,6 +31,7 @@ func main() {
 	app.Commands = []cli.Command{
 		command.StartCommand,
 		command.StopCommand,
+		command.ResetCommand,
 		command.VersionCommand,
 	}
 
