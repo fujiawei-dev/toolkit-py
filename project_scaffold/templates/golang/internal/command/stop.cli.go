@@ -25,13 +25,15 @@ var StopCommand = cli.Command{
 // stopAction stops the daemon if it is running.
 func stopAction(ctx *cli.Context) error {
 	if err := conf.InitSettings(ctx); err != nil {
-		return fmt.Errorf("config init failed: %v", err)
+		fmt.Printf("config init failed, %v\n", err)
+		return nil
 	}
 
 	fmt.Printf("looking for pid in %s\n", conf.PidFile())
 
 	if !fs.IsFile(conf.PidFile()) {
-		return fmt.Errorf("%s does not exist or is not a file", conf.PidFile())
+		fmt.Printf("%s does not exist or is not a file\n", conf.PidFile())
+		return nil
 	}
 
 	dc := daemon.Context{PidFileName: conf.PidFile()}
@@ -45,7 +47,8 @@ func stopAction(ctx *cli.Context) error {
 	err = child.Signal(syscall.SIGTERM)
 
 	if err != nil && err != os.ErrProcessDone {
-		return err
+		fmt.Printf("sent SIGTERM failed, %v\n", err)
+		return nil
 	}
 
 	ps, err := child.Wait()

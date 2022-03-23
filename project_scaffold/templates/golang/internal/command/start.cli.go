@@ -4,7 +4,6 @@ package {{GOLANG_PACKAGE}}
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/http"
 	"os"
@@ -31,18 +30,21 @@ var StartCommand = cli.Command{
 
 func startAction(ctx *cli.Context) error {
 	if err := conf.Init(ctx); err != nil {
-		return fmt.Errorf("config init failed: %v", err)
+		fmt.Printf("config init failed, %v\n", err)
+		return nil
 	}
 
 	if conf.HttpPort() < 1 || conf.HttpPort() > 65535 {
-		return errors.New("server port must be a number between 1 and 65535")
+		fmt.Println("server port must be a number between 1 and 65535")
+		return nil
 	}
 
 	if !daemon.WasReborn() && conf.DetachServer() {
 		color.Printf("⇨ https server started on %s\n", color.Green(conf.ExternalHttpHostPort()))
 
 		if pid, ok := childAlreadyRunning(conf.PidFile()); ok {
-			return fmt.Errorf("daemon already running with process id %v\n", pid)
+			fmt.Printf("daemon already running with process id %v\n", pid)
+			return nil
 		}
 
 		dc := daemon.Context{PidFileName: conf.PidFile()}
@@ -50,22 +52,24 @@ func startAction(ctx *cli.Context) error {
 		child, err := dc.Reborn()
 
 		if err != nil {
-			return err
+			fmt.Printf("daemon reborn failed, %v\n", err)
+			return nil
 		}
 
 		if child != nil {
 			if !fs.Overwrite(conf.PidFile(), []byte(strconv.Itoa(child.Pid))) {
-				return fmt.Errorf("failed writing process id to %s", conf.PidFile())
+				fmt.Printf("failed writing process id to %s\n", conf.PidFile())
+				return nil
 			}
 
-			log.Printf("daemon started with process id %v", child.Pid)
+			fmt.Printf("daemon started with process id %v\n", child.Pid)
 
 			return nil
 		}
 
 		defer func() {
 			if err = dc.Release(); err != nil {
-				log.Printf("daemon release %v", err)
+				fmt.Printf("daemon release %v\n", err)
 			}
 		}()
 	}
@@ -103,19 +107,20 @@ func startAction(ctx *cli.Context) error {
 
 		serverError = <-serverClosedSignal
 
-		log.Print("http: shutting down web server...")
+		fmt.Println("http: shutting down web server...")
 
 		if serverError == http.ErrServerClosed || serverError == nil {
-			log.Print("http: web server shutdown complete")
+			fmt.Println("http: web server shutdown complete")
 		} else {
-			log.Printf("http: web server closed unexpect: %v", serverError)
+			fmt.Printf("http: web server closed unexpect, %v\n", serverError)
 		}
 
 	case serverError = <-serverClosedSignal:
 		cancel()
 
 		if serverError != nil {
-			return serverError
+			fmt.Printf("http: web server started failed, %v\n", serverError)
+			return nil
 		}
 	}
 

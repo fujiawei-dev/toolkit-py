@@ -25,15 +25,21 @@ var ResetCommand = cli.Command{
 // resetAction resets the index and removes sidecar files after confirmation.
 func resetAction(ctx *cli.Context) error {
 	if err := conf.Init(ctx); err != nil {
-		return fmt.Errorf("config init failed: %v", err)
+		fmt.Printf("config init failed, %v\n", err)
+		return nil
 	}
 
 	onlyResetDatabase := ctx.Bool("database")
 
 	// Reset database?
 	if onlyResetDatabase {
-		return entity.ResetDatabase()
+		if err := entity.ResetDatabase(); err != nil {
+			fmt.Printf("reset database failed, %v\n", err)
+		} else {
+			fmt.Println("reset database successfully")
+		}
+		return nil
 	}
 
-	return entity.ResetDatabase()
+	return nil
 }
