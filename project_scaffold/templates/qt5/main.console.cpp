@@ -111,7 +111,7 @@ private:
 
 int main(int argc, char *argv[]) {
     // https://forum.qt.io/topic/55226/how-to-exit-a-qt-console-app-from-an-inner-class-solved
-    QCoreApplication a(argc, argv);
+    QCoreApplication app(argc, argv);
 
     QCoreApplication::setApplicationName("{{APP_NAME}}");
     QCoreApplication::setApplicationVersion("0.0.1");
@@ -132,7 +132,7 @@ int main(int argc, char *argv[]) {
 
     // Parses the command line arguments
     QCommandLineParser parser;
-    parser.setApplicationDescription("Qml Javascript Example Description");
+    parser.setApplicationDescription("{{PACKAGE_TITLE}} Description");
     parser.addHelpOption();
     parser.addVersionOption();
     QCommandLineOption configFileOption("c", "Path to config file", "settings.ini");
@@ -189,11 +189,11 @@ int main(int argc, char *argv[]) {
     }
 
     // Task  parented to the application so that it will be deleted by the application.
-    Task *task = new Task(&a);
+    Task *task = new Task(&app);
     task->InitConfig(settings);
 
     // This will cause the application to exit when the task signals finished.
-    QObject::connect(task, SIGNAL(finished()), &a, SLOT(quit()));
+    QObject::connect(task, SIGNAL(finished()), &app, SLOT(quit()));
 
     // This will run the task from the application event loop.
     QTimer::singleShot(0, task, SLOT(run()));
