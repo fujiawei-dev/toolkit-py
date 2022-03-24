@@ -122,6 +122,9 @@ int main(int argc, char *argv[]) {
         settings->setValue("Remote/HttpBasePath", "/api/v1");
         settings->setValue("Remote/WebsocketPrefix", "/ws");
 
+        settings->setValue("Assets/ProvinceCityDistrict", "assets/data/ProvinceCityDistrict.json");
+        settings->setValue("Assets/CodeRegion", "assets/data/CodeRegion.json");
+
         // 设置列表
         QList<QString> items = {"item1", "item2", "item3"};
         settings->beginWriteArray("Items");

@@ -35,6 +35,8 @@ void Core::beforeInitConfig() {
 void Core::afterInitConfig() {
     parseRegionDatabase();
 
+    qDebug() << "110000 =" << getRegionByCode("110000");
+
     qInfo() << "core: afterInitConfig OK";
 }
 
