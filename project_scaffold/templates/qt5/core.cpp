@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QNetworkReply>
 #include <QUuid>
 #include <string>
 //#include <cryptopp/aes.h>
@@ -15,6 +16,7 @@
 //using namespace CryptoPP;
 
 Core::Core(QObject *parent) : QObject(parent) {
+    httpClient = new QNetworkAccessManager;
     websocketClient = new QWebSocket();
 
     connect(websocketClient, &QWebSocket::connected, this, &Core::onWebsocketConnected);
@@ -48,6 +50,7 @@ void Core::InitConfig(bool debug, QSettings *settings) {
 
     remoteHostPort = settings->value("Remote/HostPort").toString();
     remoteHttpBasePath = settings->value("Remote/HttpBasePath").toString();
+    remoteHttpBaseUrl = remoteHostPort + remoteHttpBasePath;
     websocketPrefix = settings->value("Remote/WebsocketPrefix").toString();
 
     {
@@ -276,8 +279,71 @@ void Core::onWebsocketTimeout() {
     sendTextMessageToWebsocketServer(QJsonDocument(obj).toJson());
 }
 
+QJsonObject Core::httpRequest(const QByteArray &method, const QString &url, const QByteArray &body = "", bool customUrl = false) {
+    QNetworkRequest request;
+    request.setUrl(customUrl ? url : remoteHttpBaseUrl + url);
+
+    qInfo().noquote() << QString("core: %1 %2").arg(method, url);
+
+    if (!body.isEmpty()) {
+        qInfo() << "core: body =" << body;
+    }
+
+    if (method != "GET") {
+        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    }
+
+    QNetworkReply *response = httpClient->sendCustomRequest(request, method, body);
+
+    QEventLoop eventLoop;
+    QObject::connect(response, SIGNAL(finished()), &eventLoop, SLOT(quit()));
+    eventLoop.exec(QEventLoop::ExcludeUserInputEvents);
+
+    QJsonObject responseJson;
+
+    if (response->error() != QNetworkReply::NoError) {
+        qCritical() << response->error();
+    } else {
+        QByteArray responseBody = response->readAll();
+        qInfo() << "core: responseBody =" << responseBody;
+
+        QJsonParseError jsonParseError{};
+        QJsonDocument responseBodyJsonDocument(QJsonDocument::fromJson(responseBody, &jsonParseError));
+        if (jsonParseError.error != QJsonParseError::NoError) {
+            qCritical() << jsonParseError.error;
+        } else {
+            responseJson = responseBodyJsonDocument.object();
+        }
+    }
+
+    qInfo() << "core: responseJson =" << responseJson;
+
+    return responseJson;
+}
+
+QJsonObject Core::httpGet(const QString &url, bool customUrl = false) {
+    return httpRequest("GET", url, "", customUrl);
+}
+
+QJsonObject Core::httpPost(const QString &url, const QByteArray &body, bool customUrl = false) {
+    return httpRequest("POST", url, body, customUrl);
+}
+
+
 void Core::onRun() {
     qInfo() << "Running...";
+
+    httpGet("http://httpbin.org/get", true);
+
+    httpPost("http://httpbin.org/post",
+             QJsonDocument(
+                     QJsonObject{
+                             {"q", "typescript"},
+                             {"image", "base64"},
+                             {"debug", debugMode},
+                             {"json", "This is a json object."}})
+                     .toJson(),
+             true);
 
     // do something
     emit finished();

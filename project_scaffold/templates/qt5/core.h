@@ -4,6 +4,7 @@
 #define {{APP_NAME_UPPER}}__CORE_H
 
 #include <QDebug>
+#include <QNetworkAccessManager>
 #include <QObject>
 #include <QSettings>
 #include <QTimer>
@@ -33,6 +34,10 @@ public:
 
     static std::string AESEncryptStr(const QString &msgStr, const QString &keyStr);
     static std::string AESDecryptStr(const QString &msgStr, const QString &keyStr);
+
+    QJsonObject httpRequest(const QByteArray &method, const QString &url, const QByteArray &body, bool customUrl);
+    QJsonObject httpGet(const QString &url, bool customUrl);
+    QJsonObject httpPost(const QString &url, const QByteArray &body, bool customUrl);
 
 
 signals:
@@ -66,6 +71,9 @@ private:
     QWebSocket *websocketClient;
     QString websocketUrl;
     QTimer websocketTimer;
+
+    QNetworkAccessManager *httpClient;
+    QString remoteHttpBaseUrl;
 
     void parseRegionDatabase();
     QMap<QString, QMap<QString, QList<QString>>> provinceCityDistrictMap;
