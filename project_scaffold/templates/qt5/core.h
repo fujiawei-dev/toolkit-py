@@ -15,30 +15,33 @@ class Core : public QObject {
 public:
     explicit Core(QObject *parent = nullptr);
 
-    bool DebugMode;
+    bool DebugMode() const;
+    void InitConfig(bool, QSettings *);
 
-    void InitConfig(QSettings *);
-
-    Q_PROPERTY(bool debugMode MEMBER DebugMode);
-    Q_PROPERTY(QList<QString> specialties MEMBER specialties);
+    Q_PROPERTY(bool debugMode READ DebugMode);    // Read only
+    Q_PROPERTY(QList<QString> items MEMBER items);// Read and write
 
     Q_INVOKABLE static QString getUuid();
-    Q_INVOKABLE void connectToWebsocketServer(const QString &);
-    Q_INVOKABLE void sendTextMessageToWebsocketServer(const QString &);
 
-    Q_INVOKABLE QString getRegion(QString code);
+    Q_INVOKABLE QString getRegionByCode(const QString &code);
     Q_INVOKABLE QList<QString> getProvinces();
     Q_INVOKABLE QList<QString> getCitiesByProvince(const QString &province);
     Q_INVOKABLE QList<QString> getDistrictsByProvinceCity(const QString &province, const QString &city);
 
+    Q_INVOKABLE void connectToWebsocketServer(const QString &);
+    Q_INVOKABLE void sendTextMessageToWebsocketServer(const QString &);
+
     static std::string AESEncryptStr(const QString &msgStr, const QString &keyStr);
     static std::string AESDecryptStr(const QString &msgStr, const QString &keyStr);
 
+
 signals:
-    void signalsExample();
+    void finished();// 正常退出
+    void abort();   // 异常中断
 
 public slots:
     void onExit();
+    void onRun();// for console app
 
 private Q_SLOTS:
     void onWebsocketTimeout();
@@ -47,22 +50,24 @@ private Q_SLOTS:
     void onWebsocketTextMessageReceived(const QString &message);
 
 private:
-    // variables from config file
-    QSettings *settings{};
-    QString exportProperty;
+    bool debugMode = true;
+    bool isExiting = false;// 表示即将退出程序
 
-    QString remoteServerHttp;
-    QString remoteServerHttpBasePath;
+    void beforeInitConfig();
+    void afterInitConfig();
+
+    // variables from config file
+    QSettings *conf{};
+    QString remoteHostPort;
+    QString remoteHttpBasePath;
+    QString websocketPrefix;
+    QList<QString> items = {};
 
     QWebSocket *websocketClient;
-    QString websocketUri;
     QString websocketUrl;
     QTimer websocketTimer;
 
-    QList<QString> specialties = {};
-
-    void parseJSON();
-
+    void parseRegionDatabase();
     QMap<QString, QMap<QString, QList<QString>>> provinceCityDistrictMap;
     QMap<QString, QString> codeRegionMap;
 };

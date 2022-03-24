@@ -1,16 +1,28 @@
 {{SLASH_COMMENTS}}
 
+#include "core.h"
 #include <QCommandLineParser>
 #include <QCoreApplication>
 #include <QDateTime>
 #include <QDebug>
 #include <QDir>
 #include <QFile>
+#include <QFileInfo>
+{%- if template!=".console" %}
+#include <QFontDatabase>
+{%- endif %}
 #include <QMutex>
+{%- if template==".qml" %}
+#include <QQmlApplicationEngine>
+#include <QQmlContext>
+{%- endif %}
 #include <QSettings>
 #include <QTextCodec>
 #include <QTimer>
 #include <iostream>
+{%- if template==".gui" %}
+#include "widget.h"
+{%- endif %}
 
 void logMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg) {
     QString text;
@@ -56,63 +68,12 @@ void logMessageHandler(QtMsgType type, const QMessageLogContext &context, const 
     mutex.unlock();
 }
 
-class Task : public QObject {
-    Q_OBJECT
-public:
-    explicit Task(QObject *parent = nullptr) : QObject(parent) {}
-
-public slots:
-    void run() {
-        qInfo() << "Running...";
-
-        emit finished();
-
-        qInfo() << "I thought I'd finished!";
-    }
-
-    void InitConfig(QSettings *s) {
-        settings = s;// Reserved, the settings may be dynamically modified in the future
-
-        // 列表
-        QList<QString> users = {};
-        int usersSize = settings->beginReadArray("Users");
-        for (int i = 0; i < usersSize; i++) {
-            users.append(settings->value("user").toString());
-        }
-        settings->endArray();
-
-        // 对象列表
-        struct Account {
-            QString username;
-            QString password;
-        };
-        QList<Account> accounts;
-        int accountsSize = settings->beginReadArray("Accounts");
-        for (int i = 0; i < accountsSize; i++) {
-            Account account;
-            account.username = settings->value("username").toString();
-            account.password = settings->value("password").toString();
-            accounts.append(account);
-        }
-        settings->endArray();
-
-        qInfo() << "main: InitConfig OK";
-    };
-
-signals:
-    void finished();
-
-private:
-    // variables from config file
-    QSettings *settings{};
-};
-
-#include "main.moc"
 
 int main(int argc, char *argv[]) {
-    // https://forum.qt.io/topic/55226/how-to-exit-a-qt-console-app-from-an-inner-class-solved
     QCoreApplication app(argc, argv);
 
+    QCoreApplication::setOrganizationName("{{PACKAGE_TITLE.replace(' ', '.')}}");
+    QCoreApplication::setOrganizationDomain("{{APP_NAME}}.com");
     QCoreApplication::setApplicationName("{{APP_NAME}}");
     QCoreApplication::setApplicationVersion("0.0.1");
 
@@ -156,21 +117,21 @@ int main(int argc, char *argv[]) {
     settings->setIniCodec("UTF-8");
 
     if (!fi.isFile()) {
-        // 普通键值对
-        settings->setValue("Remote/Host", "localhost");
-        settings->setValue("Remote/Port", "9876");
-        settings->setValue("Remote/BasePath", "/api/v1");
+        // 设置普通键值对
+        settings->setValue("Remote/HostPort", "localhost:9876");
+        settings->setValue("Remote/HttpBasePath", "/api/v1");
+        settings->setValue("Remote/WebsocketPrefix", "/ws");
 
-        // 列表
-        QList<QString> users = {"user1", "user2", "user3"};
-        settings->beginWriteArray("Users");
-        for (int i = 0; i < users.size(); i++) {
+        // 设置列表
+        QList<QString> items = {"item1", "item2", "item3"};
+        settings->beginWriteArray("Items");
+        for (int i = 0; i < items.size(); i++) {
             settings->setArrayIndex(i);
-            settings->setValue("user", users[i]);
+            settings->setValue("item", items[i]);
         }
         settings->endArray();
 
-        // 对象列表
+        // 设置对象列表
         struct Account {
             QString username;
             QString password;
@@ -188,15 +149,40 @@ int main(int argc, char *argv[]) {
         settings->endArray();
     }
 
-    // Task  parented to the application so that it will be deleted by the application.
-    Task *task = new Task(&app);
-    task->InitConfig(settings);
+    Core *core = new Core(&app);
+    core->InitConfig(debugMode, settings);
 
-    // This will cause the application to exit when the task signals finished.
-    QObject::connect(task, SIGNAL(finished()), &app, SLOT(quit()));
+    {% if template==".qml" -%}
+    // Add fonts
+    // QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Regular.ttf");
+    // QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Bold.ttf");
+    // QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Heavy.ttf");
+    // QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Light.ttf");
+    // QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Regular.ttf");
 
-    // This will run the task from the application event loop.
-    QTimer::singleShot(0, task, SLOT(run()));
+    QQmlApplicationEngine engine;
+    engine.rootContext()->setContextProperty("core", core);
+    const QUrl url("qrc:/main.qml");
+    QObject::connect(
+            &engine, &QQmlApplicationEngine::objectCreated,
+            &app, [url](QObject *obj, const QUrl &objUrl) {
+                if (!obj && url == objUrl)
+                    QCoreApplication::exit(-1);
+            },
+            Qt::QueuedConnection);
+    engine.load(url);
+
+    QObject::connect(&app, SIGNAL(aboutToQuit()), core, SLOT(onExit()));
+    {% elif template==".console" %}
+    // Only for console app. This will run from the application event loop.
+    // https://forum.qt.io/topic/55226/how-to-exit-a-qt-console-app-from-an-inner-class-solved
+    QObject::connect(core, SIGNAL(finished()), &app, SLOT(quit()));
+    QTimer::singleShot(0, core, SLOT(onRun()));
+    {% elif template==".gui" %}
+    Widget w;
+    w.setSettings(settings);
+    w.show();
+    {%- endif %}
 
     return QCoreApplication::exec();
 }

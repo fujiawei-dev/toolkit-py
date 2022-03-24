@@ -43,6 +43,11 @@ class Qt5MakeType(str, Enum):
 
 
 def qt5(template=Qt5Templates.Gui, only_files: str = ""):
+    replace_list = {}
+
+    if template != Qt5Templates.Console:
+        replace_list["QCoreApplication"] = "QApplication"
+
     render_templates(
         "qt5",
         include_suffixes=[template],
@@ -58,4 +63,5 @@ def qt5(template=Qt5Templates.Gui, only_files: str = ""):
         common=False,
         template=template,
         only_files=only_files,
+        replace_list=replace_list,
     )

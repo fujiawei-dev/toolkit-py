@@ -2,15 +2,15 @@
 
 #include "core.h"
 #include <QEventLoop>
+#include <QFile>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QUuid>
-#include <QFile>
+#include <string>
 //#include <cryptopp/aes.h>
 //#include <cryptopp/base64.h>
 //#include <cryptopp/hex.h>
 //#include <cryptopp/modes.h>
-#include <string>
 
 //using namespace CryptoPP;
 
@@ -23,21 +23,93 @@ Core::Core(QObject *parent) : QObject(parent) {
     qInfo() << "core: initialized";
 }
 
+bool Core::DebugMode() const {
+    return debugMode;
+}
+
+void Core::beforeInitConfig() {
+
+    qInfo() << "core: beforeInitConfig OK";
+}
+
+void Core::afterInitConfig() {
+    parseRegionDatabase();
+
+    qInfo() << "core: afterInitConfig OK";
+}
+
+void Core::InitConfig(bool debug, QSettings *settings) {
+    beforeInitConfig();
+
+    debugMode = debug;
+    conf = settings;// Reserved, the settings may be dynamically modified in the future
+
+    remoteHostPort = settings->value("Remote/HostPort").toString();
+    remoteHttpBasePath = settings->value("Remote/HttpBasePath").toString();
+    websocketPrefix = settings->value("Remote/WebsocketPrefix").toString();
+
+    {
+        //从设置中读取列表
+        int size = settings->beginReadArray("List");
+        for (int i = 0; i < size; i++) {
+            settings->setArrayIndex(i);
+            items.append(settings->value("item").toString());
+        }
+        settings->endArray();
+    }
+
+    {
+        // 从设置中读取对象列表
+        struct Account {
+            QString username;
+            QString password;
+        };
+        QList<Account> accounts;
+        int size = settings->beginReadArray("Accounts");
+        for (int i = 0; i < size; i++) {
+            Account account;
+            settings->setArrayIndex(i);
+            account.username = settings->value("username").toString();
+            account.password = settings->value("password").toString();
+            accounts.append(account);
+        }
+        settings->endArray();
+    }
+
+    qInfo() << "core: InitConfig OK";
+    qInfo().noquote() << QString("core: remoteHostPort=%1, "
+                                 "remoteHttpBasePath=%2, "
+                                 "websocketPrefix=%3")
+                                 .arg(remoteHostPort,
+                                      remoteHttpBasePath,
+                                      websocketPrefix);
+
+    afterInitConfig();
+}
+
+// 获取 UUID
 QString Core::getUuid() {
     // "{b5eddbaf-984f-418e-88eb-cf0b8ff3e775}"
     // "b5eddbaf984f418e88ebcf0b8ff3e775"
     return QUuid::createUuid().toString().remove("{").remove("}").remove("-");
 }
 
-void Core::parseJSON() {
+// 区域数据离线查询
+void Core::parseRegionDatabase() {
     QJsonParseError qJsonParseError{};
 
-    QFile provinceCityDistrictJson("assets/data/ProvinceCityDistrict.json");
-    if (provinceCityDistrictJson.open(QIODevice::ReadOnly)) {
-        QByteArray provinceCityDistrictBuf = provinceCityDistrictJson.readAll();
+    // 中国省市区树形结构数据
+    QFile assetsProvinceCityDistrict(conf->value("Assets/ProvinceCityDistrict").toString());
+    if (!assetsProvinceCityDistrict.exists()) {
+        qCritical() << "core:" << assetsProvinceCityDistrict.fileName() << "not exists";
+        // I can't understand why Qt doesn't let me exit the program normally, I can only force it out.
+        exit(-1);
+    }
+
+    if (assetsProvinceCityDistrict.open(QIODevice::ReadOnly)) {
+        QByteArray provinceCityDistrictBuf = assetsProvinceCityDistrict.readAll();
         QJsonDocument provinceCityDistrictDocument = QJsonDocument::fromJson(provinceCityDistrictBuf, &qJsonParseError);
         if (qJsonParseError.error == QJsonParseError::NoError && !provinceCityDistrictDocument.isNull()) {
-            //            qDebug() << provinceCityDistrictDocument;
             auto provinceMap = provinceCityDistrictDocument.object().toVariantMap();
             for (auto provinceCity = provinceMap.begin(); provinceCity != provinceMap.end(); provinceCity++) {
                 const QString &province = provinceCity.key();
@@ -50,32 +122,41 @@ void Core::parseJSON() {
                     provinceCityDistrictMap[province][cityDistrict.key()] = districts;
                 }
             }
-            //            qDebug() << provinceCityDistrictMap;
         } else {
-            qCritical() << qJsonParseError.error;
+            qCritical() << "core:" << qJsonParseError.error;
+            exit(-1);
         }
     } else {
-        qCritical() << "can't open json";
+        qCritical() << "core: can't open" << assetsProvinceCityDistrict.fileName();
+        exit(-1);
     };
 
-    QFile codeRegionJson("assets/data/CodeRegion.json");
-    if (codeRegionJson.open(QIODevice::ReadOnly)) {
-        QByteArray codeRegionBuf = codeRegionJson.readAll();
+    // 区域代码与名称映射关系
+    QFile assetsCodeRegion(conf->value("Assets/ProvinceCityDistrict").toString());
+    if (!assetsCodeRegion.exists()) {
+        qCritical() << "core:" << assetsCodeRegion.fileName() << "not exists";
+        exit(-1);
+    }
+
+    if (assetsCodeRegion.open(QIODevice::ReadOnly)) {
+        QByteArray codeRegionBuf = assetsCodeRegion.readAll();
         QJsonDocument codeRegionDocument = QJsonDocument::fromJson(codeRegionBuf, &qJsonParseError);
         if (qJsonParseError.error == QJsonParseError::NoError && !codeRegionDocument.isNull()) {
-            //            qDebug() << codeRegionDocument;
             auto codeRegionVariantMap = codeRegionDocument.object().toVariantMap();
             for (auto iterator = codeRegionVariantMap.begin(); iterator != codeRegionVariantMap.end(); iterator++) {
                 codeRegionMap[iterator.key()] = iterator.value().toString();
             }
-            //            qDebug() << codeRegionMap;
+        } else {
+            qCritical() << "core:" << qJsonParseError.error;
+            exit(-1);
         }
     } else {
-        qCritical() << "can't open json";
+        qCritical() << "core: can't open" << assetsCodeRegion.fileName();
+        exit(-1);
     };
 }
 
-QString Core::getRegion(QString code) {
+QString Core::getRegionByCode(const QString &code) {
     return codeRegionMap[code];
 }
 
@@ -91,42 +172,7 @@ QList<QString> Core::getDistrictsByProvinceCity(const QString &province, const Q
     return provinceCityDistrictMap[province][city];
 }
 
-void Core::InitConfig(QSettings *s) {
-    parseJSON();
-
-    settings = s;// Reserved, the settings may be dynamically modified in the future
-    remoteServerHttp = settings->value("Remote/Host").toString() + ":" + settings->value("Remote/Port").toString();
-    websocketUri = settings->value("Remote/WebsocketUri").toString();
-    exportProperty = settings->value("Property/ExportProperty").toString();
-
-    // 列表
-    int usersSize = settings->beginReadArray("Specialty");
-    for (int i = 0; i < usersSize; i++) {
-        settings->setArrayIndex(i);
-        specialties.append(settings->value("specialty").toString());
-    }
-    settings->endArray();
-
-    // 对象列表
-    struct Account {
-        QString username;
-        QString password;
-    };
-    QList<Account> accounts;
-    int accountsSize = settings->beginReadArray("Accounts");
-    for (int i = 0; i < accountsSize; i++) {
-        Account account;
-        settings->setArrayIndex(i);
-        account.username = settings->value("username").toString();
-        account.password = settings->value("password").toString();
-        accounts.append(account);
-    }
-    settings->endArray();
-
-    qInfo() << "core: InitConfig OK";
-    qInfo().noquote() << QString("core: remoteServerHttp=%1").arg(remoteServerHttp);
-}
-
+// 常用加密函数封装
 std::string Core::AESEncryptStr(const QString &msgStr, const QString &keyStr) {
     std::string msgStrOut;
 
@@ -166,7 +212,7 @@ std::string Core::AESDecryptStr(const QString &msgStr, const QString &keyStr) {
 
 void Core::connectToWebsocketServer(const QString &s) {
     if (websocketUrl.isEmpty()) {
-        websocketUrl = "ws://" + remoteServerHttp + remoteServerHttpBasePath + websocketUri + "/" + s;
+        websocketUrl = "ws://" + remoteHostPort + remoteHttpBasePath + websocketPrefix + "/" + s;
     }
 
     qInfo().noquote() << QString("ws: connecting to %1").arg(websocketUrl);
@@ -188,8 +234,10 @@ void Core::onWebsocketDisconnected() {
 
     websocketTimer.stop();
 
-    // always reconnect
-    connectToWebsocketServer("");
+    if (!isExiting) {
+        // always reconnect
+        connectToWebsocketServer("");
+    }
 }
 
 void Core::sendTextMessageToWebsocketServer(const QString &textMessage) {
@@ -204,13 +252,15 @@ void Core::onWebsocketTextMessageReceived(const QString &message) {
     QJsonObject websocketMessageObject;
     websocketMessageObject = QJsonDocument::fromJson(message.toUtf8()).object();
     QString cmd = websocketMessageObject["cmd"].toString();
-    if (cmd == "KeepAlive") {
 
+    if (cmd == "KeepAlive") {
+        // do something
+        websocketClient->ping("KeepAlive");
     }
 }
 
 void Core::onWebsocketTimeout() {
-    qDebug() << "ws: KeepAlive";
+    qDebug() << "ws: onWebsocketTimeout";
 
     // https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers#pings_and_pongs_the_heartbeat_of_websockets
     websocketClient->ping("KeepAlive");
@@ -220,13 +270,26 @@ void Core::onWebsocketTimeout() {
             {"cmd", "KeepAlive"},
             {"message", msgStr},
     };
+
     sendTextMessageToWebsocketServer(QJsonDocument(obj).toJson());
+}
+
+void Core::onRun() {
+    qInfo() << "Running...";
+
+    // do something
+    emit finished();
+
+    qInfo() << "I thought I'd finished!";
 }
 
 void Core::onExit() {
     qDebug() << "core: exit";
 
-    QEventLoop quitLoop;
-    QTimer::singleShot(1000, &quitLoop, SLOT(quit()));
-    quitLoop.exec();
+    isExiting = true;
+    websocketClient->close();
+
+    QEventLoop exitLoop;
+    QTimer::singleShot(1000, &exitLoop, SLOT(quit()));
+    exitLoop.exec();
 }
