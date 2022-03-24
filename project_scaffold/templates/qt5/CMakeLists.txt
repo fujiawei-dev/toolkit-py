@@ -86,11 +86,9 @@ set(
         Concurrent
         {%- if template!=".console" %}
         Gui
+        Widgets
         SerialBus
         Multimedia
-        {%- endif %}
-        {%- if template==".gui" %}
-        Widgets
         {%- endif %}
         {%- if template==".qml" %}
         Qml
@@ -163,11 +161,9 @@ set(
         Qt5::Concurrent
         {%- if template!=".console" %}
         Qt5::Gui
+        Qt5::Widgets
         Qt5::Multimedia
         Qt5::SerialBus
-        {%- endif %}
-        {%- if template==".gui" %}
-        Qt5::Widgets
         {%- endif %}
         {%- if template==".qml" %}
         Qt5::Qml

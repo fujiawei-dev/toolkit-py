@@ -70,7 +70,12 @@ void logMessageHandler(QtMsgType type, const QMessageLogContext &context, const 
 
 
 int main(int argc, char *argv[]) {
-    QCoreApplication app(argc, argv);
+{%- if template!=".console" %}
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
+{%- endif %}
+   QCoreApplication app(argc, argv);
 
     QCoreApplication::setOrganizationName("{{PACKAGE_TITLE.replace(' ', '.')}}");
     QCoreApplication::setOrganizationDomain("{{APP_NAME}}.com");
