@@ -3,8 +3,8 @@
 cmake_minimum_required(VERSION 3.1)
 project({{APP_NAME}})
 
-# All problems are compilation problems.
-# Better to forgo manual compilation.
+# Prebuild
+
 {% if template==".qml" -%}
 # Compile Typescript
 # npm install -g typescript
@@ -30,7 +30,7 @@ message(STATUS "Output: ${Output}")
 message(STATUS "Error: ${Error}")
 {%- endif %}
 
-# Main
+# Build
 
 message(STATUS "PROJECT_SOURCE_DIR=${PROJECT_SOURCE_DIR}")
 message(STATUS "CMAKE_SOURCE_DIR=${CMAKE_SOURCE_DIR}")
@@ -82,20 +82,22 @@ link_directories(${CMAKE_SOURCE_DIR}/lib)
 set(
         PACKAGES
         Core
-        Network
-        {%- if template!=".console" %}
-        Concurrent
-        Gui
-        Multimedia
-        SerialBus
         SerialPort
+        Concurrent
+        {%- if template!=".console" %}
+        Gui
+        SerialBus
+        Multimedia
+        {%- endif %}
+        {%- if template==".gui" %}
+        Widgets
         {%- endif %}
         {%- if template==".qml" %}
         Qml
         Quick
         {%- endif %}
+        Network
         WebSockets
-        Widgets
 )
 
 find_package(Qt5 COMPONENTS ${PACKAGES} REQUIRED)
@@ -103,21 +105,17 @@ find_package(Qt5 COMPONENTS ${PACKAGES} REQUIRED)
 set(
         SOURCES
         main.cpp
+        core.cpp
         {%- if template==".gui" %}
         widget.cpp
-        {%- endif %}
-        {%- if template==".qml" %}
-        core.cpp
         {%- endif %}
 )
 
 set(
         HEADERS
+        core.h
         {%- if template==".gui" %}
         widget.h
-        {%- endif %}
-        {%- if template==".qml" %}
-        core.h
         {%- endif %}
 )
 
@@ -133,49 +131,50 @@ set(
 )
 {%- endif %}
 
+set(
+        OTHER_EXECUTABLE
+        ${SOURCES}
+        ${HEADERS}
+        {%- if template==".gui" %}
+        ${FORMS}
+        {%- endif %}
+        {%- if template==".qml" %}
+        ${QML_FILES}
+        {%- endif %}
+)
+
 if (ANDROID)
     add_library(
             ${PROJECT_NAME}
             SHARED
-            ${SOURCES}
-            ${HEADERS}
-            {%- if template==".gui" %}
-            ${FORMS}
-            {%- endif %}
-            {%- if template==".qml" %}
-            ${QML_FILES}
-            {%- endif %}
+            ${OTHER_EXECUTABLE}
     )
 else ()
     add_executable(
             ${PROJECT_NAME}
-            ${SOURCES}
-            ${HEADERS}
-            {%- if template==".gui" %}
-            ${FORMS}
-            {%- endif %}
-            {%- if template==".qml" %}
-            ${QML_FILES}
-            {%- endif %}
+            ${OTHER_EXECUTABLE}
     )
 endif ()
 
 set(
         QT_LIBRARIES
         Qt5::Core
-        Qt5::Network
-        {%- if template!=".console" %}
+        Qt5::SerialPort
         Qt5::Concurrent
+        {%- if template!=".console" %}
+        Qt5::Gui
         Qt5::Multimedia
         Qt5::SerialBus
-        Qt5::SerialPort
+        {%- endif %}
+        {%- if template==".gui" %}
+        Qt5::Widgets
         {%- endif %}
         {%- if template==".qml" %}
         Qt5::Qml
         Qt5::Quick
         {%- endif %}
+        Qt5::Network
         Qt5::WebSockets
-        Qt5::Widgets
 )
 
 set(
@@ -201,10 +200,6 @@ add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
         ${CMAKE_SOURCE_DIR}/settings.ini $<TARGET_FILE_DIR:${PROJECT_NAME}>)
 endif ()
-
-find_program(DEPLOYQT_EXECUTABLE NAMES windeployqt macdeployqt HINTS "${CMAKE_PREFIX_PATH}")
-
-message(STATUS "Deployqt Executable: ${DEPLOYQT_EXECUTABLE}")
 
 if (WIN32)
     set(DEBUG_SUFFIX)
@@ -234,6 +229,11 @@ if (WIN32)
                 "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
     endforeach (QT_LIB)
 endif ()
+
+# Qt Deploy
+
+# find_program(DEPLOYQT_EXECUTABLE NAMES windeployqt macdeployqt HINTS "${CMAKE_PREFIX_PATH}")
+# message(STATUS "Deployqt Executable: ${DEPLOYQT_EXECUTABLE}")
 
 #if(APPLE)
 #    configure_file(${CMAKE_SOURCE_DIR}/Info.plist.in ${CMAKE_BINARY_DIR}/Info.plist)
