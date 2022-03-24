@@ -7,26 +7,35 @@
 #include <QSerialPort>
 #include <QSettings>
 
-class SyncSerialPort : public QObject {
+class SerialPort : public QObject {
     Q_OBJECT
 
 public:
-    explicit SyncSerialPort(QObject *parent = nullptr);
+    explicit SerialPort(QObject *parent = nullptr);
 
     static void PrintSerialPorts();
 
-    void InitConfig(QSettings *);
+    bool DebugMode() const;
+    void InitConfig(bool, QSettings *);
 
-    QByteArray Write(const QByteArray &byteArray);
-    QByteArray WriteFromHex(const QByteArray &hexString);
+    void Open();
+    void Close();
+
+    QByteArray WriteSync(const QByteArray &byteArray);
+    QByteArray WriteSyncFromHex(const QByteArray &hexString);
 
 
 public slots:
     void onExit();
 
 private:
+    bool debugMode = true;
+
+    void beforeInitConfig();
+    void afterInitConfig();
+
     // variables from config file
-    QSettings *settings{};
+    QSettings *conf{};
 
     QString portName;
     QSerialPort *serialPort;
