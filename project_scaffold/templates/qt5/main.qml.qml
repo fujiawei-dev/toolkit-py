@@ -15,7 +15,7 @@ Window {
     width: 640
     height: 480
 
-    title: qsTr("{{PACKAGE_TITLE}}")
+    title: qsTr("Qt Console App")
 
     property bool debugMode: false
 
@@ -58,7 +58,7 @@ Window {
                 cities = core.getCitiesByProvince(provinces[currentIndex])
                 modelCity.clear()
                 for ( let i = 0; i < cities.length; i++) {
-                    modelCity.append({text: core.getRegion(cities[i])})
+                    modelCity.append({text: core.getRegionByCode(cities[i])})
                 }
                 comboBoxCity.currentIndex=0
             }
@@ -73,7 +73,7 @@ Window {
                 let districts = core.getDistrictsByProvinceCity(provinces[comboBoxProvince.currentIndex], cities[currentIndex])
                 modelDistrict.clear()
                 for (let i = 0; i < districts.length; i++) {
-                    modelDistrict.append({text: core.getRegion(districts[i])})
+                    modelDistrict.append({text: core.getRegionByCode(districts[i])})
                 }
                 comboBoxDistrict.currentIndex=0
             }
@@ -93,19 +93,19 @@ Window {
     Component.onCompleted: {
         debugMode = core.debugMode
         if (debugMode){
-            MainJS.httpGetExample()
-            MainJS.httpPostExample()
+            // MainJS.httpGetExample()
+            // MainJS.httpPostExample()
         }
 
         let i = 0;
-        for ( i = 0; i < core.specialties.length; i++) {
-            mainForm.modelGenerator.append({text: core.specialties[i]})
+        for ( i = 0; i < core.items.length; i++) {
+            mainForm.modelGenerator.append({text: core.items[i]})
         }
         mainForm.comboBoxGenerator.currentIndex=0
 
         provinces = core.getProvinces()
         for ( i = 0; i < provinces.length; i++) {
-            modelProvince.append({text: core.getRegion(provinces[i])})
+            modelProvince.append({text: core.getRegionByCode(provinces[i])})
         }
         comboBoxProvince.currentIndex=0
     }

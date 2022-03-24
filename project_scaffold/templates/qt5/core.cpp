@@ -52,7 +52,7 @@ void Core::InitConfig(bool debug, QSettings *settings) {
 
     {
         //从设置中读取列表
-        int size = settings->beginReadArray("List");
+        int size = settings->beginReadArray("Items");
         for (int i = 0; i < size; i++) {
             settings->setArrayIndex(i);
             items.append(settings->value("item").toString());
@@ -134,7 +134,7 @@ void Core::parseRegionDatabase() {
     };
 
     // 区域代码与名称映射关系
-    QFile assetsCodeRegion(conf->value("Assets/ProvinceCityDistrict").toString());
+    QFile assetsCodeRegion(conf->value("Assets/CodeRegion").toString());
     if (!assetsCodeRegion.exists()) {
         qCritical() << "core:" << assetsCodeRegion.fileName() << "not exists";
         exit(-1);
