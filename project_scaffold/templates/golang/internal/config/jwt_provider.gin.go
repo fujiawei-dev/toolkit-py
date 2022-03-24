@@ -23,6 +23,14 @@ type jwtUserClaims struct {
 	entity.User
 }
 
+// https://github.com/dgrijalva/jwt-go/issues/460
+func (c jwtUserClaims) Valid() error {
+	if c.StandardClaims == nil {
+		return nil
+	}
+	return c.StandardClaims.Valid()
+}
+
 func (c *config) JWTMiddleware() gin.HandlerFunc {
 	if !c.JWTEnable() {
 		return func(ctx *gin.Context) {

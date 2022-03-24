@@ -236,6 +236,7 @@ func (config *JWTConfig) defaultParseToken(auth string, c *gin.Context) (interfa
 	} else {
 		t := reflect.ValueOf(config.Claims).Type().Elem()
 		claims := reflect.New(t).Interface().(jwt.Claims)
+		// https://github.com/dgrijalva/jwt-go/issues/460
 		token, err = jwt.ParseWithClaims(auth, claims, config.KeyFunc)
 	}
 	if err != nil {
