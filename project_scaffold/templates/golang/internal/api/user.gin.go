@@ -185,6 +185,7 @@ func UserLogin(router *gin.RouterGroup) {
 		}
 
 		c.Header("Authorization", token)
+		c.Header("Access-Control-Expose-Headers", "Authorization")
 
 		SendJSON(c, m)
 	})
