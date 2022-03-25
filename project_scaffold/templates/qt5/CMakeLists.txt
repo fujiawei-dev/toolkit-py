@@ -82,10 +82,10 @@ link_directories(${CMAKE_SOURCE_DIR}/lib)
 set(
         PACKAGES
         Core
+        Gui
         SerialPort
         Concurrent
         {%- if template!=".console" %}
-        Gui
         Widgets
         SerialBus
         Multimedia
@@ -157,10 +157,10 @@ endif ()
 set(
         QT_LIBRARIES
         Qt5::Core
+        Qt5::Gui
         Qt5::SerialPort
         Qt5::Concurrent
         {%- if template!=".console" %}
-        Qt5::Gui
         Qt5::Widgets
         Qt5::Multimedia
         Qt5::SerialBus
