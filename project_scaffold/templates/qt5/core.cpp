@@ -50,7 +50,7 @@ void Core::InitConfig(bool debug, QSettings *settings) {
 
     remoteHostPort = settings->value("Remote/HostPort").toString();
     remoteHttpBasePath = settings->value("Remote/HttpBasePath").toString();
-    remoteHttpBaseUrl = remoteHostPort + remoteHttpBasePath;
+    remoteHttpBaseUrl = "http://" + remoteHostPort + remoteHttpBasePath;
     websocketPrefix = settings->value("Remote/WebsocketPrefix").toString();
 
     {
@@ -97,6 +97,14 @@ QString Core::getUuid() {
     // "{b5eddbaf-984f-418e-88eb-cf0b8ff3e775}"
     // "b5eddbaf984f418e88ebcf0b8ff3e775"
     return QUuid::createUuid().toString().remove("{").remove("}").remove("-");
+}
+
+QString Core::getDateTime() {
+    return QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz");
+}
+
+QString Core::getTimeStamp() {
+    return QString::number(QDateTime::currentDateTime().toMSecsSinceEpoch());
 }
 
 // 区域数据离线查询
@@ -280,8 +288,13 @@ void Core::onWebsocketTimeout() {
 }
 
 QJsonObject Core::httpRequest(const QByteArray &method, const QString &url, const QByteArray &body = "", bool customUrl = false) {
+    auto httpUrl = customUrl ? url : remoteHttpBaseUrl + url;
+    if (!httpUrl.startsWith("http")) {
+        httpUrl = "http://" + httpUrl;
+    }
+
     QNetworkRequest request;
-    request.setUrl(customUrl ? url : remoteHttpBaseUrl + url);
+    request.setUrl(httpUrl);
 
     qInfo().noquote() << QString("core: %1 %2").arg(method, url);
 
@@ -302,7 +315,7 @@ QJsonObject Core::httpRequest(const QByteArray &method, const QString &url, cons
     QJsonObject responseJson;
 
     if (response->error() != QNetworkReply::NoError) {
-        qCritical() << response->error();
+        qCritical() << "core: response error," << response->error();
     } else {
         QByteArray responseBody = response->readAll();
         qInfo() << "core: responseBody =" << responseBody;
@@ -310,7 +323,7 @@ QJsonObject Core::httpRequest(const QByteArray &method, const QString &url, cons
         QJsonParseError jsonParseError{};
         QJsonDocument responseBodyJsonDocument(QJsonDocument::fromJson(responseBody, &jsonParseError));
         if (jsonParseError.error != QJsonParseError::NoError) {
-            qCritical() << jsonParseError.error;
+            qCritical() << "core: jsonParseError =" << jsonParseError.error;
         } else {
             responseJson = responseBodyJsonDocument.object();
         }
@@ -329,6 +342,15 @@ QJsonObject Core::httpPost(const QString &url, const QByteArray &body, bool cust
     return httpRequest("POST", url, body, customUrl);
 }
 
+QByteArray Core::parseDate(QByteArray d) {
+    d = d.left(2).toInt() > 20 ? "19" + d : "20" + d;
+    d = d.insert(4, "-").insert(7, "-");
+    return d;
+}
+
+QByteArray Core::parseSex(const QByteArray &s) {
+    return s == "F" ? "女" : "男";
+}
 
 void Core::onRun() {
     qInfo() << "Running...";

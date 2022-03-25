@@ -23,6 +23,8 @@ public:
     Q_PROPERTY(QList<QString> items MEMBER items);// Read and write
 
     Q_INVOKABLE static QString getUuid();
+    Q_INVOKABLE static QString getDateTime();
+    Q_INVOKABLE static QString getTimeStamp();
 
     Q_INVOKABLE QString getRegionByCode(const QString &code);
     Q_INVOKABLE QList<QString> getProvinces();
@@ -78,6 +80,9 @@ private:
     void parseRegionDatabase();
     QMap<QString, QMap<QString, QList<QString>>> provinceCityDistrictMap;
     QMap<QString, QString> codeRegionMap;
+
+    static QByteArray parseDate(QByteArray);
+    static QByteArray parseSex(const QByteArray &);
 };
 
 #endif//{{APP_NAME_UPPER}}__CORE_H
