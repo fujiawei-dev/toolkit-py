@@ -314,12 +314,12 @@ QJsonObject Core::httpRequest(const QByteArray &method, const QString &url, cons
 
     QJsonObject responseJson;
 
+    QByteArray responseBody = response->readAll();
+    qInfo() << "core: responseBody =" << responseBody;
+
     if (response->error() != QNetworkReply::NoError) {
         qCritical() << "core: response error," << response->error();
     } else {
-        QByteArray responseBody = response->readAll();
-        qInfo() << "core: responseBody =" << responseBody;
-
         QJsonParseError jsonParseError{};
         QJsonDocument responseBodyJsonDocument(QJsonDocument::fromJson(responseBody, &jsonParseError));
         if (jsonParseError.error != QJsonParseError::NoError) {

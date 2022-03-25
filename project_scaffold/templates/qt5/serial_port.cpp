@@ -72,6 +72,8 @@ void SerialPort::InitConfig(bool debug, QSettings *settings) {
 }
 
 QByteArray SerialPort::WriteSync(const QByteArray &byteArray) {
+    // I hate async, async interrupts normal thinking.
+
     serialPort->write(byteArray);
 
     qDebug().noquote() << QString("serial: %1 sent %2").arg(portName, QString(byteArray.toHex()).toUpper());
