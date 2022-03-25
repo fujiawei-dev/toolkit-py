@@ -83,6 +83,9 @@ private:
 
     static QByteArray parseDate(QByteArray);
     static QByteArray parseSex(const QByteArray &);
+
+    [[noreturn]] void DoSomethingForever();
+    void DoSomethingForeverConcurrent();
 };
 
 #endif//{{APP_NAME_UPPER}}__CORE_H

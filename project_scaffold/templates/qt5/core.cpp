@@ -352,6 +352,20 @@ QByteArray Core::parseSex(const QByteArray &s) {
     return s == "F" ? "女" : "男";
 }
 
+[[noreturn]] void Core::DoSomethingForever() {
+    // https://forum.qt.io/topic/80843/qobject-cannot-create-children-for-a-parent-that-is-in-a-different-thread-but-it-works-why/6
+    httpClient = new QNetworkAccessManager();
+
+    while (true) {
+        httpGet("http://httpbin.org/get", true);
+        QThread::sleep(3);
+    }
+}
+
+void Core::DoSomethingForeverConcurrent() {
+    QtConcurrent::run(this, &Core::DoSomethingForever);
+}
+
 void Core::onRun() {
     qInfo() << "Running...";
 
@@ -366,6 +380,9 @@ void Core::onRun() {
                              {"json", "This is a json object."}})
                      .toJson(),
              true);
+
+    //    DoSomethingForever();
+    //    DoSomethingForeverConcurrent();
 
     // do something
     emit finished();
