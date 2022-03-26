@@ -353,11 +353,11 @@ QByteArray Core::parseSex(const QByteArray &s) {
     return s == "F" ? "女" : "男";
 }
 
-[[noreturn]] void Core::DoSomethingForever() {
+void Core::DoSomethingForever() {
     // https://forum.qt.io/topic/80843/qobject-cannot-create-children-for-a-parent-that-is-in-a-different-thread-but-it-works-why/6
     httpClient = new QNetworkAccessManager();
 
-    while (true) {
+    while (!isExiting) {
         httpGet("http://httpbin.org/get", true);
         QThread::sleep(3);
     }

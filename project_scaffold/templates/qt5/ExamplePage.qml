@@ -20,6 +20,26 @@ Rectangle {
     MouseArea {
         id: mouseArea
         anchors.fill: parent
+
+        Button {
+            id: buttonDoSomethingForever
+            x: 254
+            y: 208
+            text: qsTr("Run")
+            onClicked: {
+                core.DoSomethingForever()
+            }
+        }
+
+        Button {
+            id: buttonDoSomethingForeverConcurrent
+            x: 254
+            y: 273
+            text: qsTr("Run Concurrent")
+            onClicked: {
+                core.DoSomethingForeverConcurrent()
+            }
+        }
     }
 
     // 基本组件与基础布局示例

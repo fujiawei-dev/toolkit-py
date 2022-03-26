@@ -34,6 +34,9 @@ public:
     Q_INVOKABLE void connectToWebsocketServer(const QString &);
     Q_INVOKABLE void sendTextMessageToWebsocketServer(const QString &);
 
+    Q_INVOKABLE void DoSomethingForever();
+    Q_INVOKABLE void DoSomethingForeverConcurrent();
+
     static std::string AESEncryptStr(const QString &msgStr, const QString &keyStr);
     static std::string AESDecryptStr(const QString &msgStr, const QString &keyStr);
 
@@ -83,9 +86,6 @@ private:
 
     static QByteArray parseDate(QByteArray);
     static QByteArray parseSex(const QByteArray &);
-
-    [[noreturn]] void DoSomethingForever();
-    void DoSomethingForeverConcurrent();
 };
 
 #endif//{{APP_NAME_UPPER}}__CORE_H
