@@ -4,6 +4,7 @@ Description: Omit
 LastEditors: Rustle Karl
 LastEditTime: 2022.02.02 18:14
 """
+import contextlib
 import os
 import shutil
 
@@ -48,7 +49,8 @@ def clean():
             if d.find("example") != -1:
                 d = os.path.join(root, d)
                 click.echo(f"clean {d}")
-                os.rmdir(d)
+                with contextlib.suppress(OSError):
+                    os.rmdir(d)
 
             elif d in build_dirs:
                 d = os.path.join(root, d)
@@ -78,7 +80,11 @@ def python():
     help="Combination of frameworks.",
 )
 @click.option(
-    "--entity", "-e", type=str, default="", help="New entity instance.",
+    "--entity",
+    "-e",
+    type=str,
+    default="",
+    help="New entity instance.",
 )
 def golang(combination, entity):
     _golang(combination, entity)
