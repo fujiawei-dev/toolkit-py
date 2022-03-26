@@ -7,6 +7,7 @@
 #include <QJsonObject>
 #include <QNetworkReply>
 #include <QUuid>
+#include <QtConcurrent>
 #include <string>
 //#include <cryptopp/aes.h>
 //#include <cryptopp/base64.h>

@@ -15,15 +15,12 @@ Window {
     width: 640
     height: 480
 
-    title: qsTr("Qt Console App")
+    title: qsTr("{{PACKAGE_TITLE}}")
 
     property bool debugMode: false
 
-    property var provinces
-    property var cities
-
-    MainForm {
-        id: mainForm
+    ExamplePage {
+        id: examplePage
         anchors.fill: parent
         mouseArea.onClicked: {
             // Qt.quit();
@@ -39,74 +36,23 @@ Window {
         property alias height: window.height
     }
 
-    RowLayout {
-        id: rowLayoutAddress
-
-        x: 15
-        y: 345
-
-        height: 40
-
-        ComboBox {
-            id: comboBoxProvince
-            Layout.preferredWidth:  100
-            model: ListModel {
-                id: modelProvince
-            }
-            onCurrentIndexChanged:{
-                // The index has changed, but the text value is still the previous one, which is a big pit
-                cities = core.getCitiesByProvince(provinces[currentIndex])
-                modelCity.clear()
-                for ( let i = 0; i < cities.length; i++) {
-                    modelCity.append({text: core.getRegionByCode(cities[i])})
-                }
-                comboBoxCity.currentIndex=0
-            }
-        }
-        ComboBox {
-            id: comboBoxCity
-            Layout.preferredWidth: 100
-            model: ListModel {
-                id: modelCity
-            }
-            onCurrentIndexChanged:{
-                let districts = core.getDistrictsByProvinceCity(provinces[comboBoxProvince.currentIndex], cities[currentIndex])
-                modelDistrict.clear()
-                for (let i = 0; i < districts.length; i++) {
-                    modelDistrict.append({text: core.getRegionByCode(districts[i])})
-                }
-                comboBoxDistrict.currentIndex=0
-            }
-        }
-        ComboBox {
-            id: comboBoxDistrict
-            Layout.preferredWidth: 100
-            model: ListModel {
-                id: modelDistrict
-            }
-            onCurrentIndexChanged:{
-
-            }
-        }
-    }
-
     Component.onCompleted: {
         debugMode = core.debugMode
         if (debugMode){
-            // MainJS.httpGetExample()
-            // MainJS.httpPostExample()
+            MainJS.httpGetExample()
+            MainJS.httpPostExample()
         }
 
         let i = 0;
         for ( i = 0; i < core.items.length; i++) {
-            mainForm.modelGenerator.append({text: core.items[i]})
+            examplePage.modelGenerator.append({text: core.items[i]})
         }
-        mainForm.comboBoxGenerator.currentIndex=0
+        examplePage.comboBoxGenerator.currentIndex=0
 
-        provinces = core.getProvinces()
-        for ( i = 0; i < provinces.length; i++) {
-            modelProvince.append({text: core.getRegionByCode(provinces[i])})
+        examplePage.provinces = core.getProvinces()
+        for ( i = 0; i < examplePage.provinces.length; i++) {
+            examplePage.modelProvince.append({text: core.getRegionByCode(examplePage.provinces[i])})
         }
-        comboBoxProvince.currentIndex=0
+        examplePage.comboBoxProvince.currentIndex=0
     }
 }
