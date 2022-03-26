@@ -36,6 +36,7 @@ def clean():
     build_dirs = {
         "cmake-build-debug",  # Clion cmake build
         "cmake-build-release",  # Makefile cmake build
+        "node_modules",
     }
 
     for root, dirs, files in os.walk("."):
@@ -52,11 +53,12 @@ def clean():
                 with contextlib.suppress(OSError):
                     os.rmdir(d)
 
-            elif d in build_dirs:
-                d = os.path.join(root, d)
-                click.echo(f"clean {d}")
-                shutil.rmtree(d)
-                os.mkdir(d)
+            else:
+                for build_dir in build_dirs:
+                    if d.find(build_dir) != -1:
+                        d = os.path.join(root, d)
+                        click.echo(f"clean {d}")
+                        shutil.rmtree(d)
 
 
 @command_cps.command(
