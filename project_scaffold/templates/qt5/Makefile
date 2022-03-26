@@ -7,6 +7,24 @@
 .EXPORT_ALL_VARIABLES: ; # send all vars to shell
 .IGNORE: clean;            # ignore all errors, keep going
 
+APP_NAME = {{APP_NAME}}
+
+UNIFIED_NAME := $(APP_NAME)
+ifeq ($(OS), Windows_NT)
+UNIFIED_NAME := $(UNIFIED_NAME).exe
+endif
+
+# Qt default installation directory
+QT_PATH = C:/Qt/Qt5.12.6
+QT_VERSION = 5.12.6
+QT_COMPILE_VERSION = mingw73_32
+QT_TOOL_VERSION = mingw730_32
+
+CMAKE_PREFIX_PATH = ${QT_PATH}/${QT_VERSION}/${QT_COMPILE_VERSION}
+
+CMAKE_BUILD_PREFIX = cmake-build
+RELEASE_PACKAGE = release-package
+
 all: clean
 
 info:
@@ -23,3 +41,15 @@ clean:
 
 	-(mkdir $(CMAKE_BUILD_PREFIX)-release)
 	-(cd $(CMAKE_BUILD_PREFIX)-release; rm -r *)
+
+release:
+	-(rm -r $(RELEASE_PACKAGE))
+	-(mkdir $(RELEASE_PACKAGE))
+	cp $(CMAKE_BUILD_PREFIX)-release/$(UNIFIED_NAME) $(RELEASE_PACKAGE)/$(UNIFIED_NAME)
+	cp -r assets $(RELEASE_PACKAGE)
+	cp -r lib/*.dll $(RELEASE_PACKAGE)
+
+	@echo cd $(RELEASE_PACKAGE)
+	@echo '$$Env:PATH="${CMAKE_PREFIX_PATH}/bin;${QT_PATH}/Tools/${QT_TOOL_VERSION}/bin;"+$$Env:Path'
+	@echo '$$Env:QML2_IMPORT_PATH="${CMAKE_PREFIX_PATH}/qml"'
+	@echo windeployqt --release --qmldir ${CMAKE_PREFIX_PATH}/qml ${UNIFIED_NAME}
