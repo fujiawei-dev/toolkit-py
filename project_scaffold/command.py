@@ -41,13 +41,13 @@ def clean():
 
     for root, dirs, files in os.walk("."):
         for f in files:
-            if f.find("example") != -1 or f in {"ToolkitPy_logo.png"}:
+            if f.lower().find("example") != -1 or f in {"ToolkitPy_logo.png"}:
                 f = os.path.join(root, f)
                 click.echo(f"clean {f}")
                 os.unlink(f)
 
         for d in dirs:
-            if d.find("example") != -1:
+            if d.lower().find("example") != -1:
                 d = os.path.join(root, d)
                 click.echo(f"clean {d}")
                 with contextlib.suppress(OSError):
@@ -55,7 +55,7 @@ def clean():
 
             else:
                 for build_dir in build_dirs:
-                    if d.find(build_dir) != -1:
+                    if d.lower().find(build_dir) != -1:
                         d = os.path.join(root, d)
                         click.echo(f"clean {d}")
                         shutil.rmtree(d)

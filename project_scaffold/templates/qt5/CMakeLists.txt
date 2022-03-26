@@ -154,6 +154,23 @@ else ()
     )
 endif ()
 
+if (WIN32)
+    set_target_properties(
+            ${PROJECT_NAME}
+            PROPERTIES LINK_FLAGS_RELEASE "-mwindows"
+            #            PROPERTIES LINK_FLAGS_DEBUG "-mwindows"
+    )
+
+    #    set_target_properties(
+    #            ${PROJECT_NAME}
+    #            PROPERTIES
+    #            LINK_FLAGS_DEBUG "/SUBSYSTEM:CONSOLE"
+    #            LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup"
+    #            LINK_FLAGS_RELWITHDEBINFO "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup"
+    #            LINK_FLAGS_MINSIZEREL "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup"
+    #    )
+endif (WIN32)
+
 set(
         QT_LIBRARIES
         Qt5::Core
