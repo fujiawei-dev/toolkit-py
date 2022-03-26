@@ -28,7 +28,7 @@ Window {
     }
 
     Settings {
-        id:settings
+        id: settings
 
         property alias x: window.x
         property alias y: window.y

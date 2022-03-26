@@ -54,6 +54,10 @@ class HttpClient {
             url += "?" + query.join("&");
         }
 
+        if (url.substring(0, 4) !== "http") {
+            url = "http://" + url;
+        }
+
         console.log(method + " " + url);
 
         let client = new XMLHttpRequest();

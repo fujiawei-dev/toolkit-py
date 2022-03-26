@@ -131,7 +131,7 @@ int main(int argc, char *argv[]) {
         settings->setValue("Assets/CodeRegion", "assets/data/CodeRegion.json");
 
         // 设置列表
-        QList<QString> items = {"item1", "item2", "item3"};
+        QList<QString> items = {"计算机", "软件工程", "物联网"};
         settings->beginWriteArray("Items");
         for (int i = 0; i < items.size(); i++) {
             settings->setArrayIndex(i);

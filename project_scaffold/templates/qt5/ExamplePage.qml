@@ -13,6 +13,7 @@ Rectangle {
 
     property var provinces
     property var cities
+    property var districts
 
     property alias comboBoxProvince: comboBoxProvince
     property alias modelProvince: modelProvince
@@ -255,7 +256,7 @@ Rectangle {
                 id: modelProvince
             }
             onCurrentIndexChanged:{
-                // The index has changed, but the text value is still the previous one, which is a big pit
+                // https://doc.qt.io/qt-5/qml-qtquick-controls-combobox.html#currentText-prop
                 cities = core.getCitiesByProvince(provinces[currentIndex])
                 modelCity.clear()
                 for ( let i = 0; i < cities.length; i++) {
