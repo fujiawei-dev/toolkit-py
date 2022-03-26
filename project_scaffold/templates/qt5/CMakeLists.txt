@@ -228,6 +228,10 @@ endif ()
 
 # Qt Deploy
 
+if(WIN32)
+    message(STATUS "Deploy: windeployqt --release --qmldir ${CMAKE_PREFIX_PATH}/qml ${PROJECT_NAME}.exe")
+endif()
+
 # find_program(DEPLOYQT_EXECUTABLE NAMES windeployqt macdeployqt HINTS "${CMAKE_PREFIX_PATH}")
 # message(STATUS "Deployqt Executable: ${DEPLOYQT_EXECUTABLE}")
 
