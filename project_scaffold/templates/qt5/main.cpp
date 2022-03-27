@@ -182,16 +182,16 @@ int main(int argc, char *argv[]) {
     engine.load(url);
 
     QObject::connect(&app, SIGNAL(aboutToQuit()), core, SLOT(onExit()));
-    {% elif template==".console" %}
-    // Only for console app. This will run from the application event loop.
-    // https://forum.qt.io/topic/55226/how-to-exit-a-qt-console-app-from-an-inner-class-solved
-    QObject::connect(core, SIGNAL(finished()), &app, SLOT(quit()));
-    QTimer::singleShot(0, core, SLOT(onRun()));
     {% elif template==".gui" %}
     Widget w;
     w.setSettings(settings);
     w.show();
     {%- endif %}
+
+    // Only for console app. This will run from the application event loop.
+    // https://forum.qt.io/topic/55226/how-to-exit-a-qt-console-app-from-an-inner-class-solved
+    //    QObject::connect(core, SIGNAL(finished()), &app, SLOT(quit()));
+    //    QTimer::singleShot(0, core, SLOT(onRun()));
 
     return QCoreApplication::exec();
 }
