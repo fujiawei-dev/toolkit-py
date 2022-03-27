@@ -172,6 +172,9 @@ set(
         {%- if template==".gui" %}
         widget.cpp
         {%- endif %}
+        {%- if template==".qml" %}
+        image_provider.cpp
+        {%- endif %}
 )
 
 set(
@@ -180,6 +183,9 @@ set(
         core.h
         {%- if template==".gui" %}
         widget.h
+        {%- endif %}
+        {%- if template==".qml" %}
+        image_provider.h
         {%- endif %}
 )
 

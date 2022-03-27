@@ -14,6 +14,7 @@
 {%- endif %}
 #include <QMutex>
 {%- if template==".qml" %}
+#include "image_provider.h"
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 {%- endif %}
@@ -162,6 +163,8 @@ int main(int argc, char *argv[]) {
     core->InitConfig(debugMode, settings);
 
     {% if template==".qml" -%}
+    auto *qmlImageManager = new QmlImageManager();
+
     // Add fonts
     // QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Regular.ttf");
     // QFontDatabase::addApplicationFont("assets/fonts/Alibaba-PuHuiTi-Bold.ttf");
@@ -171,6 +174,9 @@ int main(int argc, char *argv[]) {
 
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("core", core);
+    engine.rootContext()->setContextProperty("qmlImageManager", qmlImageManager);
+    engine.addImageProvider(QLatin1String("qmlImageProvider"), qmlImageManager->qmlImageProvider);
+
     const QUrl url("qrc:/main.qml");
     QObject::connect(
             &engine, &QQmlApplicationEngine::objectCreated,

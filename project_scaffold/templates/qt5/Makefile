@@ -54,7 +54,7 @@ release-copy:
 release-deployqt: SHELL:=pwsh   # This is setting the shell for b only, but you should disable ONESHELL.
 release-deployqt: # $(eval SHELL:=pwsh)
 	@echo $(SHELL)
-	$$Env:PATH="${CMAKE_PREFIX_PATH}/bin;${QT_PATH}/Tools/${QT_TOOL_VERSION}/bin;"+$$Env:Path; $$Env:QML2_IMPORT_PATH="${CMAKE_PREFIX_PATH}/qml"; cd $(RELEASE_PACKAGE); windeployqt --release --qmldir ${CMAKE_PREFIX_PATH}/qml ${UNIFIED_NAME}
+	$$Env:PATH="${CMAKE_PREFIX_PATH}/bin;${QT_PATH}/Tools/${QT_TOOL_VERSION}/bin;"+$$Env:Path; $$Env:QML2_IMPORT_PATH="${CMAKE_PREFIX_PATH}/qml"; cd $(RELEASE_PACKAGE); windeployqt --release --qmldir "${CMAKE_PREFIX_PATH}/qml" ${UNIFIED_NAME}
 
 release-run:
 	@echo $(SHELL)
