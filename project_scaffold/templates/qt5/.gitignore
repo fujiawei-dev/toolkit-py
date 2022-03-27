@@ -4,6 +4,9 @@
 
 # CMake
 cmake-build-*/
+bin/
+version.h
+http_client.js
 
 # File-based project format
 *.iws

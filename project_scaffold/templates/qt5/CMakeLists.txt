@@ -5,6 +5,12 @@ project({{APP_NAME}})
 
 # Prebuild
 
+# System information
+message(STATUS "CMAKE_VERSION: " ${CMAKE_VERSION})
+message(STATUS "CMAKE_HOST_SYSTEM_NAME: " ${CMAKE_HOST_SYSTEM_NAME})
+message(STATUS "CMAKE_HOST_SYSTEM_PROCESSOR: " ${CMAKE_HOST_SYSTEM_PROCESSOR})
+message(STATUS "CMAKE_HOST_SYSTEM_VERSION: " ${CMAKE_HOST_SYSTEM_VERSION})
+
 {% if template==".qml" -%}
 # Compile Typescript
 # npm install -g typescript
@@ -31,6 +37,18 @@ message(STATUS "Error: ${Error}")
 {%- endif %}
 
 # Build
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wall -O2")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -O2")
+
+if (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "x86_64")
+    message(STATUS "LINUX_OS_X86_64")
+    set(LINUX_OS_X86_64 TRUE)
+    add_definitions(-DLINUX_OS_X86_64)
+elseif (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "AARCH64")
+    message(STATUS "LINUX_OS_ARM64")
+    set(LINUX_OS_ARM64 TRUE)
+    add_definitions(-DLINUX_OS_ARM64)
+endif ()
 
 message(STATUS "PROJECT_SOURCE_DIR=${PROJECT_SOURCE_DIR}")
 message(STATUS "CMAKE_SOURCE_DIR=${CMAKE_SOURCE_DIR}")
@@ -78,6 +96,51 @@ message("QT_ASSUME_STDERR_HAS_CONSOLE=$ENV{QT_ASSUME_STDERR_HAS_CONSOLE}")
 
 message(STATUS "On Clion, you should set QT_ASSUME_STDERR_HAS_CONSOLE=$ENV{QT_ASSUME_STDERR_HAS_CONSOLE};PATH=${CMAKE_PREFIX_PATH}/bin\;${QT_PATH}/Tools/${QT_TOOL_VERSION}/bin;QML2_IMPORT_PATH=${CMAKE_PREFIX_PATH}/qml")
 
+# Enable MESSAGELOGCONTEXT
+set(QT_MESSAGELOGCONTEXT TRUE)
+add_definitions(-DQT_MESSAGELOGCONTEXT)
+
+# Version & Git
+string(TIMESTAMP BUILD_TIMESTAMP "%Y-%m-%d %H:%M:%S")
+message("BUILD_TIMESTAMP: ${BUILD_TIMESTAMP}")
+
+set(VERSION_MAJOR 0)
+set(VERSION_MINOR 0)
+set(VERSION_PATCH 1)
+set(APP_VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})
+
+message("Version is ${APP_VERSION}")
+
+set(GIT_BRANCH_NAME "")
+set(GIT_COMMIT_HASH "")
+
+find_package(Git QUIET)
+
+if (GIT_FOUND)
+    execute_process(
+            COMMAND ${GIT_EXECUTABLE} symbolic-ref --short -q HEAD
+            OUTPUT_VARIABLE GIT_BRANCH_NAME
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+            ERROR_QUIET
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+    execute_process(
+            COMMAND ${GIT_EXECUTABLE} log -1 --pretty=format:%h
+            OUTPUT_VARIABLE GIT_COMMIT_HASH
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+            ERROR_QUIET
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+endif ()
+
+set(APP_VERSION_WITH_BUILD_INFO "${APP_VERSION}, ${GIT_COMMIT_HASH}@${GIT_BRANCH_NAME}, ${BUILD_TIMESTAMP}")
+
+configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/version_ini.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/version.h
+        @ONLY
+)
+
 include_directories(${CMAKE_SOURCE_DIR}/include)
 link_directories(${CMAKE_SOURCE_DIR}/lib)
 
@@ -113,6 +176,7 @@ set(
 
 set(
         HEADERS
+        version.h
         core.h
         {%- if template==".gui" %}
         widget.h

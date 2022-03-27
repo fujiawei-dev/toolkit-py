@@ -1,6 +1,7 @@
 {{SLASH_COMMENTS}}
 
 #include "core.h"
+#include "version.h"
 #include <QCommandLineParser>
 #include <QCoreApplication>
 #include <QDateTime>
@@ -25,31 +26,31 @@
 {%- endif %}
 
 void logMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg) {
-    QString text;
+    QString logLevel;
     static QMutex mutex;
 
     switch (type) {
         case QtDebugMsg:
-            text = QString("DEBUG:");
+            logLevel = QString("DEBUG:");
             break;
         case QtInfoMsg:
-            text = QString("INFO:");
+            logLevel = QString("INFO:");
             break;
         case QtWarningMsg:
-            text = QString("WARN:");
+            logLevel = QString("WARN:");
             break;
         case QtCriticalMsg:
-            text = QString("ERROR:");
+            logLevel = QString("ERROR:");
             break;
         case QtFatalMsg:
-            text = QString("FATAL:");
+            logLevel = QString("FATAL:");
     }
 
-    QString contextInfo = QString("%1:%2").arg(context.file).arg(context.line);
+    //    QString contextInfo = QString("%1:%2").arg(context.file).arg(context.line);
     QString currentDateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-    QString message = QString("%1 %2 %3 %4").arg(currentDateTime, text, contextInfo, text);
+    QString message = QString("%1 %2 %3").arg(currentDateTime, logLevel, msg);
 
-    QString logsDir = QCoreApplication::applicationDirPath() + "/logs";
+    QString logsDir = QApplication::applicationDirPath() + "/logs";
     QFile logFile(logsDir + "/" + currentDateTime.left(10) + ".log");
 
     QDir dir;
@@ -80,7 +81,7 @@ int main(int argc, char *argv[]) {
     QCoreApplication::setOrganizationName("{{PACKAGE_TITLE.replace(' ', '.')}}");
     QCoreApplication::setOrganizationDomain("{{APP_NAME}}.com");
     QCoreApplication::setApplicationName("{{APP_NAME}}");
-    QCoreApplication::setApplicationVersion("0.0.1");
+    QCoreApplication::setApplicationVersion(APP_VERSION_WITH_BUILD_INFO);
 
 #if (QT_VERSION <= QT_VERSION_CHECK(5, 0, 0))
 #if _MSC_VER
