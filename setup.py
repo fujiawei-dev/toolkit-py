@@ -58,6 +58,7 @@ setup(
     extras_require=extras_require,
     package_data={
         "create_config_file": find_package_data("create_config_file/templates"),
+        "open_source_mirror": find_package_data("open_source_mirror/templates"),
         "project_scaffold": find_package_data("project_scaffold/templates"),
     },
     entry_points={

@@ -78,9 +78,9 @@ Options:
   --help  Show this message and exit.
 
 Commands:
-  python (py)       Change pypi & conda source minors.
-  raspberrypi (pi)  Change Raspberry Pi OS source minors.
-  ubuntu (ubuntu)   Change ubuntu/ubuntu-port source minors.
+  python (py)       Change pypi & conda source mirrors.
+  raspberrypi (pi)  Change Raspberry Pi OS source mirrors.
+  ubuntu (ubuntu)   Change ubuntu/ubuntu-port source mirrors.
 ```
 
 ### Create basic project scaffold

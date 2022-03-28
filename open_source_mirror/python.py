@@ -1,6 +1,6 @@
 """
 Date: 2020-09-21 23:48:26
-Description: Change pypi & conda source minors.
+Description: Change pypi & conda source mirrors.
 LastEditors: Rustle Karl
 LastEditTime: 2022.02.02 15:01
 """
