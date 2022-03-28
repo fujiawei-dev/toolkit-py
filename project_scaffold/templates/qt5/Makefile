@@ -63,3 +63,7 @@ release-run:
 release-clean:
 	-(rm -r $(RELEASE_PACKAGE)/logs)
 	-(rm $(RELEASE_PACKAGE)/settings.ini)
+
+release-compress:
+	-(rm bin/${APP_NAME}.7z)
+	7z a bin/${APP_NAME}.7z -p321 bin/*
