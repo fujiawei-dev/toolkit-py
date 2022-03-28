@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
 {%- endif %}
    QCoreApplication app(argc, argv);
 
-    QCoreApplication::setOrganizationName("{{PACKAGE_TITLE.replace(' ', '.')}}");
+    QCoreApplication::setOrganizationName("{{PACKAGE_TITLE.replace(' ', '')}}");
     QCoreApplication::setOrganizationDomain("{{APP_NAME}}.com");
     QCoreApplication::setApplicationName("{{APP_NAME}}");
     QCoreApplication::setApplicationVersion(APP_VERSION_WITH_BUILD_INFO);

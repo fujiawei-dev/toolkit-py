@@ -31,13 +31,14 @@ func resetAction(ctx *cli.Context) error {
 
 	onlyResetDatabase := ctx.Bool("database")
 
+	if err := entity.ResetDatabase(); err != nil {
+		fmt.Printf("reset database failed, %v\n", err)
+	} else {
+		fmt.Println("reset database successfully")
+	}
+
 	// Reset database?
 	if onlyResetDatabase {
-		if err := entity.ResetDatabase(); err != nil {
-			fmt.Printf("reset database failed, %v\n", err)
-		} else {
-			fmt.Println("reset database successfully")
-		}
 		return nil
 	}
 
