@@ -17,7 +17,6 @@
 //using namespace CryptoPP;
 
 Core::Core(QObject *parent) : QObject(parent) {
-    httpClient = new QNetworkAccessManager;
     websocketClient = new QWebSocket();
 
     connect(websocketClient, &QWebSocket::connected, this, &Core::onWebsocketConnected);
@@ -240,6 +239,8 @@ void Core::onWebsocketConnected() {
     connect(websocketClient, &QWebSocket::textMessageReceived, this, &Core::onWebsocketTextMessageReceived);
     connect(&websocketTimer, &QTimer::timeout, this, &Core::onWebsocketTimeout);
 
+    connect(this, &Core::sendTextMessageToWebsocketServer, this, &Core::onSendTextMessageToWebsocketServer);
+
     websocketTimer.start(51.71 * 1000);
 }
 
@@ -279,17 +280,23 @@ void Core::onWebsocketTimeout() {
     // https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers#pings_and_pongs_the_heartbeat_of_websockets
     websocketClient->ping("KeepAlive");
 
+    websocketKeepAlive();
+}
+
+void Core::websocketKeepAlive() {
     QString msgStr = "KeepAlive";
     QJsonObject obj{
             {"cmd", "KeepAlive"},
             {"message", msgStr},
     };
 
-    sendTextMessageToWebsocketServer(QJsonDocument(obj).toJson());
+    emit sendTextMessageToWebsocketServer(QJsonDocument(obj).toJson());
 }
 
 QJsonObject Core::httpRequest(const QByteArray &method, const QString &url, const QByteArray &body = "", bool customUrl = false) {
-    auto httpUrl = customUrl ? url : remoteHttpBaseUrl + url;
+    auto *httpClient = new QNetworkAccessManager();
+
+   auto httpUrl = customUrl ? url : remoteHttpBaseUrl + url;
     if (!httpUrl.startsWith("http")) {
         httpUrl = "http://" + httpUrl;
     }
@@ -309,6 +316,7 @@ QJsonObject Core::httpRequest(const QByteArray &method, const QString &url, cons
 
     QNetworkReply *response = httpClient->sendCustomRequest(request, method, body);
 
+    // FIXME: timeout handling
     QEventLoop eventLoop;
     QObject::connect(response, SIGNAL(finished()), &eventLoop, SLOT(quit()));
     eventLoop.exec(QEventLoop::ExcludeUserInputEvents);
@@ -319,7 +327,7 @@ QJsonObject Core::httpRequest(const QByteArray &method, const QString &url, cons
     qInfo() << "core: responseBody =" << responseBody;
 
     if (response->error() != QNetworkReply::NoError) {
-        qCritical() << "core: response error," << response->error();
+        qCritical() << "core: response error," << response->errorString();
     } else {
         QJsonParseError jsonParseError{};
         QJsonDocument responseBodyJsonDocument(QJsonDocument::fromJson(responseBody, &jsonParseError));
@@ -329,6 +337,8 @@ QJsonObject Core::httpRequest(const QByteArray &method, const QString &url, cons
             responseJson = responseBodyJsonDocument.object();
         }
     }
+
+    response->deleteLater();
 
     qInfo() << "core: responseJson =" << responseJson;
 
@@ -355,8 +365,6 @@ QByteArray Core::parseSex(const QByteArray &s) {
 
 void Core::DoSomethingForever() {
     // https://forum.qt.io/topic/80843/qobject-cannot-create-children-for-a-parent-that-is-in-a-different-thread-but-it-works-why/6
-    httpClient = new QNetworkAccessManager();
-
     while (!isExiting) {
         httpGet("http://httpbin.org/get", true);
         QThread::sleep(3);

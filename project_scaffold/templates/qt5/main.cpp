@@ -51,7 +51,7 @@ void logMessageHandler(QtMsgType type, const QMessageLogContext &context, const 
     QString currentDateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
     QString message = QString("%1 %2 %3").arg(currentDateTime, logLevel, msg);
 
-    QString logsDir = QApplication::applicationDirPath() + "/logs";
+    QString logsDir = QCoreApplication::applicationDirPath() + "/logs";
     QFile logFile(logsDir + "/" + currentDateTime.left(10) + ".log");
 
     QDir dir;
@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
 {%- endif %}
-   QCoreApplication app(argc, argv);
+    QCoreApplication app(argc, argv);
 
     QCoreApplication::setOrganizationName("{{PACKAGE_TITLE.replace(' ', '')}}");
     QCoreApplication::setOrganizationDomain("{{APP_NAME}}.com");

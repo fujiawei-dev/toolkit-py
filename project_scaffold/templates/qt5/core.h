@@ -32,7 +32,6 @@ public:
     Q_INVOKABLE QList<QString> getDistrictsByProvinceCity(const QString &province, const QString &city);
 
     Q_INVOKABLE void connectToWebsocketServer(const QString &);
-    Q_INVOKABLE void sendTextMessageToWebsocketServer(const QString &);
 
     Q_INVOKABLE void DoSomethingForever();
     Q_INVOKABLE void DoSomethingForeverConcurrent();
@@ -49,6 +48,8 @@ signals:
     void finished();// 正常退出
     void abort();   // 异常中断
 
+    void sendTextMessageToWebsocketServer(const QString &textMessage);
+
 public slots:
     void onExit();
     void onRun();// for console app
@@ -58,6 +59,7 @@ private Q_SLOTS:
     void onWebsocketConnected();
     void onWebsocketDisconnected();
     void onWebsocketTextMessageReceived(const QString &message);
+    void onSendTextMessageToWebsocketServer(const QString &textMessage);
 
 private:
     bool debugMode = true;
@@ -70,15 +72,14 @@ private:
     QSettings *conf{};
     QString remoteHostPort;
     QString remoteHttpBasePath;
+    QString remoteHttpBaseUrl;
+
     QString websocketPrefix;
     QList<QString> items = {};
 
     QWebSocket *websocketClient;
     QString websocketUrl;
     QTimer websocketTimer;
-
-    QNetworkAccessManager *httpClient;
-    QString remoteHttpBaseUrl;
 
     void parseRegionDatabase();
     QMap<QString, QMap<QString, QList<QString>>> provinceCityDistrictMap;
