@@ -3,7 +3,7 @@
 package {{GOLANG_PACKAGE}}
 
 import (
-	"github.com/gin-gonic/gin"
+	"{{WEB_FRAMEWORK_IMPORT}}"
 
 	"{{GOLANG_MODULE}}/internal/query"
 )
@@ -12,8 +12,8 @@ func init() {
 	AddRouteRegistrar(RegionBy)
 }
 
-func RegionBy(router *gin.RouterGroup) {
-	router.Any("/region/by", func(c *gin.Context) {
+func RegionBy(router {{ROUTER_GROUP}}) {
+	router.Any("/region/by", func(c {{WEB_CONTEXT}}) {
 		var result interface{}
 
 		code := c.Query("code")
@@ -26,5 +26,6 @@ func RegionBy(router *gin.RouterGroup) {
 		}
 
 		SendJSON(c, result)
+		return{{NIL_STRING}}
 	})
 }
