@@ -3,28 +3,38 @@
 package {{GOLANG_PACKAGE}}
 
 import (
-	"github.com/kataras/iris/v12"
+	"{{WEB_FRAMEWORK_IMPORT}}"
 
 	"{{GOLANG_MODULE}}/internal/acl"
 	"{{GOLANG_MODULE}}/internal/entity"
 )
 
-func Auth(c iris.Context, resource acl.Resource, action acl.Action) (user entity.User, pass bool) {
+func Auth(c {{WEB_CONTEXT}}, resource acl.Resource, action acl.Action) (user entity.User, allow bool) {
+	defer func() {
+		operationLog := entity.NewOperationLog(user.ID, resource, action, allow)
+		if err := operationLog.Create(); err != nil {
+			log.Printf("create operation log, %v", err)
+		}
+	}()
+
 	user = conf.JWTParse(c)
 
-	if user.Invalid() {
+	allow = !user.Invalid()
+	if !allow {
 		AbortUnauthorized(c)
-		return user, false
+		return
 	}
 
-	if acl.Permissions.Deny(resource, user.Role, action) {
+	allow = !acl.Permissions.Deny(resource, user.Role, action)
+	if !allow {
 		AbortPermissionDenied(c)
-		return user, false
+		return
 	}
 
-	return user, true
+	return
 }
 
+{% if WEB_FRAMEWORK=='"iris"' %}
 // UserLoginRefresh Refresh Token
 func UserLoginRefresh(router iris.Party) {
 	router.Get("/user/login/refresh", conf.JWTMiddleware(), func(c iris.Context) {
@@ -49,3 +59,4 @@ func UserLoginRefresh(router iris.Party) {
 		SendJSON(c, token)
 	})
 }
+{%- endif %}

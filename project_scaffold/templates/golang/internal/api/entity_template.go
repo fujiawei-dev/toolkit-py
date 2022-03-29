@@ -5,8 +5,10 @@ package {{GOLANG_PACKAGE}}
 import (
 	"errors"
 
-	"github.com/gin-gonic/gin"
+	"{{WEB_FRAMEWORK_IMPORT}}"
+    {%- if WEB_FRAMEWORK not in [".iris"] %}
 	"github.com/spf13/cast"
+    {%- endif %}
 
 	"{{GOLANG_MODULE}}/internal/acl"
 	"{{GOLANG_MODULE}}/internal/entity"
@@ -24,8 +26,8 @@ func init() {
 }
 
 // PostEntityTemplate
-// @Summary      创建
-// @Description  创建
+// @Summary      创建实体
+// @Description  创建实体
 // @Tags         实体管理
 // @Accept       json
 // @Security     ApiKeyAuth
@@ -33,38 +35,39 @@ func init() {
 // @Produce      json
 // @Success      200  {object}  query.Response  "操作成功"
 // @Router       /entity_template [post]
-func PostEntityTemplate(router *gin.RouterGroup) {
-	router.POST("/entity_template", conf.JWTMiddleware(), func(c *gin.Context) {
+func PostEntityTemplate(router {{ROUTER_GROUP}}) {
+	router.{{POST_STRING}}("/entity_template", {{WEB_JWT_UP}}func(c {{WEB_CONTEXT}}) {{ERROR_STRING}}{
 		if _, pass := Auth(c, acl.ResourceEntityTemplates, acl.ActionCreate); !pass {
-			return
+			return{{NIL_STRING}}
 		}
 
 		var f form.EntityTemplateCreate
 
 		if err := form.ShouldBind(c, &f); err != nil {
 			ErrorInvalidParameters(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		var m entity.EntityTemplate
 
 		if err := m.CopyFrom(f); err != nil {
 			ErrorUnexpected(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		if err := m.Create(); err != nil {
 			ErrorUnexpected(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		SendOK(c)
+		return{{NIL_STRING}}
 	})
 }
 
 // PutEntityTemplate
-// @Summary      修改
-// @Description  修改
+// @Summary      修改实体
+// @Description  修改实体
 // @Tags         实体管理
 // @Accept       json
 // @Security     ApiKeyAuth
@@ -73,22 +76,30 @@ func PostEntityTemplate(router *gin.RouterGroup) {
 // @Produce      json
 // @Success      200  {object}  query.Response  "操作成功"
 // @Router       /entity_template/{id} [put]
-func PutEntityTemplate(router *gin.RouterGroup) {
-	router.PUT("/entity_template/:id", conf.JWTMiddleware(), func(c *gin.Context) {
+func PutEntityTemplate(router {{ROUTER_GROUP}}) {
+	router.{{PUT_STRING}}("/entity_template/{{QUERY_ID}}", {{WEB_JWT_UP}}func(c {{WEB_CONTEXT}}) {{ERROR_STRING}}{
 		if _, pass := Auth(c, acl.ResourceEntityTemplates, acl.ActionUpdate); !pass {
-			return
+			return{{NIL_STRING}}
 		}
 
+        {% if WEB_FRAMEWORK==".iris" -%}
+		id := c.Params().GetUintDefault("id", 0)
+        {% elif WEB_FRAMEWORK==".fiber" -%}
+		id := cast.ToUint(c.Params("id"))
+        {% elif WEB_FRAMEWORK==".echo" -%}
 		id := cast.ToUint(c.Param("id"))
+        {% elif WEB_FRAMEWORK==".gin" -%}
+		id := cast.ToUint(c.Param("id"))
+        {% endif -%}
 		if id == 0 {
 			ErrorInvalidParameters(c, errors.New("id(uint) is required"))
-			return
+			return{{NIL_STRING}}
 		}
 
 		var m entity.EntityTemplate
 		if err := m.FindByID(id); err != nil {
 			ErrorExpectedOrUnexpected(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		// Handle null values, malicious injection, etc.
@@ -96,31 +107,32 @@ func PutEntityTemplate(router *gin.RouterGroup) {
 
 		if err := m.CopyTo(&f); err != nil {
 			ErrorUnexpected(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		if err := form.ShouldBind(c, &f); err != nil {
 			ErrorInvalidParameters(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		if err := m.CopyFrom(f); err != nil {
 			ErrorUnexpected(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		if err := m.Save(); err != nil {
 			ErrorUnexpected(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		SendOK(c)
-	})
+		return{{NIL_STRING}}
+	}{{WEB_JWT_DOWN}})
 }
 
 // DeleteEntityTemplate
-// @Summary      删除
-// @Description  删除
+// @Summary      删除实体
+// @Description  删除实体
 // @Tags         实体管理
 // @Accept       json
 // @Security     ApiKeyAuth
@@ -128,68 +140,86 @@ func PutEntityTemplate(router *gin.RouterGroup) {
 // @Produce      json
 // @Success      200  {object}  query.Response  "操作成功"
 // @Router       /unit/{id} [delete]
-func DeleteEntityTemplate(router *gin.RouterGroup) {
-	router.DELETE("/entity_template/:id", conf.JWTMiddleware(), func(c *gin.Context) {
+func DeleteEntityTemplate(router {{ROUTER_GROUP}}) {
+	router.{{DELETE_STRING}}("/entity_template/{{QUERY_ID}}", {{WEB_JWT_UP}}func(c {{WEB_CONTEXT}}) {{ERROR_STRING}}{
 		if _, pass := Auth(c, acl.ResourceEntityTemplates, acl.ActionDelete); !pass {
-			return
+			return{{NIL_STRING}}
 		}
 
+        {% if WEB_FRAMEWORK==".iris" -%}
+		id := c.Params().GetUintDefault("id", 0)
+        {% elif WEB_FRAMEWORK==".fiber" -%}
+		id := cast.ToUint(c.Params("id"))
+        {% elif WEB_FRAMEWORK==".echo" -%}
 		id := cast.ToUint(c.Param("id"))
+        {% elif WEB_FRAMEWORK==".gin" -%}
+		id := cast.ToUint(c.Param("id"))
+        {% endif -%}
 		if id == 0 {
 			ErrorInvalidParameters(c, errors.New("id(uint) is required"))
-			return
+			return{{NIL_STRING}}
 		}
 
 		var m entity.EntityTemplate
 
 		if err := m.FindByID(id); err != nil {
 			ErrorExpectedOrUnexpected(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		if err := m.Delete(); err != nil {
 			ErrorUnexpected(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		SendOK(c)
-	})
+		return{{NIL_STRING}}
+	}{{WEB_JWT_DOWN}})
 }
 
 // GetEntityTemplate
-// @Summary      获取
-// @Description  获取
+// @Summary      获取实体
+// @Description  获取实体
 // @Tags         实体管理
 // @Accept       json
 // @Param        id  path  int  true  "ID"
 // @Produce      json
 // @Success      200  {object}  query.Response{result=query.EntityTemplateResult}  "操作成功"
 // @Router       /entity_template/{id} [get]
-func GetEntityTemplate(router *gin.RouterGroup) {
-	router.GET("/entity_template/:id", conf.JWTMiddleware(), func(c *gin.Context) {
+func GetEntityTemplate(router {{ROUTER_GROUP}}) {
+	router.{{GET_STRING}}("/entity_template/{{QUERY_ID}}", {{WEB_JWT_UP}}func(c {{WEB_CONTEXT}}) {{ERROR_STRING}}{
 		if _, pass := Auth(c, acl.ResourceEntityTemplates, acl.ActionRead); !pass {
-			return
+			return{{NIL_STRING}}
 		}
 
+        {% if WEB_FRAMEWORK==".iris" -%}
+		id := c.Params().GetUintDefault("id", 0)
+        {% elif WEB_FRAMEWORK==".fiber" -%}
+		id := cast.ToUint(c.Params("id"))
+        {% elif WEB_FRAMEWORK==".echo" -%}
 		id := cast.ToUint(c.Param("id"))
+        {% elif WEB_FRAMEWORK==".gin" -%}
+		id := cast.ToUint(c.Param("id"))
+        {% endif -%}
 		if id == 0 {
 			ErrorInvalidParameters(c, errors.New("id(uint) is required"))
-			return
+			return{{NIL_STRING}}
 		}
 
 		var m entity.EntityTemplate
 
 		if err := m.FindByID(id); err != nil {
 			ErrorExpectedOrUnexpected(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		SendJSON(c, m)
-	})
+		return{{NIL_STRING}}
+	}{{WEB_JWT_DOWN}})
 }
 
-// GetEntityTemplate
-// @Summary      实体列表
+// GetEntityTemplates
+// @Summary      获取实体列表
 // @Description  获取实体列表
 // @Tags         实体管理
 // @Accept       json
@@ -200,28 +230,29 @@ func GetEntityTemplate(router *gin.RouterGroup) {
 // @Produce      json
 // @Success      200  {object}  query.Response{result=Result{pager=form.Pager,list=[]query.EntityTemplateResult}}  "操作成功"
 // @Router       /entity_templates [get]
-func GetEntityTemplates(router *gin.RouterGroup) {
-	router.GET("/entity_templates", conf.JWTMiddleware(), func(c *gin.Context) {
+func GetEntityTemplates(router {{ROUTER_GROUP}}) {
+	router.{{GET_STRING}}("/entity_templates", {{WEB_JWT_UP}}func(c {{WEB_CONTEXT}}) {{ERROR_STRING}}{
 		if _, pass := Auth(c, acl.ResourceEntityTemplates, acl.ActionSearch); !pass {
-			return
+			return{{NIL_STRING}}
 		}
 
 		f := form.SearchPager{}
 
 		if err := form.ShouldBind(c, &f); err != nil {
 			ErrorInvalidParameters(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		list, totalRow, err := query.EntityTemplates(f)
 
 		if err != nil {
 			ErrorUnexpected(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		f.TotalRows = totalRow
 
 		SendList(c, list, f.Pager)
-	})
+		return{{NIL_STRING}}
+	}{{WEB_JWT_DOWN}})
 }

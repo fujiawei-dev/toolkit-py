@@ -56,9 +56,21 @@ class GoCombinations(str, Enum):
         ]
     )
 
-    C3 = ";".join([GoWebFramework.Echo, GoCliFramework.Cobra, GoConfigFramework.Viper,])
+    C3 = ";".join(
+        [
+            GoWebFramework.Echo,
+            GoCliFramework.Cobra,
+            GoConfigFramework.Viper,
+        ]
+    )
 
-    C4 = ";".join([GoWebFramework.Gin, GoLogFramework.Zerolog, GoCliFramework.Cli,])
+    C4 = ";".join(
+        [
+            GoWebFramework.Gin,
+            GoLogFramework.Zerolog,
+            GoCliFramework.Cli,
+        ]
+    )
 
     C5 = ";".join(
         [
@@ -104,14 +116,59 @@ def golang(combination=GoCombinations.C2, entity=""):
             "EntityTemplate": package_title.replace(" ", ""),
         }
 
-    framework_keys = [
-        "web_framework",
-        "log_framework",
-        "cli_framework",
-        "config_framework",
-    ]
-
     framework_values = GoCombinations.shortcuts(combination).split(";")
+
+    kwargs = {
+        "GET_STRING": "GET",
+        "POST_STRING": "POST",
+        "PUT_STRING": "PUT",
+        "DELETE_STRING": "DELETE",
+        "RETURN_STRING": "",
+        "ERROR_STRING": "",
+        "NIL_STRING": "",
+        "QUERY_ID": ":id",
+        "WEB_JWT_UP": "conf.JWTMiddleware(), ",
+        "WEB_JWT_DOWN": "",
+    }
+
+    if GoWebFramework.Gin in framework_values:
+        kwargs["WEB_FRAMEWORK"] = ".gin"
+        kwargs["WEB_FRAMEWORK_IMPORT"] = "github.com/gin-gonic/gin"
+        kwargs["ROUTER_GROUP"] = "*gin.RouterGroup"
+        kwargs["WEB_CONTEXT"] = "*gin.Context"
+        kwargs["WEB_ENGINE"] = "*gin.Engine"
+    elif GoWebFramework.Echo in framework_values:
+        kwargs["WEB_FRAMEWORK"] = ".echo"
+        kwargs["WEB_FRAMEWORK_IMPORT"] = "github.com/labstack/echo/v4"
+        kwargs["ROUTER_GROUP"] = "*echo.Group"
+        kwargs["WEB_CONTEXT"] = "echo.Context"
+        kwargs["RETURN_STRING"] = "return "
+        kwargs["ERROR_STRING"] = "error"
+        kwargs["NIL_STRING"] = " nil"
+        kwargs["WEB_JWT_UP"] = ""
+        kwargs["WEB_JWT_DOWN"] = ", conf.JWTMiddleware()"
+    elif GoWebFramework.Fiber in framework_values:
+        kwargs["WEB_FRAMEWORK"] = ".fiber"
+        kwargs["WEB_FRAMEWORK_IMPORT"] = "github.com/gofiber/fiber/v2"
+        kwargs["ROUTER_GROUP"] = "fiber.Router"
+        kwargs["WEB_CONTEXT"] = "*fiber.Ctx"
+        kwargs["ERROR_STRING"] = "error"
+        kwargs["NIL_STRING"] = " nil"
+        kwargs["RETURN_STRING"] = "return "
+        kwargs["GET_STRING"] = "Get"
+        kwargs["POST_STRING"] = "Post"
+        kwargs["PUT_STRING"] = "Put"
+        kwargs["DELETE_STRING"] = "Delete"
+    elif GoWebFramework.Iris in framework_values:
+        kwargs["WEB_FRAMEWORK"] = ".iris"
+        kwargs["WEB_FRAMEWORK_IMPORT"] = "github.com/kataras/iris/v12"
+        kwargs["ROUTER_GROUP"] = "iris.Party"
+        kwargs["WEB_CONTEXT"] = "iris.Context"
+        kwargs["GET_STRING"] = "Get"
+        kwargs["POST_STRING"] = "Post"
+        kwargs["PUT_STRING"] = "Put"
+        kwargs["DELETE_STRING"] = "Delete"
+        kwargs["QUERY_ID"] = "{id:uint}"
 
     render_templates(
         "golang",
@@ -120,7 +177,7 @@ def golang(combination=GoCombinations.C2, entity=""):
         only_files=only_files,
         replace_list=replace_list,
         GOLANG_HEADER=GENERATOR_HEADER.replace("#", "//"),
-        **dict(zip(framework_keys, framework_values))
+        **kwargs
     )
 
     if entity == "":

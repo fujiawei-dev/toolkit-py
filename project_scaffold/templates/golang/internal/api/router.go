@@ -2,9 +2,9 @@
 
 package {{GOLANG_PACKAGE}}
 
-import "github.com/gin-gonic/gin"
+import "{{WEB_FRAMEWORK_IMPORT}}"
 
-type RouteRegistrar func(router *gin.RouterGroup)
+type RouteRegistrar func(router {{ROUTER_GROUP}})
 
 var RouteRegistrars []RouteRegistrar
 
@@ -12,8 +12,8 @@ func AddRouteRegistrar(rr RouteRegistrar) {
 	RouteRegistrars = append(RouteRegistrars, rr)
 }
 
-func RegisterRoutes(app *gin.Engine) {
-	router := app.Group(conf.BasePath())
+func RegisterRoutes(app {{WEB_ENGINE}}) {
+	router := app.{{WEB_ENGINE_GROUP}}(conf.BasePath())
 
 	for _, rr := range RouteRegistrars {
 		rr(router)

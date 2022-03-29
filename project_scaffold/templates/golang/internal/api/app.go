@@ -3,7 +3,7 @@
 package {{GOLANG_PACKAGE}}
 
 import (
-	"github.com/gin-gonic/gin"
+	"{{WEB_FRAMEWORK_IMPORT}}"
 
 	"{{GOLANG_MODULE}}/internal/query"
 )
@@ -12,8 +12,9 @@ func init() {
 	AddRouteRegistrar(GetAppDescription)
 }
 
-func GetAppDescription(router *gin.RouterGroup) {
-	router.GET("/app/description", func(c *gin.Context) {
+func GetAppDescription(router {{ROUTER_GROUP}}) {
+	router.{{GET_STRING}}("/app/description", func(c {{WEB_CONTEXT}}) {{ERROR_STRING}}{
 		SendJSON(c, query.GetAppDescription())
+		return{{NIL_STRING}}
 	})
 }

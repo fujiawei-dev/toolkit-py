@@ -50,15 +50,15 @@ func (c *config) JWTGenerate(ctx *fiber.Ctx, user entity.User) (interface{}, err
 	return nil, nil
 }
 
-func (c *config) JWTParse(ctx *fiber.Ctx) (user entity.User, err error) {
+func (c *config) JWTParse(ctx *fiber.Ctx) (user entity.User) {
 	if !c.JWTEnable() {
-		return entity.Admin, nil
+		return entity.Admin
 	}
 
 	claims := ctx.Locals(c.JWTContextKey()).(*jwtProvider.Token).Claims.(jwtProvider.MapClaims)
 
 	if v := claims["user"]; v != nil {
-		err = mapstructure.Decode(v, &user)
+		_ = mapstructure.Decode(v, &user)
 	}
 
 	return

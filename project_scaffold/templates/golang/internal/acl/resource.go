@@ -12,5 +12,5 @@ const (
 	ResourceLogs      Resource = "logs"      // 日志
 	ResourcePasswords Resource = "passwords" // 密码
 	ResourceUsers     Resource = "users"     // 用户
-	ResourceEntityTemplate    Resource = "entity_template"
+	ResourceEntityTemplates    Resource = "entity_templates"// 示例
 )
