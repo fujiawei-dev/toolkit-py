@@ -25,7 +25,7 @@ func init() {
 
 func PostEntityTemplate(router *gin.RouterGroup) {
 	router.POST("/entity_template", conf.JWTMiddleware(), func(c *gin.Context) {
-		if _, pass := Auth(c, acl.ResourceEntityTemplate, acl.ActionCreate); !pass {
+		if _, pass := Auth(c, acl.ResourceEntityTemplates, acl.ActionCreate); !pass {
 			return
 		}
 
@@ -54,7 +54,7 @@ func PostEntityTemplate(router *gin.RouterGroup) {
 
 func PutEntityTemplate(router *gin.RouterGroup) {
 	router.PUT("/entity_template/:id", conf.JWTMiddleware(), func(c *gin.Context) {
-		if _, pass := Auth(c, acl.ResourceEntityTemplate, acl.ActionUpdate); !pass {
+		if _, pass := Auth(c, acl.ResourceEntityTemplates, acl.ActionUpdate); !pass {
 			return
 		}
 
@@ -99,7 +99,7 @@ func PutEntityTemplate(router *gin.RouterGroup) {
 
 func DeleteEntityTemplate(router *gin.RouterGroup) {
 	router.DELETE("/entity_template/:id", conf.JWTMiddleware(), func(c *gin.Context) {
-		if _, pass := Auth(c, acl.ResourceEntityTemplate, acl.ActionDelete); !pass {
+		if _, pass := Auth(c, acl.ResourceEntityTemplates, acl.ActionDelete); !pass {
 			return
 		}
 
@@ -127,7 +127,7 @@ func DeleteEntityTemplate(router *gin.RouterGroup) {
 
 func GetEntityTemplate(router *gin.RouterGroup) {
 	router.GET("/entity_template/:id", conf.JWTMiddleware(), func(c *gin.Context) {
-		if _, pass := Auth(c, acl.ResourceEntityTemplate, acl.ActionRead); !pass {
+		if _, pass := Auth(c, acl.ResourceEntityTemplates, acl.ActionRead); !pass {
 			return
 		}
 
@@ -150,7 +150,7 @@ func GetEntityTemplate(router *gin.RouterGroup) {
 
 func GetEntityTemplates(router *gin.RouterGroup) {
 	router.GET("/entity_templates", conf.JWTMiddleware(), func(c *gin.Context) {
-		if _, pass := Auth(c, acl.ResourceEntityTemplate, acl.ActionSearch); !pass {
+		if _, pass := Auth(c, acl.ResourceEntityTemplates, acl.ActionSearch); !pass {
 			return
 		}
 
