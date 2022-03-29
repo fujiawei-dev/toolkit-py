@@ -104,13 +104,23 @@ def golang(combination=GoCombinations.C2, entity=""):
             "EntityTemplate": package_title.replace(" ", ""),
         }
 
+    framework_keys = [
+        "web_framework",
+        "log_framework",
+        "cli_framework",
+        "config_framework",
+    ]
+
+    framework_values = GoCombinations.shortcuts(combination).split(";")
+
     render_templates(
         "golang",
-        include_suffixes=GoCombinations.shortcuts(combination).split(";"),
+        include_suffixes=framework_values,
         folders=["storage", "storage/configs"],
         only_files=only_files,
         replace_list=replace_list,
         GOLANG_HEADER=GENERATOR_HEADER.replace("#", "//"),
+        **dict(zip(framework_keys, framework_values))
     )
 
     if entity == "":
