@@ -19,6 +19,7 @@
 #include <QQmlContext>
 {%- endif %}
 #include <QSettings>
+#include <QSharedMemory>
 #include <QTextCodec>
 #include <QTimer>
 #include <iostream>
@@ -72,6 +73,14 @@ void logMessageHandler(QtMsgType type, const QMessageLogContext &context, const 
 
 
 int main(int argc, char *argv[]) {
+    // ONLY ALLOW SINGLETON!
+    //    QSharedMemory shared("immigration_office_qml_app");
+    //    if (shared.attach()) {
+    //        qCritical() << "app: multiple instances are not allowed";
+    //        return 0;
+    //    }
+    //    shared.create(1);
+
 {%- if template!=".console" %}
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
