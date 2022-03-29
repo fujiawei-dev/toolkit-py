@@ -255,7 +255,7 @@ void Core::onWebsocketDisconnected() {
     }
 }
 
-void Core::sendTextMessageToWebsocketServer(const QString &textMessage) {
+void Core::onSendTextMessageToWebsocketServer(const QString &textMessage) {
     qInfo().noquote() << QString("ws: sent '%1'").arg(textMessage.simplified());
 
     websocketClient->sendTextMessage(textMessage);

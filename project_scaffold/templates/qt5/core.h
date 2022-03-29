@@ -80,6 +80,7 @@ private:
     QWebSocket *websocketClient;
     QString websocketUrl;
     QTimer websocketTimer;
+    void websocketKeepAlive();
 
     void parseRegionDatabase();
     QMap<QString, QMap<QString, QList<QString>>> provinceCityDistrictMap;
