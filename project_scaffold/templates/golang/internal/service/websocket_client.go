@@ -31,7 +31,7 @@ type Client struct {
 	handleMessage func(messageType int, p []byte)
 
 	// Buffered channel of outbound messages.
-	send chan []byte
+	Send chan []byte
 
 	afterClose func()
 }
@@ -41,7 +41,7 @@ func NewClient(hub *Hub, conn *websocket.Conn, handleMessage func(messageType in
 		Hub:           hub,
 		conn:          conn,
 		handleMessage: handleMessage,
-		send:          make(chan []byte, 256),
+		Send:          make(chan []byte, 256),
 		afterClose:    afterClose,
 	}
 }
@@ -96,7 +96,7 @@ func (c *Client) WritePump() {
 
 	for {
 		select {
-		case message, ok := <-c.send:
+		case message, ok := <-c.Send:
 			if !ok {
 				// The hub closed the channel.
 				c.conn.WriteMessage(websocket.CloseMessage, []byte{})
@@ -111,9 +111,9 @@ func (c *Client) WritePump() {
 			w.Write(message)
 
 			// Add queued chat messages to the current websocket message.
-			n := len(c.send)
+			n := len(c.Send)
 			for i := 0; i < n; i++ {
-				w.Write(<-c.send)
+				w.Write(<-c.Send)
 			}
 
 			if err = w.Close(); err != nil {
@@ -166,14 +166,14 @@ func (h *Hub) Run() {
 		case client := <-h.Unregister:
 			if _, ok := h.Clients[client]; ok {
 				delete(h.Clients, client)
-				close(client.send)
+				close(client.Send)
 			}
 		case message := <-h.Broadcast:
 			for client := range h.Clients {
 				select {
-				case client.send <- message:
+				case client.Send <- message:
 				default:
-					close(client.send)
+					close(client.Send)
 					delete(h.Clients, client)
 				}
 			}
