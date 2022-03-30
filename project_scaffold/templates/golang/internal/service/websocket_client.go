@@ -22,7 +22,7 @@ const (
 
 // Client is a middleman between the websocket connection and the hub.
 type Client struct {
-	hub *Hub
+	Hub *Hub
 
 	// The websocket connection.
 	conn *websocket.Conn
@@ -38,7 +38,7 @@ type Client struct {
 
 func NewClient(hub *Hub, conn *websocket.Conn, handleMessage func(messageType int, p []byte), afterClose func()) *Client {
 	return &Client{
-		hub:           hub,
+		Hub:           hub,
 		conn:          conn,
 		handleMessage: handleMessage,
 		send:          make(chan []byte, 256),
@@ -46,15 +46,15 @@ func NewClient(hub *Hub, conn *websocket.Conn, handleMessage func(messageType in
 	}
 }
 
-// readPump pumps messages from the websocket connection to the hub.
+// ReadPump pumps messages from the websocket connection to the hub.
 //
 // The application runs readPump in a per-connection goroutine. The application
 // ensures that there is at most one reader on a connection by executing all
 // reads from this goroutine.
-func (c *Client) readPump() {
+func (c *Client) ReadPump() {
 	defer func() {
 		c.conn.Close()
-		c.hub.unregister <- c
+		c.Hub.Unregister <- c
 		if c.afterClose != nil {
 			c.afterClose()
 		}
@@ -67,7 +67,7 @@ func (c *Client) readPump() {
 		messageType, message, err := c.conn.ReadMessage()
 
 		if err != nil {
-			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
+			if websocket.IsUnexpectedCloseError(err, websocket.CloseNormalClosure, websocket.CloseGoingAway) {
 				log.Error().Msgf("ws: %v", err)
 			}
 			break
@@ -76,17 +76,17 @@ func (c *Client) readPump() {
 		if c.handleMessage != nil {
 			c.handleMessage(messageType, message)
 		} else {
-			c.hub.broadcast <- message
+			c.Hub.Broadcast <- message
 		}
 	}
 }
 
-// writePump pumps messages from the hub to the websocket connection.
+// WritePump pumps messages from the hub to the websocket connection.
 //
 // A goroutine running writePump is started for each connection. The
 // application ensures that there is at most one writer to a connection by
 // executing all writes from this goroutine.
-func (c *Client) writePump() {
+func (c *Client) WritePump() {
 	ticker := time.NewTicker(pingPeriod)
 
 	defer func() {
@@ -128,60 +128,60 @@ func (c *Client) writePump() {
 	}
 }
 
-// Hub maintains the set of active clients and broadcasts messages to the clients.
+// Hub maintains the set of active Clients and broadcasts messages to the Clients.
 type Hub struct {
 	// Used to distinguish
 	label string
 
-	// Registered clients.
-	clients map[*Client]bool
+	// Registered Clients.
+	Clients map[*Client]bool
 
-	// Inbound messages from the clients.
-	broadcast chan []byte
+	// Inbound messages from the Clients.
+	Broadcast chan []byte
 
-	// Register requests from the clients.
-	register chan *Client
+	// Register requests from the Clients.
+	Register chan *Client
 
-	// Unregister requests from clients.
-	unregister chan *Client
+	// Unregister requests from Clients.
+	Unregister chan *Client
 }
 
-func newHub(label string) *Hub {
+func NewHub(label string) *Hub {
 	return &Hub{
 		label:      label,
-		broadcast:  make(chan []byte),
-		register:   make(chan *Client),
-		unregister: make(chan *Client),
-		clients:    make(map[*Client]bool),
+		Broadcast:  make(chan []byte),
+		Register:   make(chan *Client),
+		Unregister: make(chan *Client),
+		Clients:    make(map[*Client]bool),
 	}
 }
 
-func (h *Hub) run() {
+func (h *Hub) Run() {
 	for {
-		log.Printf("hub<%s>: len(h.clients) = %d", h.label, len(h.clients))
+		// log.Printf("hub<%s>: len(h.Clients) = %d", h.label, len(h.Clients))
 
 		select {
-		case client := <-h.register:
-			h.clients[client] = true
-		case client := <-h.unregister:
-			if _, ok := h.clients[client]; ok {
-				delete(h.clients, client)
+		case client := <-h.Register:
+			h.Clients[client] = true
+		case client := <-h.Unregister:
+			if _, ok := h.Clients[client]; ok {
+				delete(h.Clients, client)
 				close(client.send)
 			}
-		case message := <-h.broadcast:
-			for client := range h.clients {
+		case message := <-h.Broadcast:
+			for client := range h.Clients {
 				select {
 				case client.send <- message:
 				default:
 					close(client.send)
-					delete(h.clients, client)
+					delete(h.Clients, client)
 				}
 			}
 		}
 	}
 }
 
-var crossSiteUpgrader = websocket.Upgrader{
+var CrossSiteUpgrader = websocket.Upgrader{
 	HandshakeTimeout:  time.Second * 8,
 	CheckOrigin:       func(r *http.Request) bool { return true }, // cross-site
 	EnableCompression: false,
