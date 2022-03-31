@@ -32,9 +32,9 @@ func (c *config) JWTMiddleware() fiber.Handler {
 	})
 }
 
-func (c *config) JWTGenerate(ctx *fiber.Ctx, user entity.User) (interface{}, error) {
+func (c *config) JWTGenerate(user entity.User) (string, error) {
 	if !c.JWTEnable() {
-		return nil, nil
+		return "", nil
 	}
 
 	switch c.JWTMode() {
@@ -47,7 +47,7 @@ func (c *config) JWTGenerate(ctx *fiber.Ctx, user entity.User) (interface{}, err
 		return j.SignedString(c.JWTKey())
 	}
 
-	return nil, nil
+	return "", nil
 }
 
 func (c *config) JWTParse(ctx *fiber.Ctx) (user entity.User) {

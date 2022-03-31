@@ -24,7 +24,7 @@ type JWTProvider struct{
 
 func (c *config) JWTMiddleware() iris.Handler {
 	if !c.JWTEnable() {
-		return func(ctx *context.Context) {
+		return func(ctx iris.Context) {
 			ctx.Next()
 		}
 	}
@@ -34,7 +34,7 @@ func (c *config) JWTMiddleware() iris.Handler {
 	})
 }
 
-func (c *config) JWTGenerate(ctx iris.Context, user entity.User) (interface{}, error) {
+func (c *config) JWTGenerate(user entity.User) (interface{}, error) {
 	if !c.JWTEnable() {
 		return nil, nil
 	}
@@ -43,7 +43,6 @@ func (c *config) JWTGenerate(ctx iris.Context, user entity.User) (interface{}, e
 	case JWTDefault:
 		buf, err := c.jwtSigner().Sign(user, jwt.Claims{Issuer: conf.JWTIssuer()})
 		value := string(buf)
-		ctx.ResponseWriter().Header().Set("Authorization", value)
 		return value, err
 	case JWTRefresh:
 		return c.jwtSigner().NewTokenPair(
@@ -90,7 +89,7 @@ func (c *config) JWTRefresh(ctx iris.Context, user entity.User) (bool, interface
 		return false, nil, err
 	}
 
-	val, err := c.JWTGenerate(ctx, user)
+	val, err := c.JWTGenerate(user)
 
 	return true, val, err
 }

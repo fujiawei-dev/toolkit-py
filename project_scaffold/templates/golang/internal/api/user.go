@@ -23,7 +23,7 @@ func init() {
 	AddRouteRegistrar(PostUser)
 	AddRouteRegistrar(PutUser)
 	AddRouteRegistrar(PutUserPassword)
-    AddRouteRegistrar(GetUsers)
+	AddRouteRegistrar(GetUsers)
 }
 
 func PostUser(router {{ROUTER_GROUP}}) {
@@ -159,12 +159,10 @@ func GetUsers(router {{ROUTER_GROUP}}) {
 
         {% if WEB_FRAMEWORK==".iris" -%}
 		username := c.URLParam("username")
-        {% elif WEB_FRAMEWORK==".fiber" -%}
-		username := cast.ToUint(c.Params("id"))
-        {% elif WEB_FRAMEWORK==".echo" -%}
-		username := cast.ToUint(c.Param("id"))
-        {% elif WEB_FRAMEWORK==".gin" -%}
+        {% elif WEB_FRAMEWORK in [".gin", ".fiber"] -%}
 		username := c.Query("username")
+        {% elif WEB_FRAMEWORK==".echo" -%}
+		username := c.QueryParam("username")
         {% endif -%}
 		f.LikeQ = username
 
@@ -215,8 +213,19 @@ func UserLogin(router {{ROUTER_GROUP}}) {
 			return{{NIL_STRING}}
 		}
 
+        {% if WEB_FRAMEWORK==".iris" -%}
+		c.Header("Authorization", token.(string))
+		c.Header("Access-Control-Expose-Headers", "Authorization")
+        {% elif WEB_FRAMEWORK==".fiber" -%}
+		c.Response().Header.Set("Authorization", token)
+		c.Response().Header.Set("Access-Control-Expose-Headers", "Authorization")
+        {% elif WEB_FRAMEWORK==".echo" -%}
+		c.Response().Header().Set("Authorization", token)
+		c.Response().Header().Set("Access-Control-Expose-Headers", "Authorization")
+        {% elif WEB_FRAMEWORK==".gin" -%}
 		c.Header("Authorization", token)
 		c.Header("Access-Control-Expose-Headers", "Authorization")
+        {% endif -%}
 
 		SendJSON(c, m)
 		return{{NIL_STRING}}
