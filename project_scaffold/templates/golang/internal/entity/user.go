@@ -99,7 +99,10 @@ func (m *User) Save() error {
 
 // CreateWithPassword Creates User with Password in db transaction.
 func CreateWithPassword(f form.User) error {
-	u := &User{Username: f.Username, LoginAt: time.Now()}
+	u := &User{LoginAt: time.Now()}
+	if err := u.CopyFrom(f); err != nil {
+		return err
+	}
 
 	if len(f.Password) < 4 {
 		return fmt.Errorf("user: new password for %s must be at least 4 characters", u.Username)

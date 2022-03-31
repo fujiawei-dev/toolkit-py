@@ -16,6 +16,14 @@ APP_VERSION := $(shell python -c "from {{PYTHON_MODULE}}.version import __versio
 
 all: format reinstall tests
 
+info:
+	@echo $(SHELL)
+
+init:
+	git init
+	git add .
+	git commit -m "first commit"
+
 format:
 	pip install -U black
 	black .
