@@ -56,21 +56,9 @@ class GoCombinations(str, Enum):
         ]
     )
 
-    C3 = ";".join(
-        [
-            GoWebFramework.Echo,
-            GoCliFramework.Cobra,
-            GoConfigFramework.Viper,
-        ]
-    )
+    C3 = ";".join([GoWebFramework.Echo, GoCliFramework.Cobra, GoConfigFramework.Viper,])
 
-    C4 = ";".join(
-        [
-            GoWebFramework.Gin,
-            GoLogFramework.Zerolog,
-            GoCliFramework.Cli,
-        ]
-    )
+    C4 = ";".join([GoWebFramework.Gin, GoLogFramework.Zerolog, GoCliFramework.Cli,])
 
     C5 = ";".join(
         [
@@ -169,6 +157,12 @@ def golang(combination=GoCombinations.C2, entity=""):
         kwargs["PUT_STRING"] = "Put"
         kwargs["DELETE_STRING"] = "Delete"
         kwargs["QUERY_ID"] = "{id:uint}"
+
+    if GoCliFramework.Cli in framework_values:
+        kwargs["CLI_FRAMEWORK"] = ".cli"
+
+    elif GoCliFramework.Cobra in framework_values:
+        kwargs["CLI_FRAMEWORK"] = ".cobra"
 
     render_templates(
         "golang",

@@ -3,12 +3,18 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
+    {%- if CLI_FRAMEWORK==".cli" %}
+
 	"github.com/urfave/cli"
+    {%- endif %}
 
 	"{{GOLANG_MODULE}}/internal/command"
+    {%- if CLI_FRAMEWORK==".cli" %}
 	"{{GOLANG_MODULE}}/internal/config"
+    {%- endif %}
 )
 
 // @Title        Swagger Example API
@@ -19,10 +25,27 @@ import (
 // @Host      localhost:8080
 // @BasePath  /api/v1
 
+// @securityDefinitions.Basic   BasicAuth
 // @SecurityDefinitions.ApiKey  ApiKeyAuth
 // @In                          header
 // @Name                        Authorization
 func main() {
+    {%- if CLI_FRAMEWORK==".cobra" %}
+	onError := func(err error) {
+		_, _ = fmt.Fprintf(os.Stderr, "%s\n", err)
+		os.Exit(1)
+	}
+
+	cmd, err := command.NewAppCommand()
+
+	if err != nil {
+		onError(err)
+	}
+
+	if err = cmd.Execute(); err != nil {
+		onError(err)
+	}
+    {%- elif CLI_FRAMEWORK==".cli" %}
 	app := cli.NewApp()
 	app.Version = config.Conf().Version()
 	app.EnableBashCompletion = true
@@ -38,4 +61,5 @@ func main() {
 	if err := app.Run(os.Args); err != nil {
 		panic(err)
 	}
+    {%- endif %}
 }
