@@ -194,6 +194,7 @@ deploy: deploy-stop deploy-clean $(TARGET_ARCH) deploy-upload deploy-start
 deploy-upload:
 	$(SSH_CMD) "mkdir -p $(INSTALL_PATH)"
 	scp bin/$(APP_NAME)-$(TARGET_ARCH) "$(USER)@$(HOST):$(TARGET_PATH)"
+	scp storage/configs/settings-release.yaml "$(USER)@$(HOST):$(INSTALL_PATH)/settings.yaml"
 	$(SSH_CMD) "chmod +x $(TARGET_PATH)"
 
 deploy-reset: deploy-stop
