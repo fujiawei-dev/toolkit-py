@@ -5,8 +5,10 @@ package {{GOLANG_PACKAGE}}
 import (
 	"errors"
 
-	"github.com/gin-gonic/gin"
+	"{{WEB_FRAMEWORK_IMPORT}}"
+    {%- if WEB_FRAMEWORK not in [".iris"] %}
 	"github.com/spf13/cast"
+    {%- endif %}
 
 	"{{GOLANG_MODULE}}/internal/acl"
 	"{{GOLANG_MODULE}}/internal/entity"
@@ -24,40 +26,49 @@ func init() {
     AddRouteRegistrar(GetUsers)
 }
 
-func PostUser(router *gin.RouterGroup) {
-	router.POST("/user", func(c *gin.Context) {
+func PostUser(router {{ROUTER_GROUP}}) {
+	router.{{POST_STRING}}("/user", func(c {{WEB_CONTEXT}}) {{ERROR_STRING}}{
 		var f form.User
 
 		if err := form.ShouldBind(c, &f); err != nil {
 			ErrorInvalidParameters(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		if err := entity.CreateWithPassword(f); err != nil {
 			ErrorUnexpected(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		SendOK(c)
+		return{{NIL_STRING}}
 	})
 }
 
-func PutUser(router *gin.RouterGroup) {
-	router.PUT("/user/:id", conf.JWTMiddleware(), func(c *gin.Context) {
+func PutUser(router {{ROUTER_GROUP}}) {
+	router.{{PUT_STRING}}("/user/{{QUERY_ID}}", {{WEB_JWT_UP}}func(c {{WEB_CONTEXT}}) {{ERROR_STRING}}{
 		if _, pass := Auth(c, acl.ResourceUsers, acl.ActionUpdate); !pass {
-			return
+			return{{NIL_STRING}}
 		}
 
+        {% if WEB_FRAMEWORK==".iris" -%}
+		id := c.Params().GetUintDefault("id", 0)
+        {% elif WEB_FRAMEWORK==".fiber" -%}
+		id := cast.ToUint(c.Params("id"))
+        {% elif WEB_FRAMEWORK==".echo" -%}
 		id := cast.ToUint(c.Param("id"))
+        {% elif WEB_FRAMEWORK==".gin" -%}
+		id := cast.ToUint(c.Param("id"))
+        {% endif -%}
 		if id == 0 {
 			ErrorInvalidParameters(c, errors.New("id(uint) is required"))
-			return
+			return{{NIL_STRING}}
 		}
 
 		m, err := entity.FindUserByID(id)
 		if err != nil {
 			ErrorExpectedOrUnexpected(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		// Handle null values, malicious injection, etc.
@@ -65,44 +76,53 @@ func PutUser(router *gin.RouterGroup) {
 
 		if err = m.CopyTo(&f); err != nil {
 			ErrorUnexpected(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		if err = form.ShouldBind(c, &f); err != nil {
 			ErrorInvalidParameters(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		if err = m.CopyFrom(f); err != nil {
 			ErrorUnexpected(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		if err = m.Save(); err != nil {
 			ErrorUnexpected(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		SendOK(c)
-	})
+		return{{NIL_STRING}}
+	}{{WEB_JWT_DOWN}})
 }
 
-func PutUserPassword(router *gin.RouterGroup) {
-	router.PUT("/user/:id/password", conf.JWTMiddleware(), func(c *gin.Context) {
+func PutUserPassword(router {{ROUTER_GROUP}}) {
+	router.{{PUT_STRING}}("/user/{{QUERY_ID}}/password", {{WEB_JWT_UP}}func(c {{WEB_CONTEXT}}) {{ERROR_STRING}}{
 		if _, pass := Auth(c, acl.ResourcePasswords, acl.ActionUpdate); !pass {
-			return
+			return{{NIL_STRING}}
 		}
 
+        {% if WEB_FRAMEWORK==".iris" -%}
+		id := c.Params().GetUintDefault("id", 0)
+        {% elif WEB_FRAMEWORK==".fiber" -%}
+		id := cast.ToUint(c.Params("id"))
+        {% elif WEB_FRAMEWORK==".echo" -%}
 		id := cast.ToUint(c.Param("id"))
+        {% elif WEB_FRAMEWORK==".gin" -%}
+		id := cast.ToUint(c.Param("id"))
+        {% endif -%}
 		if id == 0 {
 			ErrorInvalidParameters(c, errors.New("id(uint) is required"))
-			return
+			return{{NIL_STRING}}
 		}
 
 		m, err := entity.FindUserByID(id)
 		if err != nil {
 			ErrorExpectedOrUnexpected(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		// Handle null values, malicious injection, etc.
@@ -110,97 +130,110 @@ func PutUserPassword(router *gin.RouterGroup) {
 
 		if err = form.ShouldBind(c, &f); err != nil {
 			ErrorInvalidParameters(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		if m.InvalidPassword(f.OldPassword) {
 			AbortInvalidPassword(c)
-			return
+			return{{NIL_STRING}}
 		}
 
 		if err = m.SetPassword(f.NewPassword); err != nil {
 			ErrorExpectedOrUnexpected(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		SendOK(c)
-	})
+		return{{NIL_STRING}}
+	}{{WEB_JWT_DOWN}})
 }
 
-func GetUsers(router *gin.RouterGroup) {
-	router.GET("/users", func(c *gin.Context) {
+func GetUsers(router {{ROUTER_GROUP}}) {
+	router.{{GET_STRING}}("/users", func(c {{WEB_CONTEXT}}) {{ERROR_STRING}}{
 		f := form.SearchPager{}
 
 		if err := form.ShouldBind(c, &f); err != nil {
 			ErrorInvalidParameters(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
-		f.LikeQ = c.Query("username")
+        {% if WEB_FRAMEWORK==".iris" -%}
+		username := c.URLParam("username")
+        {% elif WEB_FRAMEWORK==".fiber" -%}
+		username := cast.ToUint(c.Params("id"))
+        {% elif WEB_FRAMEWORK==".echo" -%}
+		username := cast.ToUint(c.Param("id"))
+        {% elif WEB_FRAMEWORK==".gin" -%}
+		username := c.Query("username")
+        {% endif -%}
+		f.LikeQ = username
 
 		list, totalRow, err := query.Users(f)
 
 		if err != nil {
 			ErrorUnexpected(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		f.TotalRows = totalRow
 
 		SendList(c, list, f.Pager)
+		return{{NIL_STRING}}
 	})
 }
 
-func UserLogin(router *gin.RouterGroup) {
-	router.POST("/user/login", func(c *gin.Context) {
+func UserLogin(router {{ROUTER_GROUP}}) {
+	router.{{POST_STRING}}("/user/login", func(c {{WEB_CONTEXT}}) {{ERROR_STRING}}{
 		var f form.UserLogin
 
 		if err := form.ShouldBind(c, &f); err != nil {
 			ErrorInvalidParameters(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		m, err := entity.FindUserByUsername(f.Username)
 		if err != nil {
 			ErrorExpectedOrUnexpected(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		defer func() {
 			operationLog := entity.NewOperationLog(m.ID, acl.ResourceUsers, acl.ActionLogin, err == nil)
 			if err = operationLog.Create(); err != nil {
-				log.Error().Msgf("create operation log, %v", err)
+				log.Printf("create operation log, %v", err)
 			}
 		}()
 
 		if m.InvalidPassword(f.Password) {
 			AbortInvalidPassword(c)
-			return
+			return{{NIL_STRING}}
 		}
 
 		token, err := conf.JWTGenerate(m)
 		if err != nil {
 			ErrorUnexpected(c, err)
-			return
+			return{{NIL_STRING}}
 		}
 
 		c.Header("Authorization", token)
 		c.Header("Access-Control-Expose-Headers", "Authorization")
 
 		SendJSON(c, m)
+		return{{NIL_STRING}}
 	})
 }
 
-func UserLogout(router *gin.RouterGroup) {
-	router.POST("/user/logout", conf.JWTMiddleware(), func(c *gin.Context) {
+func UserLogout(router {{ROUTER_GROUP}}) {
+	router.{{POST_STRING}}("/user/logout", {{WEB_JWT_UP}}func(c {{WEB_CONTEXT}}) {{ERROR_STRING}}{
 		user, pass := Auth(c, acl.ResourceUsers, acl.ActionLogout)
 
 		if !pass {
-			return
+			return{{NIL_STRING}}
 		}
 
-		log.Info().Msgf("user: %s logout", user.Username)
+		log.Printf("user: %s logout", user.Username)
 
 		SendOK(c)
-	})
+		return{{NIL_STRING}}
+	}{{WEB_JWT_DOWN}})
 }
