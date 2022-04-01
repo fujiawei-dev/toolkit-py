@@ -14,6 +14,8 @@ PYPI_PACKAGE = {{PYPI_PACKAGE}}
 
 APP_VERSION := $(shell python -c "from {{PYTHON_MODULE}}.version import __version__; print(__version__, end='')")
 
+APP_NAME_VERSION := $(PYPI_PACKAGE)_$(APP_VERSION)
+
 all: format reinstall tests
 
 info:
@@ -62,4 +64,6 @@ tag:
 	git push origin v$(APP_VERSION)
 
 build-onefile:
-	pyinstaller --onefile -y --clean -n $(PYPI_PACKAGE) main.py
+	pyinstaller --onefile -y --clean -n $(APP_NAME_VERSION) main.py
+	-(rm $(APP_NAME_VERSION).spec)
+	-(rm -r build)
