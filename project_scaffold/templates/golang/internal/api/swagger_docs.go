@@ -108,6 +108,7 @@ func deleteOperationLogs() {}
 // @Tags         操作日志
 // @Accept       json
 // @Security     ApiKeyAuth
+// @Deprecated   true
 // @Param        id  path  int  true  "ID"
 // @Produce      json
 // @Success      200  {object}  query.OperationLogResult  "操作成功"
