@@ -30,35 +30,33 @@ func (d *Digest) Validate(password, method string, body []byte) bool {
 	}
 
 	var (
-		ha0      [md5.Size]byte
 		ha1      [md5.Size]byte
 		ha2      [md5.Size]byte
 		response [md5.Size]byte
 	)
 
+	ha1Str := d.Username + ":" + d.Realm + ":" + password
 	if d.Algorithm == "MD5-sess" {
-		ha0 = md5.Sum(StringToBytes(d.Username + ":" + d.Realm + ":" + password))
-		ha1 = md5.Sum(StringToBytes(hex.EncodeToString(ha0[:]) + ":" + d.Nonce + ":" + d.Cnonce))
-	} else { // MD5
-		ha1 = md5.Sum(StringToBytes(d.Username + ":" + d.Realm + ":" + password))
+		ha1 = md5.Sum(StringToBytes(ha1Str))
+		ha1Str = hex.EncodeToString(ha1[:]) + ":" + d.Nonce + ":" + d.Cnonce
 	}
+	ha1 = md5.Sum(StringToBytes(ha1Str))
 
 	// fmt.Printf("HA1 = %x\n", ha1)
 
+	ha2Str := method + ":" + d.Uri
 	if d.Qop == "auth-int" {
-		ha0 = md5.Sum(body)
-		ha2 = md5.Sum(StringToBytes(method + ":" + d.Uri + ":" + BytesToString(ha0[:])))
-	} else {
-		ha2 = md5.Sum(StringToBytes(method + ":" + d.Uri))
+		ha2 = md5.Sum(body)
+		ha2Str = method + ":" + d.Uri + ":" + BytesToString(ha2[:])
 	}
+	ha2 = md5.Sum(StringToBytes(ha2Str))
 
 	// fmt.Printf("HA2 = %x\n", ha2)
 
 	var responseStr string
 
 	if d.Qop == "auth" || d.Qop == "auth-int" {
-		responseStr = hex.EncodeToString(ha1[:]) + ":" + d.Nonce + ":" + d.Nc +
-			":" + d.Cnonce + ":" + d.Qop + ":" + hex.EncodeToString(ha2[:])
+		responseStr = hex.EncodeToString(ha1[:]) + ":" + d.Nonce + ":" + d.Nc + ":" + d.Cnonce + ":" + d.Qop + ":" + hex.EncodeToString(ha2[:])
 	} else {
 		responseStr = hex.EncodeToString(ha1[:]) + ":" + d.Nonce + ":" + hex.EncodeToString(ha2[:])
 	}
