@@ -1,6 +1,7 @@
 {{SLASH_COMMENTS}}
 
 #include "core.h"
+#include "http_client/auth.h"
 #include <QEventLoop>
 #include <QFile>
 #include <QJsonDocument>
@@ -230,7 +231,25 @@ void Core::connectToWebsocketServer(const QString &s) {
 
     qInfo().noquote() << QString("ws: connecting to %1").arg(websocketUrl);
 
-    websocketClient->open(websocketUrl);
+    Digest digest = {
+            "48619c2a",
+            "7fb58b0205e",
+            "GET",
+            QUrl(websocketUrl).path().toLocal8Bit(),
+            "gin@golang",
+    };
+
+    QString authValue = generateDigestAuthentication(digest);
+
+    QNetworkRequest request;
+    request.setUrl(websocketUrl);
+    request.setRawHeader("Authorization", authValue.toUtf8());
+
+    qDebug().noquote() <<authValue;
+
+    websocketClient->open(request);
+
+    // websocketClient->open(websocketUrl);
 }
 
 void Core::onWebsocketConnected() {
@@ -293,16 +312,20 @@ void Core::websocketKeepAlive() {
     emit sendTextMessageToWebsocketServer(QJsonDocument(obj).toJson());
 }
 
-QJsonObject Core::httpRequest(const QByteArray &method, const QString &url, const QByteArray &body = "", bool customUrl = false) {
+QJsonObject Core::httpRequest(const QByteArray &method, const QString &url, const QByteArray &body = "", bool customUrl = false, const QByteArray &authValue = "") {
     auto *httpClient = new QNetworkAccessManager();
 
-   auto httpUrl = customUrl ? url : remoteHttpBaseUrl + url;
+    auto httpUrl = customUrl ? url : remoteHttpBaseUrl + url;
     if (!httpUrl.startsWith("http")) {
         httpUrl = "http://" + httpUrl;
     }
 
     QNetworkRequest request;
     request.setUrl(httpUrl);
+
+    if (!authValue.isEmpty()) {
+        request.setRawHeader("Authorization", authValue);
+    }
 
     qInfo().noquote() << QString("core: %1 %2").arg(method, url);
 
@@ -345,12 +368,12 @@ QJsonObject Core::httpRequest(const QByteArray &method, const QString &url, cons
     return responseJson;
 }
 
-QJsonObject Core::httpGet(const QString &url, bool customUrl = false) {
-    return httpRequest("GET", url, "", customUrl);
+QJsonObject Core::httpGet(const QString &url, bool customUrl = false, const QByteArray &authValue = "") {
+    return httpRequest("GET", url, "", customUrl, authValue);
 }
 
-QJsonObject Core::httpPost(const QString &url, const QByteArray &body, bool customUrl = false) {
-    return httpRequest("POST", url, body, customUrl);
+QJsonObject Core::httpPost(const QString &url, const QByteArray &body, bool customUrl = false, const QByteArray &authValue = "") {
+    return httpRequest("POST", url, body, customUrl, authValue);
 }
 
 QByteArray Core::parseDate(QByteArray d) {
@@ -378,23 +401,36 @@ void Core::DoSomethingForeverConcurrent() {
 void Core::onRun() {
     qInfo() << "Running...";
 
-    httpGet("http://httpbin.org/get", true);
+    QByteArray httpUrl = "http://localhost:8787/debug";
 
-    httpPost("http://httpbin.org/post",
-             QJsonDocument(
-                     QJsonObject{
-                             {"q", "typescript"},
-                             {"image", "base64"},
-                             {"debug", debugMode},
-                             {"json", "This is a json object."}})
-                     .toJson(),
-             true);
+    Digest digest = {
+            "admin",
+            "admin",
+            "GET",
+            QUrl(httpUrl).path().toLocal8Bit(),
+            "gin@golang",
+    };
 
-    //    DoSomethingForever();
+    QString authValue = generateDigestAuthentication(digest);
+
+    httpGet(httpUrl, true, authValue.toUtf8());
+    connectToWebsocketServer("typescript");
+
+    //    httpPost("http://localhost:12780/post",
+    //             QJsonDocument(
+    //                     QJsonObject{
+    //                             {"q", "typescript"},
+    //                             {"image", "base64"},
+    //                             {"debug", debugMode},
+    //                             {"json", "This is a json object."}})
+    //                     .toJson(),
+    //             true);
+
+//        DoSomethingForever();
     //    DoSomethingForeverConcurrent();
 
     // do something
-    emit finished();
+//    emit finished();
 
     qInfo() << "I thought I'd finished!";
 }

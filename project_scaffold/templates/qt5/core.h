@@ -39,9 +39,9 @@ public:
     static std::string AESEncryptStr(const QString &msgStr, const QString &keyStr);
     static std::string AESDecryptStr(const QString &msgStr, const QString &keyStr);
 
-    QJsonObject httpRequest(const QByteArray &method, const QString &url, const QByteArray &body, bool customUrl);
-    QJsonObject httpGet(const QString &url, bool customUrl);
-    QJsonObject httpPost(const QString &url, const QByteArray &body, bool customUrl);
+    QJsonObject httpRequest(const QByteArray &method, const QString &url, const QByteArray &body, bool customUrl, const QByteArray& authValue);
+    QJsonObject httpGet(const QString &url, bool customUrl,const QByteArray& authValue);
+    QJsonObject httpPost(const QString &url, const QByteArray &body, bool customUrl,const QByteArray& authValue);
 
 
 signals:

@@ -169,6 +169,7 @@ set(
         SOURCES
         main.cpp
         core.cpp
+        http_client/auth.cpp
         {%- if template==".gui" %}
         widget.cpp
         {%- endif %}
@@ -181,6 +182,7 @@ set(
         HEADERS
         version.h
         core.h
+        http_client/auth.h
         {%- if template==".gui" %}
         widget.h
         {%- endif %}

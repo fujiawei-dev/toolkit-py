@@ -61,7 +61,7 @@ func DigestAuthForRealm(accounts Accounts, realm string) gin.HandlerFunc {
 			c.GetHeader("Authorization"),
 			c.Request.Method,
 			realm,
-			c.FullPath(),
+			c.Request.URL.Path,
 			nil,
 		)
 		if !found {
