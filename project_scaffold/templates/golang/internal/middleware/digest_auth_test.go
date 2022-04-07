@@ -18,7 +18,7 @@ func TestDigest_Validate(t *testing.T) {
 	d := readDigest(authValue)
 	d.Username = "Mufasa"
 
-	if !d.Validate("Circle Of Life", "GET", nil) {
+	if !d.Validate("Circle Of Life", "GET", "testrealm@host.com", "/dir/index.html", nil) {
 		t.Error("validation failed")
 	}
 }
@@ -38,7 +38,7 @@ func TestDigest_Validate2(t *testing.T) {
 	d := readDigest(authValue)
 	d.Username = "Mufasa"
 
-	if !d.Validate("Circle Of Life", "GET", nil) {
+	if !d.Validate("Circle Of Life", "GET", "testrealm@host.com", "/dir/index.html", nil) {
 		t.Error("validation failed")
 	}
 }
