@@ -313,7 +313,7 @@ void Core::websocketKeepAlive() {
 }
 
 QJsonObject Core::httpRequest(const QByteArray &method, const QString &url, const QByteArray &body = "", bool customUrl = false, const QByteArray &authValue = "") {
-    auto *httpClient = new QNetworkAccessManager();
+    auto httpClient = new QNetworkAccessManager();
 
     auto httpUrl = customUrl ? url : remoteHttpBaseUrl + url;
     if (!httpUrl.startsWith("http")) {

@@ -25,7 +25,7 @@ import (
 // @Host      localhost:8080
 // @BasePath  /api/v1
 
-// @securityDefinitions.Basic   BasicAuth
+// @SecurityDefinitions.Basic   BasicAuth
 // @SecurityDefinitions.ApiKey  ApiKeyAuth
 // @In                          header
 // @Name                        Authorization
