@@ -18,7 +18,7 @@ const AuthUserKey = "user"
 // Accounts defines a key/value for username/password list of authorized logins.
 type Accounts map[string]string
 
-func (as Accounts) searchCredential(authValue, method string, body []byte) (string, bool) {
+func (as Accounts) searchCredential(authValue, method, realm, url string, body []byte) (string, bool) {
 	if authValue == "" {
 		return "", false
 	}
@@ -26,7 +26,7 @@ func (as Accounts) searchCredential(authValue, method string, body []byte) (stri
 	d := readDigest(authValue)
 	for username, password := range as {
 		d.Username = username
-		if d.Validate(password, method, body) {
+		if d.Validate(password, method, realm, url, body) {
 			return username, true
 		}
 	}
@@ -57,7 +57,13 @@ func DigestAuthForRealm(accounts Accounts, realm string) gin.HandlerFunc {
 
 	return func(c *gin.Context) {
 		// Search user in the slice of allowed credentials
-		user, found := accounts.searchCredential(c.GetHeader("Authorization"), c.Request.Method, nil)
+		user, found := accounts.searchCredential(
+			c.GetHeader("Authorization"),
+			c.Request.Method,
+			realm,
+			c.FullPath(),
+			nil,
+		)
 		if !found {
 			// Credentials don't match, we return 401 and abort handlers chain.
 			c.Header("WWW-Authenticate", authenticate)

@@ -24,8 +24,9 @@ type Digest struct {
 	Response  string
 }
 
-func (d *Digest) Validate(password, method string, body []byte) bool {
-	if d == nil {
+func (d *Digest) Validate(password, method, realm, uri string, body []byte) bool {
+	if d == nil || d.Realm != realm ||
+		strings.TrimSuffix(d.Uri, "/") != strings.TrimSuffix(uri, "/") {
 		return false
 	}
 
