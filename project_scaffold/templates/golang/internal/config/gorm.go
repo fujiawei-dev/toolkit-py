@@ -162,13 +162,19 @@ func (c *config) DatabaseDialector() gorm.Dialector {
 				c.DatabaseName(),
 			))
 	case SQLite:
-		return sqlite.Open(fs.Join(c.DatabasePath(), c.DatabaseName()))
+		// https://github.com/mattn/go-sqlite3/issues/274
+		return sqlite.Open(fs.Join(c.DatabasePath(), c.DatabaseName()) + "?_busy_timeout=5000")
 	default:
 		panic("config: not currently supported")
 	}
 }
 
 func (c *config) DatabaseConns() int {
+	// https://github.com/mattn/go-sqlite3/issues/274
+	if c.DatabaseType() == SQLite {
+		return 1
+	}
+
 	limit := (runtime.NumCPU() * 2) + 16
 
 	if limit > 1024 {
