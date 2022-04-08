@@ -36,8 +36,8 @@ public:
     Q_INVOKABLE void DoSomethingForever();
     Q_INVOKABLE void DoSomethingForeverConcurrent();
 
-    static std::string AESEncryptStr(const QString &msgStr, const QString &keyStr);
-    static std::string AESDecryptStr(const QString &msgStr, const QString &keyStr);
+    static QString AESEncryptStr(const QString &msgStr, const QString &keyStr);
+    static QString AESDecryptStr(const QString &msgStr, const QString &keyStr);
 
     QJsonObject httpRequest(const QByteArray &method, const QString &url, const QByteArray &body, bool customUrl, const QByteArray& authValue);
     QJsonObject httpGet(const QString &url, bool customUrl,const QByteArray& authValue);

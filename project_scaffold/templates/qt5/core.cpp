@@ -187,7 +187,7 @@ QList<QString> Core::getDistrictsByProvinceCity(const QString &province, const Q
 }
 
 // 常用加密函数封装
-std::string Core::AESEncryptStr(const QString &msgStr, const QString &keyStr) {
+QString Core::AESEncryptStr(const QString &msgStr, const QString &keyStr) {
     std::string msgStrOut;
 
     //    std::string msgStdStr = msgStr.toStdString();
@@ -200,10 +200,10 @@ std::string Core::AESEncryptStr(const QString &msgStr, const QString &keyStr) {
     //    ecbEncryptor.Put((byte *) plainText, strlen(plainText));
     //    ecbEncryptor.MessageEnd();
 
-    return msgStrOut;
+    return QString::fromStdString(msgStrOut);
 }
 
-std::string Core::AESDecryptStr(const QString &msgStr, const QString &keyStr) {
+QString Core::AESDecryptStr(const QString &msgStr, const QString &keyStr) {
     std::string msgStrOut;
 
     std::string msgStrBase64 = msgStr.toStdString();
@@ -221,7 +221,7 @@ std::string Core::AESDecryptStr(const QString &msgStr, const QString &keyStr) {
     //    stf.Put(reinterpret_cast<const unsigned char *>(msgStrEnc.c_str()), msgStrEnc.length());
     //    stf.MessageEnd();
 
-    return msgStrOut;
+    return QString::fromStdString(msgStrOut);
 }
 
 void Core::connectToWebsocketServer(const QString &s) {
