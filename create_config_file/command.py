@@ -13,6 +13,7 @@ from .hosts import hosts as _hosts
 from .notes import notes as _notes
 from .powershell import powershell as _powershell
 from .python import python as _python
+from .vim import vim as _vim
 
 
 @click.group(cls=ClickAliasedGroup)
@@ -86,3 +87,18 @@ def powershell(write):
 )
 def alias(write):
     _alias(not write)
+
+
+@command_ccf.command(
+    context_settings={"help_option_names": ["-h", "--help"]},
+    help="Create or display configuration files about Vim.",
+)
+@click.option(
+    "--read-only",
+    "-r",
+    default=False,
+    type=bool,
+    help="Read only or create configuration files.",
+)
+def vim(read_only):
+    _vim(read_only)
