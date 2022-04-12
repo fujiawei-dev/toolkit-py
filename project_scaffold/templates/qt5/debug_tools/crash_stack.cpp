@@ -15,7 +15,6 @@ CrashStack::CrashStack(PEXCEPTION_POINTERS pException) {
     m_pException = pException;
 }
 
-
 QString CrashStack::GetModuleByReturnAddress(const PBYTE &returnAddress, PBYTE &moduleAddress) {
     HANDLE handleSnapshot;
     wchar_t moduleName[MAX_PATH] = {0};
@@ -124,7 +123,6 @@ QString CrashStack::GetExceptionInfo() {
         QString module = GetModuleByReturnAddress((PBYTE) E.ExceptionAddress, moduleAddress);
         if (module.length() > 0) {
             result.append(" \nModule: ");
-            qDebug() << module;
             result.append(module);
         }
 
