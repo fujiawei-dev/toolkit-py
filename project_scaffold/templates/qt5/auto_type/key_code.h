@@ -1,0 +1,168 @@
+{{SLASH_COMMENTS}}
+
+#ifndef {{APP_NAME_UPPER}}__KEY_CODE_H
+#define {{APP_NAME_UPPER}}__KEY_CODE_H
+
+enum class KeyCode {
+  Undefined,
+
+  // numbers
+  D0,
+  D1,
+  D2,
+  D3,
+  D4,
+  D5,
+  D6,
+  D7,
+  D8,
+  D9,
+
+  // letters
+  A,
+  B,
+  C,
+  D,
+  E,
+  F,
+  G,
+  H,
+  I,
+  J,
+  K,
+  L,
+  M,
+  N,
+  O,
+  P,
+  Q,
+  R,
+  S,
+  T,
+  U,
+  V,
+  W,
+  X,
+  Y,
+  Z,
+
+  // function
+  F1,
+  F2,
+  F3,
+  F4,
+  F5,
+  F6,
+  F7,
+  F8,
+  F9,
+  F10,
+  F11,
+  F12,
+  F13,
+  F14,
+  F15,
+  F16,
+  F17,
+  F18,
+  F19,
+  F20,
+  F21,
+  F22,
+  F23,
+  F24,
+
+  // keypad numbers
+  Keypad0,
+  Keypad1,
+  Keypad2,
+  Keypad3,
+  Keypad4,
+  Keypad5,
+  Keypad6,
+  Keypad7,
+  Keypad8,
+  Keypad9,
+
+  // keypad other
+  KeypadClear,
+  KeypadDecimal,
+  KeypadDivide,
+  KeypadEnter,
+  KeypadEquals,
+  KeypadMinus,
+  KeypadMultiply,
+  KeypadPlus,
+
+  // others
+  Backslash,
+  Comma,
+  Equal,
+  Grave,
+  LeftBracket,
+  Minus,
+  Period,
+  Quote,
+  RightBracket,
+  Semicolon,
+  Slash,
+
+  // modifiers
+  Meta,
+  Command = Meta,
+  Win = Meta,
+  Ctrl,
+  Control = Ctrl,
+  Function,
+  Alt,
+  Option = Alt,
+  Shift,
+  RightMeta,
+  RightCommand = RightMeta,
+  RightWin = RightMeta,
+  RightCtrl,
+  RightControl = RightCtrl,
+  RightAlt,
+  RightOption = RightAlt,
+  RightShift,
+  CapsLock,
+  NumLock,
+  ScrollLock,
+
+  // arrows
+  DownArrow,
+  LeftArrow,
+  RightArrow,
+  UpArrow,
+
+  // navigation
+  End,
+  Home,
+  PageDown,
+  PageUp,
+
+  // actions
+  ContextMenu,
+  BackwardDelete,
+  Backspace = BackwardDelete,
+  Escape,
+  ForwardDelete,
+  Help,
+  Mute,
+  PrintScreen,
+  Snapshot = PrintScreen,
+  Return,
+  Enter = Return,
+  Space,
+  Tab,
+  VolumeDown,
+  VolumeUp,
+  Pause,
+  Insert,
+  Sleep,
+
+  // number of key codes
+  KeyCodeCount
+};
+
+#endif//{{APP_NAME_UPPER}}__KEY_CODE_H
