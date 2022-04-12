@@ -245,7 +245,7 @@ void Core::connectToWebsocketServer(const QString &s) {
     request.setUrl(websocketUrl);
     request.setRawHeader("Authorization", authValue.toUtf8());
 
-    qDebug().noquote() <<authValue;
+    qDebug().noquote() << authValue;
 
     websocketClient->open(request);
 

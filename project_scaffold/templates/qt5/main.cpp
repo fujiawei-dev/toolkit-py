@@ -26,6 +26,7 @@
 {%- if template==".gui" %}
 #include "widget.h"
 {%- endif %}
+#include"debug_tools/crash_stack.h"
 
 void logMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg) {
     QString logLevel;
@@ -73,6 +74,10 @@ void logMessageHandler(QtMsgType type, const QMessageLogContext &context, const 
 
 
 int main(int argc, char *argv[]) {
+#ifdef Q_OS_WIN
+    SetUnhandledExceptionFilter(CrashHandler);
+#endif
+
     // ONLY ALLOW SINGLETON!
     //    QSharedMemory shared("immigration_office_qml_app");
     //    if (shared.attach()) {

@@ -170,6 +170,7 @@ set(
         main.cpp
         core.cpp
         http_client/auth.cpp
+        debug_tools/crash_stack.cpp
         {%- if template==".gui" %}
         widget.cpp
         {%- endif %}
@@ -183,6 +184,7 @@ set(
         version.h
         core.h
         http_client/auth.h
+        debug_tools/crash_stack.h
         {%- if template==".gui" %}
         widget.h
         {%- endif %}
@@ -266,6 +268,7 @@ set(
 
 set(
         NON_QT_LIBRARIES
+        DbgHelp
 )
 
 target_link_libraries(
