@@ -10,7 +10,7 @@ from click_aliases import ClickAliasedGroup
 from .alias import alias as _alias
 from .clash import clash as _clash
 from .hosts import hosts as _hosts
-from .notes import notes as _notes
+from .notes import notes as _notes, notes_append_header
 from .powershell import powershell as _powershell
 from .python import python as _python
 from .vim import vim as _vim
@@ -56,8 +56,12 @@ def clash():
 @click.option(
     "--path", "-p", required=True, type=str, help="The file path for a new note."
 )
-def notes(path):
-    _notes(path)
+@click.option("--mode", "-m", required=False, type=int, help="Processing mode.")
+def notes(path, mode):
+    if not mode or mode == 0:
+        _notes(path)
+    else:
+        notes_append_header(path)
 
 
 @command_ccf.command(

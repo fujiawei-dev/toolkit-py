@@ -56,9 +56,21 @@ class GoCombinations(str, Enum):
         ]
     )
 
-    C3 = ";".join([GoWebFramework.Echo, GoCliFramework.Cobra, GoConfigFramework.Viper,])
+    C3 = ";".join(
+        [
+            GoWebFramework.Echo,
+            GoCliFramework.Cobra,
+            GoConfigFramework.Viper,
+        ]
+    )
 
-    C4 = ";".join([GoWebFramework.Gin, GoLogFramework.Zerolog, GoCliFramework.Cli,])
+    C4 = ";".join(
+        [
+            GoWebFramework.Gin,
+            GoLogFramework.Zerolog,
+            GoCliFramework.Cli,
+        ]
+    )
 
     C5 = ";".join(
         [
