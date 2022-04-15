@@ -28,8 +28,8 @@ func init() {
 	SetLevel(zerolog.DebugLevel)
 }
 
-func Logger() zerolog.Logger {
-	return log
+func Logger() *zerolog.Logger {
+	return &log
 }
 
 func SetLevel(l zerolog.Level) {

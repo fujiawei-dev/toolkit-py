@@ -13,7 +13,7 @@ func (c *config) initLogger() {
 	if c.DetachServer() {
 		event.SetLogger(zerolog.New(c.LogWriter()).
 			With().
-			CallerWithSkipFrameCount(3).
+			CallerWithSkipFrameCount(2).
 			Logger(),
 		)
 

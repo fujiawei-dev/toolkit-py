@@ -5,6 +5,7 @@ package {{GOLANG_PACKAGE}}
 import (
 	"io/ioutil"
 	"os"
+	"runtime"
 	"sync"
 
 	"github.com/labstack/gommon/color"
@@ -63,8 +64,6 @@ func (c *config) Init(ctx *cli.Context)error {
 		return err
 	}
 
-	c.initLogger()
-
 	c.initJWT()
 
 	return nil
@@ -86,6 +85,9 @@ func (c *config) InitSettings(ctx *cli.Context) error {
 	}
 
 	c.initLogger()
+
+	log.Printf("version: %s", c.AppVersion())
+	log.Printf("runtime: %s", runtime.GOOS)
 
 	return nil
 }
