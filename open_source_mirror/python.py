@@ -19,11 +19,11 @@ def pypi():
     mirrors = [
         "https://mirrors.ustc.edu.cn/pypi/web/simple/",
         "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple/",
-        # "https://mirrors.aliyun.com/pypi/simple/", # very slow
+        "https://mirrors.aliyun.com/pypi/simple/",  # very slow
         "https://pypi.douban.com/simple",
     ]
 
-    cmd = "pip uninstall -y PyQt5-Qt5; pip install PyQt5-Qt5 --no-cache-dir -i "
+    cmd = "pip uninstall -y PyQt5-Qt5 && pip install PyQt5-Qt5 --no-cache-dir -i "
 
     min_cost = 0
     mirror = mirrors[0]
@@ -33,9 +33,11 @@ def pypi():
         subprocess.run(cmd + mirrors[index], shell=True)
         te = time.perf_counter()
         cost = te - ts
-        if cost < min_cost:
+        click.echo(f"[{cost:.02f}] {mirrors[index]}")
+
+        if min_cost == 0 or cost < min_cost:
+            min_cost = cost
             mirror = mirrors[index]
-        click.echo(f"[{cost:.02f}] {mirror}")
 
     user = os.path.expanduser("~")
     conf = os.path.join(user, ".pip/pip.conf")
