@@ -17,10 +17,10 @@ def pypi():
     # https://pypi.org/
 
     mirrors = [
+        "https://pypi.douban.com/simple",
         "https://mirrors.ustc.edu.cn/pypi/web/simple/",
         "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple/",
         "https://mirrors.aliyun.com/pypi/simple/",  # very slow
-        "https://pypi.douban.com/simple",
     ]
 
     cmd = "pip uninstall -y PyQt5-Qt5 && pip install PyQt5-Qt5 --no-cache-dir -i "
@@ -38,6 +38,9 @@ def pypi():
         if min_cost == 0 or cost < min_cost:
             min_cost = cost
             mirror = mirrors[index]
+
+        if min_cost < 15:
+            break
 
     user = os.path.expanduser("~")
     conf = os.path.join(user, ".pip/pip.conf")
