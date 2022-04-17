@@ -5,14 +5,37 @@ LastEditors: Rustle Karl
 LastEditTime: 2022.02.02 15:01
 """
 import os
+import subprocess
 import sys
+import time
+from urllib.parse import urlparse
+
+import click
 
 
 def pypi():
     # https://pypi.org/
-    # https://mirrors.ustc.edu.cn/pypi/web/simple/
-    # https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple/
-    # https://mirrors.aliyun.com/pypi/simple/
+
+    mirrors = [
+        "https://mirrors.ustc.edu.cn/pypi/web/simple/",
+        "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple/",
+        # "https://mirrors.aliyun.com/pypi/simple/", # very slow
+        "https://pypi.douban.com/simple",
+    ]
+
+    cmd = "pip uninstall -y PyQt5-Qt5; pip install PyQt5-Qt5 --no-cache-dir -i "
+
+    min_cost = 0
+    mirror = mirrors[0]
+
+    for index in range(len(mirrors)):
+        ts = time.perf_counter()
+        subprocess.run(cmd + mirrors[index], shell=True)
+        te = time.perf_counter()
+        cost = te - ts
+        if cost < min_cost:
+            mirror = mirrors[index]
+        click.echo(f"[{cost:.02f}] {mirror}")
 
     user = os.path.expanduser("~")
     conf = os.path.join(user, ".pip/pip.conf")
@@ -25,9 +48,9 @@ def pypi():
     with open(conf, "w", encoding="utf-8", newline="\n") as fp:
         fp.write(
             "[global]\n"
-            "index-url=https://mirrors.aliyun.com/pypi/simple/\n"
+            f"index-url={mirror}\n"
             "[install]\n"
-            "trusted-host=mirrors.aliyun.com\n",
+            f"trusted-host={urlparse(mirror).netloc}\n",
         )
 
     print(conf)
