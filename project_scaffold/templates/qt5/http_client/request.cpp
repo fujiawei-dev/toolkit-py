@@ -25,10 +25,10 @@ QJsonObject HttpClientRequest::Request(const QByteArray &method, const QString &
         request.setRawHeader("Authorization", authValue);
     }
 
-    qInfo().noquote() << QString("core: %1 %2").arg(method, url);
+    qInfo().noquote() << QString("http: %1 %2").arg(method, url);
 
     if (!body.isEmpty()) {
-        qInfo() << "core: body =" << body;
+        qInfo() << "http: body =" << body;
     }
 
     if (method != "GET") {
@@ -45,15 +45,15 @@ QJsonObject HttpClientRequest::Request(const QByteArray &method, const QString &
     QJsonObject responseJson;
 
     QByteArray responseBody = response->readAll();
-    qInfo() << "core: responseBody =" << responseBody;
+    qInfo() << "http: responseBody =" << responseBody;
 
     if (response->error() != QNetworkReply::NoError) {
-        qCritical() << "core: response error," << response->errorString();
+        qCritical() << "http: response error," << response->errorString();
     } else {
         QJsonParseError jsonParseError{};
         QJsonDocument responseBodyJsonDocument(QJsonDocument::fromJson(responseBody, &jsonParseError));
         if (jsonParseError.error != QJsonParseError::NoError) {
-            qCritical() << "core: jsonParseError =" << jsonParseError.error;
+            qCritical() << "http: jsonParseError =" << jsonParseError.error;
         } else {
             responseJson = responseBodyJsonDocument.object();
         }
@@ -61,7 +61,7 @@ QJsonObject HttpClientRequest::Request(const QByteArray &method, const QString &
 
     response->deleteLater();
 
-    qInfo() << "core: responseJson =" << responseJson;
+    qInfo() << "http: responseJson =" << responseJson;
 
     return responseJson;
 }
