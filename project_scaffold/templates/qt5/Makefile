@@ -55,6 +55,8 @@ release-deployqt: SHELL:=pwsh   # This is setting the shell for b only, but you 
 release-deployqt: # $(eval SHELL:=pwsh)
 	@echo $(SHELL)
 	$$Env:PATH="${CMAKE_PREFIX_PATH}/bin;${QT_PATH}/Tools/${QT_TOOL_VERSION}/bin;"+$$Env:Path; $$Env:QML2_IMPORT_PATH="${CMAKE_PREFIX_PATH}/qml"; cd $(RELEASE_PACKAGE); windeployqt --release --qmldir "${CMAKE_PREFIX_PATH}/qml" ${UNIFIED_NAME}
+	enigmavbconsole scripts/pack.evb
+	iscc scripts/setup.iss
 
 release-run:
 	@echo $(SHELL)
@@ -67,3 +69,17 @@ release-clean:
 release-compress:
 	-(rm bin/${APP_NAME}.7z)
 	7z a bin/${APP_NAME}.7z -p321 bin/*
+
+# ONLY FOR TESTING!
+
+UPLOAD_PATH = /root/project/storage/uploads/$(APP_NAME)
+
+USER = root
+HOST = 192.168.1.2
+
+USER_HOST = "$(USER)@$(HOST)"
+SSH_CMD = ssh $(USER_HOST)
+
+release-upload: release
+	$(SSH_CMD) "mkdir -p $(UPLOAD_PATH)"
+	scp bin/*_Setup.exe "$(USER)@$(HOST):$(UPLOAD_PATH)"
