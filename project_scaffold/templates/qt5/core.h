@@ -10,6 +10,8 @@
 #include <QTimer>
 #include <QWebSocket>
 
+#include "worker.h"
+
 class Core : public QObject {
     Q_OBJECT
 
@@ -39,9 +41,9 @@ public:
     static QString AESEncryptStr(const QString &msgStr, const QString &keyStr);
     static QString AESDecryptStr(const QString &msgStr, const QString &keyStr);
 
-    QJsonObject httpRequest(const QByteArray &method, const QString &url, const QByteArray &body, bool customUrl, const QByteArray& authValue);
-    QJsonObject httpGet(const QString &url, bool customUrl,const QByteArray& authValue);
-    QJsonObject httpPost(const QString &url, const QByteArray &body, bool customUrl,const QByteArray& authValue);
+    QJsonObject httpRequest(const QByteArray &method, const QString &url, const QByteArray &body, bool customUrl, const QByteArray &authValue);
+    QJsonObject httpGet(const QString &url, bool customUrl, const QByteArray &authValue);
+    QJsonObject httpPost(const QString &url, const QByteArray &body, bool customUrl, const QByteArray &authValue);
 
 
 signals:
@@ -88,6 +90,9 @@ private:
 
     static QByteArray parseDate(QByteArray);
     static QByteArray parseSex(const QByteArray &);
+
+    void DoSomethingForeverThread();
+    DoSomethingForeverWorkerThread *doSomethingForeverWorker;
 };
 
 #endif//{{APP_NAME_UPPER}}__CORE_H

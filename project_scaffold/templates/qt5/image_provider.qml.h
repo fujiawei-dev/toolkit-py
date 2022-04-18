@@ -12,6 +12,7 @@ public:
     QmlImageProvider();
 
     void updateImage(int index, const QImage &image);
+    void deleteImage(int index);
     QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize);
 
     QHash<int, QImage> images;

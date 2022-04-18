@@ -1,7 +1,8 @@
 {{SLASH_COMMENTS}}
 
-#include "image_provider.h"
 #include <QDebug>
+
+#include "image_provider.h"
 
 QmlImageProvider::QmlImageProvider()
     : QQuickImageProvider(QQuickImageProvider::Image) {
@@ -11,6 +12,12 @@ void QmlImageProvider::updateImage(int index, const QImage &image) {
     qDebug() << "provider: update" << index;
     QMutexLocker lock(&mutex);
     images[index] = image;
+}
+
+void QmlImageProvider::deleteImage(int index) {
+    qDebug() << "provider: delete" << index;
+    QMutexLocker lock(&mutex);
+    images.remove(index);
 }
 
 QImage QmlImageProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize) {

@@ -1,7 +1,5 @@
 {{SLASH_COMMENTS}}
 
-#include "core.h"
-#include "http_client/auth.h"
 #include <QEventLoop>
 #include <QFile>
 #include <QJsonDocument>
@@ -14,6 +12,10 @@
 //#include <cryptopp/base64.h>
 //#include <cryptopp/hex.h>
 //#include <cryptopp/modes.h>
+
+#include "core.h"
+#include "http_client/auth.h"
+#include "worker.h"
 
 //using namespace CryptoPP;
 
@@ -398,6 +400,11 @@ void Core::DoSomethingForeverConcurrent() {
     QtConcurrent::run(this, &Core::DoSomethingForever);
 }
 
+void Core::DoSomethingForeverThread() {
+    doSomethingForeverWorker = new DoSomethingForeverWorkerThread();
+    doSomethingForeverWorker->start();
+}
+
 void Core::onRun() {
     qInfo() << "Running...";
 
@@ -428,6 +435,8 @@ void Core::onRun() {
 
 //        DoSomethingForever();
     //    DoSomethingForeverConcurrent();
+
+    DoSomethingForeverThread();
 
     // do something
 //    emit finished();

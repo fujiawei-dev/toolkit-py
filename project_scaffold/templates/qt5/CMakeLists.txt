@@ -169,7 +169,9 @@ set(
         SOURCES
         main.cpp
         core.cpp
+        worker.cpp
         http_client/auth.cpp
+        http_client/request.cpp
         debug_tools/crash_stack.cpp
         {%- if template==".gui" %}
         widget.cpp
@@ -183,7 +185,9 @@ set(
         HEADERS
         version.h
         core.h
+        worker.h
         http_client/auth.h
+        http_client/request.h
         debug_tools/crash_stack.h
         {%- if template==".gui" %}
         widget.h

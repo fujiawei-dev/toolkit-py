@@ -1,10 +1,10 @@
 {{SLASH_COMMENTS}}
 
-#include "auth.h"
 #include <QCryptographicHash>
 #include <QString>
 #include <QTime>
 
+#include "auth.h"
 
 QByteArray getRandomHex(const int &length) {
     QByteArray randomHex;
