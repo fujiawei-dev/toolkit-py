@@ -129,14 +129,16 @@ def golang(combination=GoCombinations.C2, entity=""):
         "QUERY_ID": ":id",
         "WEB_JWT_UP": "conf.JWTMiddleware(), ",
         "WEB_JWT_DOWN": "",
+        "ERROR_F": "Errorf",
     }
 
     if GoWebFramework.Gin in framework_values:
         kwargs["WEB_FRAMEWORK"] = ".gin"
+        kwargs["WEB_ENGINE"] = "*gin.Engine"
+        kwargs["WEB_ENGINE_GROUP"] = "Group"
         kwargs["WEB_FRAMEWORK_IMPORT"] = "github.com/gin-gonic/gin"
         kwargs["ROUTER_GROUP"] = "*gin.RouterGroup"
         kwargs["WEB_CONTEXT"] = "*gin.Context"
-        kwargs["WEB_ENGINE"] = "*gin.Engine"
     elif GoWebFramework.Echo in framework_values:
         kwargs["WEB_FRAMEWORK"] = ".echo"
         kwargs["WEB_FRAMEWORK_IMPORT"] = "github.com/labstack/echo/v4"
@@ -161,6 +163,8 @@ def golang(combination=GoCombinations.C2, entity=""):
         kwargs["DELETE_STRING"] = "Delete"
     elif GoWebFramework.Iris in framework_values:
         kwargs["WEB_FRAMEWORK"] = ".iris"
+        kwargs["WEB_ENGINE"] = "*gin.Engine"
+        kwargs["WEB_ENGINE_GROUP"] = "Party"
         kwargs["WEB_FRAMEWORK_IMPORT"] = "github.com/kataras/iris/v12"
         kwargs["ROUTER_GROUP"] = "iris.Party"
         kwargs["WEB_CONTEXT"] = "iris.Context"
@@ -175,6 +179,9 @@ def golang(combination=GoCombinations.C2, entity=""):
 
     elif GoCliFramework.Cobra in framework_values:
         kwargs["CLI_FRAMEWORK"] = ".cobra"
+
+    if GoLogFramework.Zerolog in framework_values:
+        kwargs["ERROR_F"] = "Error().Msgf"
 
     render_templates(
         "golang",

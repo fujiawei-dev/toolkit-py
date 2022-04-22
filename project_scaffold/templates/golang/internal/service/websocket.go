@@ -4,7 +4,10 @@ package {{GOLANG_PACKAGE}}
 
 import (
 	"encoding/json"
+	"sync"
 	"time"
+
+    "{{GOLANG_MODULE}}/internal/query"
 )
 
 var (

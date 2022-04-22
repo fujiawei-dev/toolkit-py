@@ -13,8 +13,8 @@ import (
 
 	_ "database/sql/driver"
 	"gorm.io/driver/mysql"
-	"gorm.io/driver/sqlite"
-//     "github.com/glebarez/sqlite" // Pure go SQLite driver, checkout https://github.com/glebarez/sqlite for details
+	// "gorm.io/driver/sqlite"
+	"github.com/glebarez/sqlite" // Pure go SQLite driver, checkout https://github.com/glebarez/sqlite for details
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 

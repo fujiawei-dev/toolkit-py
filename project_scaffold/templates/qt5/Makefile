@@ -50,6 +50,9 @@ release-copy:
 	cp $(CMAKE_BUILD_PREFIX)-release/$(UNIFIED_NAME) $(RELEASE_PACKAGE)/$(UNIFIED_NAME)
 	cp -r assets $(RELEASE_PACKAGE)
 	cp -r lib/*.dll $(RELEASE_PACKAGE)
+	-(mkdir bin; rm -r bin/*)
+	cp configs/debug.ini bin/settings.ini
+	cp configs/logo.ico bin/logo.ico
 
 release-deployqt: SHELL:=pwsh   # This is setting the shell for b only, but you should disable ONESHELL.
 release-deployqt: # $(eval SHELL:=pwsh)
