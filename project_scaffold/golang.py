@@ -163,7 +163,7 @@ def golang(combination=GoCombinations.C2, entity=""):
         kwargs["DELETE_STRING"] = "Delete"
     elif GoWebFramework.Iris in framework_values:
         kwargs["WEB_FRAMEWORK"] = ".iris"
-        kwargs["WEB_ENGINE"] = "*gin.Engine"
+        kwargs["WEB_ENGINE"] = "*iris.Application"
         kwargs["WEB_ENGINE_GROUP"] = "Party"
         kwargs["WEB_FRAMEWORK_IMPORT"] = "github.com/kataras/iris/v12"
         kwargs["ROUTER_GROUP"] = "iris.Party"

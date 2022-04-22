@@ -128,13 +128,3 @@ func getOperationLog() {}
 // @Success      200  {object}  query.Response{result=Result{pager=form.Pager,list=[]query.OperationLogResult}}  "操作成功"
 // @Router       /operation_logs [get]
 func getOperationLogs() {}
-
-// @Summary      获取区域数据
-// @Description  获取区域数据
-// @Tags         常量数据
-// @Accept       application/x-www-form-urlencoded
-// @Param        code  query  string  false  "区域代码"
-// @Produce      json
-// @Success      200  {object}  query.Response{result=query.RegionLocation}  "操作成功"
-// @Router       /region/by [get]
-func getRegionBy() {}

@@ -55,6 +55,13 @@ func registerRoutes(app *iris.Application) {
 
 	router := app.Party(conf.BasePath())
 
+	// /proxy -> /debug
+	NewReverseProxyIrisExample(
+		"http://127.0.0.1:8787"+conf.BasePath()+"/debug",
+		router,
+		"/proxy",
+	)
+
 	// Register the request id middleware
 	router.UseRouter(requestid.New())
 
