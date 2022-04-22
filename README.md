@@ -140,3 +140,7 @@ Options:
   -r, --read-only BOOLEAN  Read only or create configuration files.
   -h, --help               Show this message and exit.
 ```
+
+## Thanks
+
+![JetBrains Logo (Main) logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)
