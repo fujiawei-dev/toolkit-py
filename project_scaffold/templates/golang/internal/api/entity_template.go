@@ -139,7 +139,7 @@ func PutEntityTemplate(router {{ROUTER_GROUP}}) {
 // @Param        id  path  int  true  "ID"
 // @Produce      json
 // @Success      200  {object}  query.Response  "操作成功"
-// @Router       /unit/{id} [delete]
+// @Router       /entity_template/{id} [delete]
 func DeleteEntityTemplate(router {{ROUTER_GROUP}}) {
 	router.{{DELETE_STRING}}("/entity_template/{{QUERY_ID}}", {{WEB_JWT_UP}}func(c {{WEB_CONTEXT}}) {{ERROR_STRING}}{
 		if _, pass := Auth(c, acl.ResourceEntityTemplates, acl.ActionDelete); !pass {
