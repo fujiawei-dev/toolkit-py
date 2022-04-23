@@ -9,11 +9,11 @@ const (
 // https://www.iris-go.com/docs/#/?id=bind-any
 
 type Pager struct {
-	Page         int    `json:"page" form:"page" query:"page" binding:"gte=1"`                    // 页码
-	PageSize     int    `json:"page_size" form:"page_size" query:"page" binding:"gte=10,lte=100"` // 每页数量
-	Order        int    `json:"-" form:"order" query:"page" binding:"oneof=0 1 2 3"`          // 已定义字段排序
-	OrderByField string `json:"-" form:"order_by_field" query:"page"`                // 自定义字段排序
-	TotalRows    int64  `json:"total_rows"`                                                       // 总行数
+	Page         int    `json:"page" form:"page" query:"page" url:"page" binding:"gte=1"`                              // 页码
+	PageSize     int    `json:"page_size" form:"page_size" query:"page_size" url:"page_size" binding:"gte=10,lte=100"` // 每页数量
+	Order        int    `json:"-" form:"order" query:"page" binding:"oneof=0 1 2 3"`                                   // 已定义字段排序
+	OrderByField string `json:"-" form:"order_by_field" query:"order_by_field" url:"order_by_field"`                   // 自定义字段排序
+	TotalRows    int64  `json:"total_rows"`                                                                            // 总行数
 }
 
 func (p Pager) Offset() int {

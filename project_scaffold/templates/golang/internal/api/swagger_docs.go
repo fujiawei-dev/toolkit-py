@@ -52,7 +52,7 @@ func putUserPassword() {}
 // @Summary      用户列表
 // @Description  用户列表
 // @Tags         用户管理
-// @Accept       json
+// @Accept       application/x-www-form-urlencoded
 // @Param        page       query  int     false  "页码"    default(1)
 // @Param        page_size  query  int     false  "每页数量"  Enums(10, 20)  default(10)
 // @Param        username   query  string  false  "用户名"
@@ -106,7 +106,7 @@ func deleteOperationLogs() {}
 // @Summary      获取操作日志
 // @Description  获取操作日志
 // @Tags         操作日志
-// @Accept       json
+// @Accept       application/x-www-form-urlencoded
 // @Security     ApiKeyAuth
 // @Deprecated   true
 // @Param        id  path  int  true  "ID"
@@ -118,7 +118,7 @@ func getOperationLog() {}
 // @Summary      获取操作日志列表
 // @Description  获取操作日志列表
 // @Tags         操作日志
-// @Accept       json
+// @Accept       application/x-www-form-urlencoded
 // @Security     ApiKeyAuth
 // @Param        page        query  int     false  "页码"    default(1)
 // @Param        page_size   query  int     false  "每页数量"  Enums(10, 20)  default(10)

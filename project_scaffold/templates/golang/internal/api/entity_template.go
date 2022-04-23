@@ -222,7 +222,7 @@ func GetEntityTemplate(router {{ROUTER_GROUP}}) {
 // @Summary      获取实体列表
 // @Description  获取实体列表
 // @Tags         实体管理
-// @Accept       json
+// @Accept       application/x-www-form-urlencoded
 // @Param        page        query  int     false  "页码"    default(1)
 // @Param        page_size   query  int     false  "每页数量"  Enums(10, 20)  default(10)
 // @Param        time_begin  query  string  false  "开始时间前一天，比如 2021-10-01，则实际从 2021-10-02 起开始"
