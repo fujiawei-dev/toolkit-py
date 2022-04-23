@@ -24,7 +24,7 @@ def main():
 def start(config_file: str = "settings.yaml"):
     conf = {
         "serial_port": "com3",
-        "mqtt_host": "localhost",
+        "mqtt_host": "127.0.0.1",
         "mqtt_port": 8080,
         "mqtt_username": "root",
         "mqtt_password": "123456",

@@ -22,7 +22,7 @@ func (c *config) RemoteUrl() string {
 		return c.settings.Service.RemoteUrl
 	}
 
-	return "http://localhost"
+	return "http://127.0.0.1"
 }
 
 func (c *config) InitService() error {

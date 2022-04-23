@@ -139,7 +139,7 @@ int main(int argc, char *argv[]) {
 
     if (!fi.isFile()) {
         // 设置普通键值对
-        settings->setValue("Remote/HostPort", "localhost:9876");
+        settings->setValue("Remote/HostPort", "127.0.0.1:9876");
         settings->setValue("Remote/HttpBasePath", "/api/v1");
         settings->setValue("Remote/WebsocketPrefix", "/ws");
 

@@ -408,7 +408,7 @@ void Core::DoSomethingForeverThread() {
 void Core::onRun() {
     qInfo() << "Running...";
 
-    QByteArray httpUrl = "http://localhost:8787/debug";
+    QByteArray httpUrl = "http://127.0.0.1:8787/debug";
 
     Digest digest = {
             "admin",
@@ -423,7 +423,7 @@ void Core::onRun() {
     httpGet(httpUrl, true, authValue.toUtf8());
     connectToWebsocketServer("typescript");
 
-    //    httpPost("http://localhost:12780/post",
+    //    httpPost("http://127.0.0.1:12780/post",
     //             QJsonDocument(
     //                     QJsonObject{
     //                             {"q", "typescript"},

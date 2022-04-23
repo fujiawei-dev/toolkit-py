@@ -18,13 +18,13 @@ func init() {
 	})
 }
 
-func SetCache(key, value interface{}, ttl time.Duration) {
+func SetCache(key, value any, ttl time.Duration) {
 	log.Printf("query: cached %s", key)
 
-	cache.SetWithTTL(key, value, 1, ttl)
+	cache.SetWithTTL(key, value, 0, ttl)
 }
 
-func GetCache(key interface{}) (interface{}, bool) {
+func GetCache(key any) (any, bool) {
 	value, exist := cache.Get(key)
 
 	if exist {

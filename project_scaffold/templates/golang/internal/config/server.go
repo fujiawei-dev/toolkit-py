@@ -61,7 +61,7 @@ func (c *config) HttpHost() string {
 		return c.settings.Server.HttpHost
 	}
 
-	return "localhost"
+	return "127.0.0.1"
 }
 
 // HttpPort returns the built-in HTTP server port.
@@ -91,7 +91,7 @@ func (c *config) InternalHttpHostPort() string {
 
 func (c *config) ExternalHttpHostPort() string {
 	if !c.Public() || c.HttpHost() == "0.0.0.0" {
-		return fmt.Sprintf("localhost:%d", c.HttpPort())
+		return fmt.Sprintf("127.0.0.1:%d", c.HttpPort())
 	}
 
 	return c.HttpHostPort()

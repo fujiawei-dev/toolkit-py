@@ -86,7 +86,7 @@ func (c *config) DatabaseServer() string {
 		return c.settings.Database.HostPort
 	}
 
-	return "localhost"
+	return "127.0.0.1"
 }
 
 // DatabaseHost the database server host.

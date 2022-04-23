@@ -51,16 +51,11 @@ func registerRoutes(app *iris.Application) {
 	app.OnErrorCode(http.StatusUnauthorized, api.AbortUnauthorized)
 	app.OnErrorCode(http.StatusForbidden, api.AbortPermissionDenied)
 
-	Websocket(app)
-
 	router := app.Party(conf.BasePath())
 
-	// /proxy -> /debug
-	NewReverseProxyIrisExample(
-		"http://127.0.0.1:8787"+conf.BasePath()+"/debug",
-		router,
-		"/proxy",
-	)
+	Websocket(router.Party("/ws"))
+
+	NewReverseProxyIrisExample("http://"+conf.ExternalHttpHostPort()+conf.BasePath()+"/debug", router)
 
 	// Register the request id middleware
 	router.UseRouter(requestid.New())

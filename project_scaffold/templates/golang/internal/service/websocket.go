@@ -14,11 +14,11 @@ var (
 	HubServer                    *Hub
 	HubClient                    *Hub
 	HubRealTimeMessageSubscriber *Hub
-	MapClients                   sync.Map
+	MapClientConnections                   sync.Map
 )
 
 const (
-	Activation     int = iota + 1
+	Activation int = iota + 1
 	Authentication
 )
 
@@ -37,6 +37,11 @@ type WebsocketMessage struct {
 type WebsocketRealTimeMessage struct {
 	Type    int    `json:"type" example:"1"`
 	Message string `json:"message" example:"以 | 分割字段"`
+}
+
+func (m WebsocketRealTimeMessage) ToJson() []byte {
+	buf, _ := json.Marshal(m)
+	return buf
 }
 
 // RealTimeMessageBroadcast 实时推送

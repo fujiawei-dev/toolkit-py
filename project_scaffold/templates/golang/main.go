@@ -22,7 +22,7 @@ import (
 // @Description  Automatically generate RESTful API documentation with Swagger 2.0 for Go.
 
 // @Schemes   http
-// @Host      localhost:8080
+// @Host      127.0.0.1:8080
 // @BasePath  /api/v1
 
 // @SecurityDefinitions.Basic   BasicAuth

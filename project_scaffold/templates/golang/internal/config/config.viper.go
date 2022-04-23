@@ -83,6 +83,10 @@ func (c *config) Init() (err error) {
 		return
 	}
 
+	if err = c.InitService(); err != nil {
+		return
+	}
+
 	c.initLogger()
 
 	c.initJWT()

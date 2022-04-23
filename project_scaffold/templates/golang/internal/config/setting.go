@@ -48,7 +48,7 @@ func NewSettings() *Settings {
 		},
 		Server: ServerSetting{
 			BasePath: "/api/v1",
-			HttpHost: "localhost",
+			HttpHost: "127.0.0.1",
 			HttpPort: 8787,
 			RunMode:  "debug",
 		},
