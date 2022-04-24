@@ -68,7 +68,7 @@ func getUsers() {}
 // @Param        object  body  form.UserLogin  true  "参数"
 // @Produce      json
 // @Header       200  {string}  Authorization                  "鉴权"
-// @Success      200  {object}  query.Response{result=string}  "result 即 Authorization 参数，该值同时存在于 Header 的 Authorization 字段中"
+// @Success      200  {object}  query.Response{result=entity.User}  "result 即 Authorization 参数，该值同时存在于 Header 的 Authorization 字段中"
 // @Router       /user/login [post]
 func postUserLogin() {}
 

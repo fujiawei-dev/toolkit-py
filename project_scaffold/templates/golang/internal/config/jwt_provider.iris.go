@@ -13,7 +13,7 @@ import (
 	"{{GOLANG_MODULE}}/internal/entity"
 )
 
-type JWTProvider struct{
+type JWTProvider struct {
 	once         sync.Once
 	signatureAlg jwt.Alg
 	signer       *jwt.Signer
@@ -36,7 +36,7 @@ func (c *config) JWTMiddleware() iris.Handler {
 
 func (c *config) JWTGenerate(user entity.User) (interface{}, error) {
 	if !c.JWTEnable() {
-		return nil, nil
+		return "", nil
 	}
 
 	switch c.JWTMode() {

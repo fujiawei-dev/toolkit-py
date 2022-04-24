@@ -227,7 +227,10 @@ func UserLogin(router {{ROUTER_GROUP}}) {
 		c.Header("Access-Control-Expose-Headers", "Authorization")
         {% endif -%}
 
-		SendJSON(c, m)
+		var r query.UserResult
+		m.CopyTo(&r)
+
+		SendJSON(c, r)
 		return{{NIL_STRING}}
 	})
 }

@@ -184,6 +184,8 @@ TARGET_ARCH = linux-amd64
 
 USER = root
 HOST = raspberrypi
+CONFIG_PATH = storage/configs/deploy/debug.yaml
+
 USER_HOST = "$(USER)@$(HOST)"
 SSH_CMD = ssh $(USER_HOST)
 CD_INSTALL_PATH = cd $(INSTALL_PATH)
@@ -194,7 +196,9 @@ deploy: deploy-stop deploy-clean $(TARGET_ARCH) deploy-upload deploy-start
 deploy-upload:
 	$(SSH_CMD) "mkdir -p $(INSTALL_PATH)"
 	scp bin/$(APP_NAME)-$(TARGET_ARCH) "$(USER)@$(HOST):$(TARGET_PATH)"
-	scp storage/configs/settings-release.yaml "$(USER)@$(HOST):$(INSTALL_PATH)/settings.yaml"
+	scp $(CONFIG_PATH) "$(USER)@$(HOST):$(INSTALL_PATH)/settings.yaml"
+	$(SSH_CMD) "mkdir -p $(INSTALL_PATH)/assets"
+	scp -r assets "$(USER)@$(HOST):$(INSTALL_PATH)"
 	$(SSH_CMD) "chmod +x $(TARGET_PATH)"
 
 deploy-reset: deploy-stop

@@ -179,8 +179,9 @@ func DeleteEntityTemplate(router {{ROUTER_GROUP}}) {
 
 // GetEntityTemplate
 // @Summary      获取实体
-// @Description  获取实体
+// @Description  获取实体，存在必要性存疑，如前期需要再讨论
 // @Tags         实体管理
+// @Deprecated   true
 // @Accept       json
 // @Param        id  path  int  true  "ID"
 // @Produce      json
@@ -213,7 +214,10 @@ func GetEntityTemplate(router {{ROUTER_GROUP}}) {
 			return{{NIL_STRING}}
 		}
 
-		SendJSON(c, m)
+		var r query.EntityTemplateResult
+		m.CopyTo(&r)
+
+		SendJSON(c, r)
 		return{{NIL_STRING}}
 	}{{WEB_JWT_DOWN}})
 }
