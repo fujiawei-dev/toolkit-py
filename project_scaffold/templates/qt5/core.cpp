@@ -33,6 +33,10 @@ bool Core::DebugMode() const {
 }
 
 void Core::beforeInitConfig() {
+    auto cipherText = AESEncryptStr("hello world", "key");
+    qDebug() << "cryptopp: cipherText =" << cipherText;
+    auto plainText = AESDecryptStr(cipherText, "key");
+    qDebug() << "cryptopp: plainText =" << plainText;
 
     qInfo() << "core: beforeInitConfig OK";
 }
@@ -192,15 +196,15 @@ QList<QString> Core::getDistrictsByProvinceCity(const QString &province, const Q
 QString Core::AESEncryptStr(const QString &msgStr, const QString &keyStr) {
     std::string msgStrOut;
 
-    //    std::string msgStdStr = msgStr.toStdString();
-    //    const char *plainText = msgStdStr.c_str();
-    //    QByteArray key = QCryptographicHash::hash(keyStr.toLocal8Bit(), QCryptographicHash::Sha1).mid(0, 16);
-    //
-    //    AES::Encryption aesEncryption((byte *) key.data(), 16);
-    //    ECB_Mode_ExternalCipher::Encryption ecbEncryption(aesEncryption);
-    //    StreamTransformationFilter ecbEncryptor(ecbEncryption, new Base64Encoder(new StringSink(msgStrOut), BlockPaddingSchemeDef::PKCS_PADDING));
-    //    ecbEncryptor.Put((byte *) plainText, strlen(plainText));
-    //    ecbEncryptor.MessageEnd();
+    std::string msgStdStr = msgStr.toStdString();
+    const char *plainText = msgStdStr.c_str();
+    QByteArray key = QCryptographicHash::hash(keyStr.toLocal8Bit(), QCryptographicHash::Sha1).mid(0, 16);
+
+    AES::Encryption aesEncryption((byte *) key.data(), 16);
+    ECB_Mode_ExternalCipher::Encryption ecbEncryption(aesEncryption);
+    StreamTransformationFilter ecbEncryptor(ecbEncryption, new Base64Encoder(new StringSink(msgStrOut), false));
+    ecbEncryptor.Put((byte *) plainText, strlen(plainText));
+    ecbEncryptor.MessageEnd();
 
     return QString::fromStdString(msgStrOut);
 }
@@ -211,17 +215,17 @@ QString Core::AESDecryptStr(const QString &msgStr, const QString &keyStr) {
     std::string msgStrBase64 = msgStr.toStdString();
     QByteArray key = QCryptographicHash::hash(keyStr.toLocal8Bit(), QCryptographicHash::Sha1).mid(0, 16);
 
-    //    std::string msgStrEnc;
-    //    CryptoPP::Base64Decoder base64Decoder;
-    //    base64Decoder.Attach(new CryptoPP::StringSink(msgStrEnc));
-    //    base64Decoder.Put(reinterpret_cast<const unsigned char *>(msgStrBase64.c_str()), msgStrBase64.length());
-    //    base64Decoder.MessageEnd();
-    //
-    //    CryptoPP::ECB_Mode<CryptoPP::AES>::Decryption ebcDescription((byte *) key.data(), 16);
-    //    CryptoPP::StreamTransformationFilter stf(ebcDescription, new CryptoPP::StringSink(msgStrOut), CryptoPP::BlockPaddingSchemeDef::PKCS_PADDING);
-    //
-    //    stf.Put(reinterpret_cast<const unsigned char *>(msgStrEnc.c_str()), msgStrEnc.length());
-    //    stf.MessageEnd();
+    std::string msgStrEnc;
+    Base64Decoder base64Decoder;
+    base64Decoder.Attach(new StringSink(msgStrEnc));
+    base64Decoder.Put(reinterpret_cast<const unsigned char *>(msgStrBase64.c_str()), msgStrBase64.length());
+    base64Decoder.MessageEnd();
+
+    ECB_Mode<AES>::Decryption ebcDescription((byte *) key.data(), 16);
+    StreamTransformationFilter stf(ebcDescription, new StringSink(msgStrOut), BlockPaddingSchemeDef::PKCS_PADDING);
+
+    stf.Put(reinterpret_cast<const unsigned char *>(msgStrEnc.c_str()), msgStrEnc.length());
+    stf.MessageEnd();
 
     return QString::fromStdString(msgStrOut);
 }
