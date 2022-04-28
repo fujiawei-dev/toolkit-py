@@ -90,6 +90,7 @@ func NewReverseProxyFunc(targetUrl string, clientIP string, trimPrefix string) (
 	reverseProxy.ModifyResponse = func(r *http.Response) error {
 		r.Header.Set("Client-IP", clientIP)
 		r.Header.Set("X-Proxy", "Reverse Proxy")
+		r.Header.Del("Access-Control-Allow-Origin")
 		return nil
 	}
 
