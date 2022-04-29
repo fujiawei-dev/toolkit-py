@@ -11,6 +11,7 @@
 #include <QFileInfo>
 {%- if template!=".console" %}
 #include <QFontDatabase>
+#include <QIcon>
 {%- endif %}
 #include <QMutex>
 {%- if template==".qml" %}
@@ -97,6 +98,7 @@ int main(int argc, char *argv[]) {
     QCoreApplication::setOrganizationDomain("{{APP_NAME}}.com");
     QCoreApplication::setApplicationName("{{APP_NAME}}");
     QCoreApplication::setApplicationVersion(APP_VERSION_WITH_BUILD_INFO);
+    QApplication::setWindowIcon(QIcon("logo.ico"));
 
 #if (QT_VERSION <= QT_VERSION_CHECK(5, 0, 0))
 #if _MSC_VER

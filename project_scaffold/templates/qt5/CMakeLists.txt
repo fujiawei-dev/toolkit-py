@@ -206,6 +206,7 @@ set(
 set(
         QML_FILES
         qml.qrc
+        logo.rc
 )
 {%- endif %}
 

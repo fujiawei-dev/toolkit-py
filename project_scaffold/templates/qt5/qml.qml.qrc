@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
+        <file>logo.ico</file>
         <file>main.qml</file>
         <file>main.js</file>
         <file>http_client.js</file>
