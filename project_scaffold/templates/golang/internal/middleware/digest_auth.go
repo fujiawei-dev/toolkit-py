@@ -24,10 +24,8 @@ type Digest struct {
 	Response  string
 }
 
-// TODO 阻止重放攻击，时间戳过期验证和未过期黑名单
 func (d *Digest) Validate(password, method, realm, uri string, body []byte) bool {
-	if d == nil || d.Realm != realm ||
-		strings.TrimSuffix(d.Uri, "/") != strings.TrimSuffix(uri, "/") {
+	if d == nil || d.Realm != realm || !strings.HasPrefix(d.Uri, strings.TrimSuffix(uri, "/")) {
 		return false
 	}
 

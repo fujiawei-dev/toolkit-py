@@ -3,63 +3,26 @@
 package {{GOLANG_PACKAGE}}
 
 import (
-	"encoding/json"
-	"sync"
-	"time"
-
     "{{GOLANG_MODULE}}/internal/query"
 )
 
 var (
-	HubServer                    *Hub
-	HubClient                    *Hub
-	HubRealTimeMessageSubscriber *Hub
-	MapClientConnections                   sync.Map
+	WebsocketScheduler *Scheduler
 )
 
-const (
-	Activation int = iota + 1
-	Authentication
-)
+func init() {
+	WebsocketScheduler = NewScheduler()
+	go WebsocketScheduler.Run()
+	WebsocketScheduler.FindOrCreateHub(Default, true)
+}
 
 const (
-	KeepAlive     = "KeepAlive"
-	GetPrivateKey = "GetPrivateKey"
-	PostPublicKey = "PostPublicKey"
-	GetPosition   = "GetPosition"
+	Masters                    = "masters"
+	Default                    = "default"
+	RealTimeMessageSubscribers = "realtime_message_subscribers"
 )
 
 type WebsocketMessage struct {
-	Cmd string `json:"cmd" example:"GetPrivateKey"`
+	Cmd string `json:"cmd" example:"GetSessionKey"`
 	query.Response
-}
-
-type WebsocketRealTimeMessage struct {
-	Type    int    `json:"type" example:"1"`
-	Message string `json:"message" example:"以 | 分割字段"`
-}
-
-func (m WebsocketRealTimeMessage) ToJson() []byte {
-	buf, _ := json.Marshal(m)
-	return buf
-}
-
-// RealTimeMessageBroadcast 实时推送
-var RealTimeMessageBroadcast chan []byte
-
-func init() {
-	go func() {
-		message, _ := json.Marshal(WebsocketRealTimeMessage{
-			Type:    1,
-			Message: "golang|python|cpp",
-		})
-
-		for {
-			if HubRealTimeMessageSubscriber != nil {
-				HubRealTimeMessageSubscriber.Broadcast <- message
-			}
-
-			time.Sleep(3 * time.Second)
-		}
-	}()
 }
