@@ -7,6 +7,7 @@ LastEditTime: 2022.02.02 18:14
 import click
 from click_aliases import ClickAliasedGroup
 
+from .golang import golang as _golang
 from .java import java as _java
 from .python import python as _python
 from .raspberrypi import Version as raspberrypi_version, raspberrypi as _raspberrypi
@@ -57,3 +58,12 @@ def raspberrypi(version):
 )
 def java():
     _java()
+
+
+@command_cfm.command(
+    aliases=["go"],
+    context_settings={"help_option_names": ["-h", "--help"]},
+    help="Change golang source mirrors.",
+)
+def golang():
+    _golang()
