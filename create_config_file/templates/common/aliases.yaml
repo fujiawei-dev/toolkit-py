@@ -1,5 +1,6 @@
 common:
   py: python
+  curlip: curl ifconfig.me
 
   # Aliases for FFmpeg
   ffmpeg: ffmpeg -hide_banner -y
@@ -16,3 +17,7 @@ common:
 
 linux:
   cls: clear
+  apti: apt install -y
+  aptr: apt remove -y
+  apts: apt search
+  aptu: apt update -y; apt upgrade -y; apt autoremove -y

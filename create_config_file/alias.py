@@ -14,8 +14,9 @@ from .templates import COMMON_PATH
 _powershell_template = """\
 {% for key, value in aliases.items() %}
 # {{key}} 简写 {{value}}
-function {{value.replace('_', ' ').replace('-', ' ').title().replace(' ', '')}} { {{value}} $args }
-Set-Alias -Name {{key}} -Value {{value.title().replace(' ', '')}}
+{%- set cmd=value.replace('_', ' ').replace('-', ' ').replace('.', ' ').title().replace(' ', '') %}
+function {{cmd}} { {{value}} $args }
+Set-Alias -Name {{key}} -Value {{cmd}}
 {% endfor %}
 """
 
@@ -50,11 +51,7 @@ def alias(read_only=True):
 
     click.echo("============ For Linux =================")
 
-    confs = [
-        join_user(".config/fish/config.fish"),
-        join_user(".profile"),
-        join_user(".zshrc"),
-    ]
+    confs = ["~/.config/fish/config.fish", "~/.profile", "~/.zshrc"]
     content = Template(_bash_templates).render(
         aliases={
             **aliases.get("common", {}),
