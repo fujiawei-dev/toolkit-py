@@ -1,12 +1,17 @@
 common:
   py: python
+
+  curlp: curl -x localhost:8118
   curlip: curl ifconfig.me
+  curlpip: curl -x localhost:8118 ifconfig.me
+
+  wgetp: wget -e use_proxy=yes -e http_proxy=localhost:8118 -e https_proxy=localhost:8118
 
   # Aliases for FFmpeg
   ffmpeg: ffmpeg -hide_banner -y
   ffprobe: ffprobe -hide_banner -y
 
-# Aliases for Git
+  # Aliases for Git
   get: git clone
   gad: git add
   gcmt: git commit -m
