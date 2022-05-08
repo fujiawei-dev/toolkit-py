@@ -5,6 +5,7 @@ LastEditors: Rustle Karl
 LastEditTime: 2022.02.10 14:54
 """
 import os.path
+import shutil
 import time
 from pathlib import Path
 from typing import List, Tuple
@@ -131,6 +132,7 @@ def render_templates(
     common: bool = True,
     only_files: str = "",
     replace_list: dict = None,
+    exclude_dirs: List[str] = None,
     **kwargs,
 ):
     package, package_title, package_underscore = get_different_camel_case_styles()
@@ -162,3 +164,7 @@ def render_templates(
     else:
         for folder in folders:
             os.makedirs(folder, exist_ok=True)
+
+    if exclude_dirs:
+        for exclude_dir in exclude_dirs:
+            shutil.rmtree(exclude_dir)

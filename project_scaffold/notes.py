@@ -50,4 +50,10 @@ def notes():
             "src/libraries/tripartite",  # 第三方库源码示例
             "src/quickstart",  # 基础用法源码示例
         ],
+        exclude_dirs=[
+            ".github",
+            "assets/geography",
+            "examples",
+            "drafts",
+        ],
     )

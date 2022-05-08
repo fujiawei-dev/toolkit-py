@@ -118,6 +118,10 @@ func AbortInvalidPassword(c {{WEB_CONTEXT}}) {
 	Abort(c, query.ErrInvalidPassword)
 }
 
+func AbortNotImplemented(c {{WEB_CONTEXT}}) {
+	Abort(c, http.StatusNotImplemented)
+}
+
 func ErrorExpectedOrUnexpected(c {{WEB_CONTEXT}}, err error) {
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		ErrorRecordNotFound(c, err)
