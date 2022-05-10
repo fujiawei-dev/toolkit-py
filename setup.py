@@ -1,13 +1,39 @@
 """
 Date: 2020-09-21 23:48:26
 LastEditors: Rustle Karl
-LastEditTime: 2022.02.08 00:02:29
+Description: Distutils setup file for Toolkit-Py.
+LastEditTime: 2022.05.10 11:29:42
 """
+
+try:
+    from setuptools import setup, find_packages
+except:
+    raise ImportError("setuptools is required to install toolkit-py!")
+
 import os.path
 
-from setuptools import find_packages, setup
+root = os.path.abspath(os.path.dirname(__file__))
 
-from unified_command.version import __version__
+# Import the README and use it as the long-description.
+def get_long_description():
+    """Extract description from README.md, for PyPI's usage"""
+
+    def process_ignore_tags(buffer):
+        return "\n".join(
+            x for x in buffer.split("\n") 
+            if "<!-- ignore_ppi -->" not in x
+        )
+
+    try:
+        fpath = os.path.join(root, "README.md")
+        with open(fpath, encoding="utf-8") as f:
+            readme = f.read()
+            desc = readme.partition("<!-- begin_ppi_description -->")[2]
+            desc = desc.partition("<!-- end_ppi_description -->")[0]
+            return process_ignore_tags(desc.strip())
+    except IOError:
+        return ""
+
 
 # What packages are required for this module to be executed?
 requires = [
@@ -36,19 +62,14 @@ def find_package_data(*paths):
     ]
 
 
-root = os.path.abspath(os.path.dirname(__file__))
-
-# Import the README and use it as the long-description.
-with open(os.path.join(root, "README.md"), encoding="utf-8") as f:
-    long_description = f.read()
-
+# https://packaging.python.org/guides/distributing-packages-using-setuptools/
 setup(
     name="toolkit-py",
-    version=__version__,
+    version=__import__("unified_command").version.__version__,
     url="https://github.com/fujiawei-dev/toolkit-py",
     keywords=["toolkit", "toolset"],
     description="Personal toolkit implemented by Python.",
-    long_description=long_description,
+    long_description=get_long_description(),
     long_description_content_type="text/markdown",
     author="Rustle Karl",
     author_email="fujiawei@outlook.com",
@@ -61,6 +82,7 @@ setup(
         "open_source_mirror": find_package_data("open_source_mirror/templates"),
         "project_scaffold": find_package_data("project_scaffold/templates"),
     },
+    # Build starting scripts automatically
     entry_points={
         "console_scripts": [
             "gua=user_agent:command_gua",
@@ -72,14 +94,16 @@ setup(
             "ucmd=unified_command.command:command_ucmd",
         ],
     },
+    python_requires=">=3.7",
     classifiers=[
-        "Intended Audience :: Developers",
         "Environment :: Console",
+        "Intended Audience :: Developers",
         "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: Implementation :: CPython",
-        "Programming Language :: Python :: Implementation :: PyPy",
-        "Topic :: Software Development :: Libraries :: Python Modules",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Topic :: Software Development",
     ],
 )
