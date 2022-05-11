@@ -37,18 +37,3 @@ def start(config_file: str = "settings.yaml"):
         conf |= yaml.safe_load(config_file.open(encoding="utf-8"))
     else:
         yaml.safe_dump(conf, config_file.open("w", encoding="utf-8"))
-
-    from .service import Service
-
-    srv = Service(
-        serial_port=conf["serial_port"],
-        mqtt_host=conf["mqtt_host"],
-        mqtt_port=conf["mqtt_port"],
-        mqtt_username=conf["mqtt_username"],
-        mqtt_password=conf["mqtt_password"],
-    )
-
-    try:
-        srv.loop_forever(unit=0x02, topic=conf["topic"])
-    except KeyboardInterrupt:
-        pass

@@ -1,7 +1,5 @@
 {PYTHON_HEADER}
 
-# https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
-
 name: Python Test
 
 on:
