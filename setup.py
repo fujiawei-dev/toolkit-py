@@ -12,6 +12,8 @@ except:
 
 import os.path
 
+from unified_command.version import __version__
+
 root = os.path.abspath(os.path.dirname(__file__))
 
 # Import the README and use it as the long-description.
@@ -20,7 +22,7 @@ def get_long_description():
 
     def process_ignore_tags(buffer):
         return "\n".join(
-            x for x in buffer.split("\n") 
+            x for x in buffer.split("\n")
             if "<!-- ignore_ppi -->" not in x
         )
 
@@ -65,7 +67,7 @@ def find_package_data(*paths):
 # https://packaging.python.org/guides/distributing-packages-using-setuptools/
 setup(
     name="toolkit-py",
-    version=__import__("unified_command").version.__version__,
+    version=__version__,
     url="https://github.com/fujiawei-dev/toolkit-py",
     keywords=["toolkit", "toolset"],
     description="Personal toolkit implemented by Python.",
