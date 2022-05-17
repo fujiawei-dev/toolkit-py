@@ -13,6 +13,7 @@ from click_aliases import ClickAliasedGroup
 
 from .c import Qt5Templates, c as _c, qt5 as _qt5
 from .common import create_common_files
+from .docker import docker as _docker
 from .golang import GoCombinations, golang as _golang
 from .kotlin import kotlin as _kotlin
 from .notes import notes as _notes
@@ -135,3 +136,8 @@ def qt5(template=Qt5Templates.Gui, only_files=""):
 @command_cps.command(help="Create kotlin project scaffold.")
 def kotlin():
     _kotlin()
+
+
+@command_cps.command(help="Create docker project scaffold.")
+def docker():
+    _docker()

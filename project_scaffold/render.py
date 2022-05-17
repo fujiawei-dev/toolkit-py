@@ -161,7 +161,7 @@ def render_templates(
 
     if common:
         create_common_files(folders)
-    else:
+    elif folders:
         for folder in folders:
             os.makedirs(folder, exist_ok=True)
 
