@@ -18,6 +18,8 @@ TEXT_SUFFIXES = {
     ".c",
     ".cmd",
     ".cpp",
+    ".xml",
+    ".iml",
     ".go",
     ".h",
     ".ini",

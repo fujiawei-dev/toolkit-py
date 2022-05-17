@@ -49,6 +49,7 @@ def notes():
             "src/libraries/standard",  # 标准库源码示例
             "src/libraries/tripartite",  # 第三方库源码示例
             "src/quickstart",  # 基础用法源码示例
+            "tools",  # 常用工具
         ],
         exclude_dirs=[
             ".github",
