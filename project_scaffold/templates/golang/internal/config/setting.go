@@ -22,6 +22,7 @@ type StaticSetting struct {
 	BackupPath  string `mapstructure:"backup_path" yaml:"backup_path,omitempty"`
 	StoragePath string `mapstructure:"storage_path" yaml:"storage_path,omitempty"`
 	AssetsPath  string `mapstructure:"assets_path" yaml:"assets_path,omitempty"`
+	UploadPath  string `mapstructure:"upload_path" yaml:"upload_path,omitempty"`
 }
 
 type Settings struct {

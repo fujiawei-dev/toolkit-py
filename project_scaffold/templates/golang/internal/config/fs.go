@@ -19,6 +19,12 @@ func (c *config) CreateDirectories() (err error) {
 		}
 	}
 
+	if !fs.Exists(c.UploadPath()) {
+		if err = fs.MkdirAll(c.UploadPath()); err != nil {
+			return err
+		}
+	}
+
 	if !fs.Exists(c.LogPath()) {
 		if err = fs.MkdirAll(c.LogPath()); err != nil {
 			return err
@@ -74,4 +80,12 @@ func (c *config) BackupPath() string {
 // PidFile returns the filename for storing the server process id (pid).
 func (c *config) PidFile() string {
 	return fs.Join(c.StoragePath(), c.AppName()+".pid")
+}
+
+func (c *config) UploadPath() string {
+	if fs.PathWritable(c.settings.Static.UploadPath) {
+		return fs.MustAbs(c.settings.Static.UploadPath)
+	}
+
+	return fs.Join(c.StoragePath(), "uploads")
 }

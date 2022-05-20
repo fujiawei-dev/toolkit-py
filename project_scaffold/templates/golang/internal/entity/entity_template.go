@@ -146,24 +146,24 @@ func (m *EntityTemplate) Save() error {
 // When updating a single column with Update, it needs to have any conditions,
 // or it will raise error ErrMissingWhereClause
 func (m *EntityTemplate) Update(column string, value interface{}) (err error) {
-	err = Db().Where(m).Update(column, value).Error
+	err = Db().Model(m).Where(m).Update(column, value).Error
 	return
 }
 
 func (m *EntityTemplate) Updates(values interface{}) (err error) {
-	err = Db().Where(m).Updates(values).Error
+	err = Db().Model(m).Where(m).Updates(values).Error
 	return
 }
 
 // UpdateColumn Without Hooks/Time Tracking
 func (m *EntityTemplate) UpdateColumn(column string, value interface{}) (err error) {
-	err = Db().Where(m).UpdateColumn(column, value).Error
+	err = Db().Model(m).Where(m).UpdateColumn(column, value).Error
 	return
 }
 
 // UpdateColumns Update multiple columns without Hooks/Time Tracking
 func (m *EntityTemplate) UpdateColumns(values interface{}) (err error) {
-	err = Db().Where(m).UpdateColumns(values).Error
+	err = Db().Model(m).Where(m).UpdateColumns(values).Error
 	return
 }
 
