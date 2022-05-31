@@ -17,21 +17,25 @@ TEXT_SUFFIXES = {
     ".bat",
     ".c",
     ".cmd",
+    ".conf",
     ".cpp",
-    ".xml",
-    ".iml",
     ".go",
     ".h",
+    ".iml",
     ".ini",
     ".js",
     ".json",
     ".md",
+    ".metainfo",
     ".py",
     ".qml",
+    ".qmlproject",
     ".qrc",
+    ".qtds",
     ".ts",
     ".txt",
     ".ui",
+    ".xml",
     ".yaml",
     ".yml",
 }
@@ -39,6 +43,8 @@ TEXT_SUFFIXES = {
 TEXT_FILES = {
     "license",
     "makefile",
+    "qmldir",
+    "qmlmodules",
 }
 
 
