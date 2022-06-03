@@ -25,7 +25,7 @@ func init() {
 // @Security     ApiKeyAuth
 // @Param        upload  formData  file  true  "大小不超过 12MB 的文件"
 // @Produce      json
-// @Success      200  {object}  query.Response  "返回以 ; 分割的字符串，获取时的相对路径为 /uploads，比如返回的是 x.jpg，则实际路径为 /uploads/x.jpg"
+// @Success      200  {object}  query.Response  "返回以 ; 分割的字符串，前端获取时的相对路径为 /uploads，比如返回的是 x.jpg，则实际路径为 /uploads/x.jpg"
 // @Router       /upload/files [post]
 {%- if WEB_FRAMEWORK == ".iris" %}
 func UploadFiles(router iris.Party) {

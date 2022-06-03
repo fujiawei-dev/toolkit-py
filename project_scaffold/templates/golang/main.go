@@ -3,7 +3,9 @@
 package main
 
 import (
+    {%- if CLI_FRAMEWORK==".cli" %}
 	"fmt"
+    {%- endif %}
 	"os"
 
     {%- if CLI_FRAMEWORK==".cli" %}

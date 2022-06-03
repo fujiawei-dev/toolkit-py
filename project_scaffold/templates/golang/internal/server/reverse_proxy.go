@@ -108,6 +108,7 @@ func NewReverseProxyFunc(targetUrl string, clientIP string, trimPrefix string) (
 // @Produce      plain
 // @Success      200  {object}  query.Response  "操作成功"
 // @Router       /proxy/{any} [get]
+{%- if WEB_FRAMEWORK == ".iris" %}
 func NewReverseProxyIrisExample(targetUrl string, router iris.Party) {
 	basePath := router.GetRelPath()
 	relPath := "/proxy"
@@ -122,3 +123,4 @@ func NewReverseProxyIrisExample(targetUrl string, router iris.Party) {
 		proxy(c.ResponseWriter(), c.Request())
 	})
 }
+{%- endif %}

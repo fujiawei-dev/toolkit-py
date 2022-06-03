@@ -71,7 +71,7 @@ func PostEntityTemplate(router {{ROUTER_GROUP}}) {
 // @Tags         实体管理
 // @Accept       json
 // @Security     ApiKeyAuth
-// @Param        id      path  int              true   "ID"
+// @Param        id      path  int                        true   "ID"
 // @Param        object  body  form.EntityTemplateUpdate  false  "参数"
 // @Produce      json
 // @Success      200  {object}  query.Response  "操作成功"
@@ -227,9 +227,9 @@ func GetEntityTemplate(router {{ROUTER_GROUP}}) {
 // @Description  获取实体列表
 // @Tags         实体管理
 // @Accept       application/x-www-form-urlencoded
-// @Param        page        query  int     false  "页码"    default(1)
-// @Param        page_size   query  int     false  "每页数量"  Enums(10, 20)  default(10)
-// @Param        order                 query  int     false  "已定义字段排序 0 ID顺序 1 ID倒序"  Enums(0, 1)    default(1)
+// @Param        page        query  int     false  "页码"                     default(1)
+// @Param        page_size   query  int     false  "每页数量"                   Enums(10, 20)  default(10)
+// @Param        order       query  int     false  "已定义字段排序 0 ID顺序 1 ID倒序"  Enums(0, 1)    default(1)
 // @Param        time_begin  query  string  false  "开始时间前一天，比如 2021-10-01，则实际从 2021-10-02 起开始"
 // @Param        time_end    query  string  false  "结束时间后一天，比如 2022-10-01，则实际到 2021-09-31 起结束"
 // @Produce      json
