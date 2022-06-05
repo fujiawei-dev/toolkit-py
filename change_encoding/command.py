@@ -16,12 +16,14 @@ TEXT_SUFFIXES = {
     ".asm",
     ".bat",
     ".c",
+    ".cfg",
     ".cmd",
     ".conf",
     ".cpp",
     ".go",
     ".h",
     ".iml",
+    ".in",
     ".ini",
     ".js",
     ".json",
@@ -45,6 +47,8 @@ TEXT_FILES = {
     "makefile",
     "qmldir",
     "qmlmodules",
+    ".gitignore",
+    ".gitattributes",
 }
 
 
