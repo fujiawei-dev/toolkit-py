@@ -20,6 +20,8 @@ TEXT_SUFFIXES = {
     ".cmd",
     ".conf",
     ".cpp",
+    '.css',
+    '.csv',
     ".go",
     ".h",
     ".iml",
@@ -34,6 +36,7 @@ TEXT_SUFFIXES = {
     ".qmlproject",
     ".qrc",
     ".qtds",
+    '.rst',
     ".ts",
     ".txt",
     ".ui",
@@ -43,6 +46,7 @@ TEXT_SUFFIXES = {
 }
 
 TEXT_FILES = {
+    '.editorconfig',
     "license",
     "makefile",
     "qmldir",

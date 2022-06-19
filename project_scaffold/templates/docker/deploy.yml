@@ -1,0 +1,7 @@
+servers:
+    openwrt-rpi:
+        host: 192.168.0.10
+        port: "80"
+    ubuntu-amd64:
+        host: 192.168.0.18
+        port: "80"
