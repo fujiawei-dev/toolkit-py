@@ -2,10 +2,10 @@
 
 ### 三级
 
-```python
+```{{STUDY_OBJECT | lower}}
 
 ```
 
-```shell
+```{{STUDY_OBJECT | lower}}
 
 ```

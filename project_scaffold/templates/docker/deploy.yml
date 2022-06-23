@@ -1,3 +1,5 @@
+disabled: true
+
 servers:
     openwrt-rpi:
         host: 192.168.0.10
