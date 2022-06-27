@@ -4,6 +4,8 @@ Description: Omit
 LastEditors: Rustle Karl
 LastEditTime: 2022.02.02 18:14
 """
+from pathlib import Path
+
 import click
 from click_aliases import ClickAliasedGroup
 
@@ -58,6 +60,8 @@ def clash():
 )
 @click.option("--mode", "-m", required=False, type=int, help="Processing mode.")
 def notes(path, mode):
+    path = Path(path).with_suffix(".md")
+
     if not mode or mode == 0:
         _notes(path)
     else:
