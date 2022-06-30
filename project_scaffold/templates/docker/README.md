@@ -4,17 +4,17 @@
 
 ```shell
 # Start
-docker-compose up -d
+docker compose up -d
 
 # Stop
-docker-compose stop
+docker compose stop
 
 # Update
-docker-compose pull
+docker compose pull
 
 # Logs
-docker-compose logs --tail=25 -f
+docker compose logs --tail=25 -f
 
 # Terminal
-docker-compose exec {{APP_NAME}} bash
+docker compose exec {{APP_NAME}} bash
 ```
