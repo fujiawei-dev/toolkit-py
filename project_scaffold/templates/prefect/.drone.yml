@@ -1,0 +1,41 @@
+kind: pipeline
+type: docker
+name: test
+
+volumes:
+  - name: cache
+    host:
+      path: /mnt/ssd/dockerd/volumes/python-3.10/cache
+
+steps:
+  - name: pytest
+    image: python:3.10
+    volumes:
+      - name: cache
+        path: /root/.cache
+    commands:
+      - pip -V
+      - if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+      - pytest tests
+      - python setup.py install
+
+---
+kind: pipeline
+type: exec
+name: deploy
+
+depends_on:
+  - test
+
+steps:
+  - name: install
+    environment:
+      PATH: /opt/anaconda3/envs/prefect-collections/bin:/usr/bin
+    commands:
+      - pip -V
+      - if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+      - python setup.py install
+      - cp -r .prefect ~
+      - python register.py

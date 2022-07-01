@@ -17,6 +17,7 @@ from .docker import docker as _docker
 from .golang import GoCombinations, golang as _golang
 from .kotlin import kotlin as _kotlin
 from .notes import notes as _notes
+from .prefect import prefect as _prefect
 from .python import python as _python
 
 
@@ -141,3 +142,8 @@ def kotlin():
 @command_cps.command(help="Create docker project scaffold.")
 def docker():
     _docker()
+
+
+@command_cps.command(help="Create prefect project scaffold.")
+def prefect():
+    _prefect()
