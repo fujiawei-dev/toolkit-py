@@ -22,20 +22,20 @@ draft: false  # 草稿
 
 - `assets/images`: 笔记配图
 - `assets/templates`: 笔记模板
-- `docs`: 基础语法
+- `docs`: 基础教程
 - `libraries`: 库
   - `libraries/standard`: 标准库
   - `libraries/tripartite`: 第三方库
 - `quickstart`: 基础用法
 - `src`: 源码示例
-  - `src/docs`: 基础语法源码示例
+  - `src/docs`: 基础教程源码示例
   - `src/libraries/standard`: 标准库源码示例
   - `src/libraries/tripartite`: 第三方库源码示例
   - `src/quickstart`: 基础用法源码示例
 
 ## 基础用法
 
-## 基础语法
+## 基础教程
 
 ## 库
 
