@@ -14,6 +14,7 @@ from click_aliases import ClickAliasedGroup
 from .c import Qt5Templates, c as _c, qt5 as _qt5
 from .common import create_common_files
 from .docker import docker as _docker
+from .example import example as _example
 from .golang import GoCombinations, golang as _golang
 from .kotlin import kotlin as _kotlin
 from .notes import notes as _notes
@@ -147,3 +148,9 @@ def docker():
 @command_cps.command(help="Create prefect project scaffold.")
 def prefect():
     _prefect()
+
+
+@command_cps.command(help="Create example project scaffold.")
+@click.argument("suffix", type=str, required=True)
+def example(suffix):
+    _example(suffix)
