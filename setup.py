@@ -1,0 +1,56 @@
+"""The setup script."""
+
+from setuptools import find_packages, setup
+
+import versioneer
+
+with open("requirements.txt") as install_requires_file:
+    install_requires = install_requires_file.read().splitlines()
+
+with open("requirements-dev.txt") as dev_requires_file:
+    dev_requires = dev_requires_file.read().splitlines()
+
+with open("README.md") as readme_file:
+    readme = readme_file.read()
+
+with open("HISTORY.md") as history_file:
+    history = history_file.read()
+
+
+setup(
+    name="toolkit",
+    version=versioneer.get_version(),
+    cmdclass=versioneer.get_cmdclass(),
+    author="Rustle Karl",
+    author_email="fu.jiawei@outlook.com",
+    url="https://github.com/fujiawei-dev/toolkit",
+    description="Personal toolkit implemented by Python.",
+    long_description=readme + "\n\n" + history,
+    long_description_content_type="text/markdown",
+    keywords="toolkit",
+    license="MIT license",
+    packages=find_packages(
+        include=["toolkit", "toolkit.*"],
+        exclude=("tests", "docs"),
+    ),
+    test_suite="tests",
+    include_package_data=True,
+    entry_points={
+        "console_scripts": [
+            "toolkit=toolkit.cli:main",
+        ],
+    },
+    python_requires=">=3.9",
+    install_requires=install_requires,
+    extras_require={"dev": dev_requires},
+    classifiers=[
+        "Environment :: Console",
+        "Intended Audience :: Developers",
+        "Operating System :: OS Independent",
+        "License :: OSI Approved :: MIT License",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Topic :: Software Development",
+    ],
+)

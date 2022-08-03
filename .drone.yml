@@ -1,0 +1,20 @@
+kind: pipeline
+type: docker
+name: test
+
+volumes:
+  - name: cache
+    host:
+      path: /tmp/cache
+
+steps:
+  - name: pytest
+    image: python:3.10
+    volumes:
+      - name: cache
+        path: /root/.cache
+    commands:
+      - pip -V
+      - pip install -i https://pypi.douban.com/simple -r requirements.txt
+      - pip install -i https://pypi.douban.com/simple -r requirements-dev.txt
+      - pytest tests
