@@ -1,5 +1,7 @@
 """The setup script."""
 
+import os.path
+
 from setuptools import find_packages, setup
 
 import versioneer
@@ -17,13 +19,22 @@ with open("HISTORY.md") as history_file:
     history = history_file.read()
 
 
+def find_package_data(*paths):
+    return [
+        os.path.normpath(os.path.join("..", p, f))
+        for path in paths
+        for (p, d, fs) in os.walk(path)
+        for f in fs
+    ]
+
+
 setup(
-    name="toolkit",
+    name="toolkit-py",
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
     author="Rustle Karl",
     author_email="fu.jiawei@outlook.com",
-    url="https://github.com/fujiawei-dev/toolkit",
+    url="https://github.com/fujiawei-dev/toolkit-py",
     description="Personal toolkit implemented by Python.",
     long_description=readme + "\n\n" + history,
     long_description_content_type="text/markdown",
@@ -31,7 +42,7 @@ setup(
     license="MIT license",
     packages=find_packages(
         include=["toolkit", "toolkit.*"],
-        exclude=("tests", "docs"),
+        exclude=("tests", "tests.*", "docs"),
     ),
     test_suite="tests",
     include_package_data=True,

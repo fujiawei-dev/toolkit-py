@@ -1,1 +1,6 @@
 toolkit/_version.py export-subst
+
+*.py linguist-language=python
+*.go linguist-language=golang
+*.c linguist-language=cpp
+*.cpp linguist-language=cpp
