@@ -5,9 +5,17 @@ import click
 from click_aliases import ClickAliasedGroup
 
 from toolkit import __version__
+from toolkit.provider.image_hosting import ups_for_typora_command
 from toolkit.provider.tidy import tidy_command
 from toolkit.provider.unzip import unzip_command
+from toolkit.provider.user_agent import generate_user_agent_command
 from toolkit.provider.youdao import block_youdao_ads_command
+
+__all__ = [
+    "generate_user_agent_command",
+    "main",
+    "ups_for_typora_command",
+]
 
 
 @click.group(cls=ClickAliasedGroup)

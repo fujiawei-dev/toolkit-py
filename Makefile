@@ -55,9 +55,7 @@ clean-build: ## remove build artifacts
 	rm -fr build/
 	rm -fr dist/
 	rm -fr .eggs/
-	rm -fr UNKNOWN.egg-info/
-	-find . -name '*.egg-info' -exec rm -fr {} +
-	-find . -name '*.egg' -exec rm -f {} +
+	rm -fr *.egg-info/
 
 clean-pyc: ## remove Python file artifacts
 	find . -name '*.pyc' -exec rm -f {} +
@@ -81,7 +79,8 @@ dist: clean ## builds source and wheel package
 	ls -l dist
 
 install: clean ## install the package to the active Python's site-packages
-	python setup.py install
+	pip install .
+	# python setup.py install
 
 act-install: ## install act
 	curl https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo bash
