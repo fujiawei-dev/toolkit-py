@@ -610,7 +610,7 @@ class Browser(str, Enum):
     Firefox = "firefox"
     Edge = "edge"
     Safari = "safari"
-    Opera = "opera"
+    Opera = "opr"
 
     ChromeAndroid = Chrome + OS.Android
     ChromeIOS = Chrome + OS.IOS
