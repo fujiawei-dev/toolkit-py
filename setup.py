@@ -49,6 +49,7 @@ setup(
     entry_points={
         "console_scripts": [
             "toolkit=toolkit.cli:main",
+            "mirror=toolkit.scaffold.mirror.cli:main",
             "gua=toolkit.cli:generate_user_agent_command",
             "upsfortypora=toolkit.cli:ups_for_typora_command",
         ],
