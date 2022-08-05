@@ -14,12 +14,17 @@ from subprocess import PIPE
 from threading import Thread
 from typing import Dict, Iterable, List, Tuple, Union
 
+import click
+import yaml
+
 from toolkit.logger import logger
 
 log = logger.getChild("provider.unzip")
 
 DEFAULT_PASSWORDS_DIR = Path.home() / ".config" / ".passwords"
+DEFAULT_PASSWORDS_DIR.mkdir(parents=True, exist_ok=True)
 DEFAULT_PASSWORDS_FILE = DEFAULT_PASSWORDS_DIR / "customize.txt"
+DEFAULT_PASSWORDS_FILE.touch(exist_ok=True)
 
 NORMAL_FILE_SUFFIXES = {".jpeg", ".jpg", ".png"}
 COMPRESSED_FILE_SUFFIXES = {".7z", ".zip", ".rar", ".7zz"}
@@ -344,3 +349,63 @@ class Unzipper(object):
             return self.run(src, move_to)
         finally:
             pickle.dump(self.successful_items_dict, file=open(history_file, "wb"))
+
+
+@click.command(help="Automatically unzip files recursively.")
+@click.option(
+    "--src",
+    type=click.Path(exists=False),
+    required=False,
+    default=".",
+    help="The source file or directory.",
+)
+@click.option(
+    "--move-to",
+    type=click.Path(exists=False),
+    required=False,
+    default="",
+    help="The destination directory.",
+)
+@click.option(
+    "--disable-history",
+    is_flag=True,
+    help="Whether to use history file to speed up the process.",
+)
+@click.option(
+    "--show-config",
+    is_flag=True,
+    help="Show the content of the default config.",
+)
+@click.option(
+    "--open-password-file",
+    is_flag=True,
+    help="Open the customize password file.",
+)
+def unzip_command(
+    src: str,
+    move_to: str,
+    disable_history: bool,
+    show_config: bool,
+    open_password_file: bool,
+):
+    if open_password_file:
+        click.edit(filename=str(DEFAULT_PASSWORDS_FILE), editor="code")
+        return
+
+    if show_config:
+        click.echo(
+            yaml.dump(
+                {
+                    "default_passwords_dir": DEFAULT_PASSWORDS_DIR,
+                    "default_passwords_file": DEFAULT_PASSWORDS_FILE,
+                }
+            )
+        )
+        return
+
+    unzipper = Unzipper()
+
+    if not disable_history:
+        return unzipper.run_with_history(src, move_to)
+
+    return unzipper.run(src, move_to)

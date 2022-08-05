@@ -26,7 +26,7 @@ def block_ads_as_admin():
 
 
 @click.command(help="Remove the ui ads of YoudaoNote (run as admin)")
-def block_ads_command():
+def block_youdao_ads_command():
     if sys.platform != "win32":
         exit(0)
 
