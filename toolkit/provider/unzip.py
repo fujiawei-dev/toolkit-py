@@ -17,6 +17,7 @@ from typing import Dict, Iterable, List, Tuple, Union
 import click
 import yaml
 
+from toolkit.config.runtime import EDITOR
 from toolkit.logger import logger
 
 log = logger.getChild("provider.unzip")
@@ -389,7 +390,7 @@ def unzip_command(
     open_password_file: bool,
 ):
     if open_password_file:
-        click.edit(filename=str(DEFAULT_PASSWORDS_FILE), editor="code")
+        click.edit(filename=str(DEFAULT_PASSWORDS_FILE), editor=EDITOR)
         return
 
     if show_config:

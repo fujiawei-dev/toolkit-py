@@ -46,10 +46,14 @@ setup(
     ),
     test_suite="tests",
     include_package_data=True,
+    package_data={
+        "toolkit": find_package_data("toolkit/template"),
+    },
     entry_points={
         "console_scripts": [
             "toolkit=toolkit.cli:main",
             "mirror=toolkit.scaffold.mirror.cli:main",
+            "config=toolkit.scaffold.config.cli:main",
             "gua=toolkit.cli:generate_user_agent_command",
             "upsfortypora=toolkit.cli:ups_for_typora_command",
         ],

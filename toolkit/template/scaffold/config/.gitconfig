@@ -1,0 +1,32 @@
+[user]
+        name = {{ __author__ }}
+        email = {{ __author_email__ }}
+
+[init]
+        defaultBranch = main
+
+[core]
+	eol = lf
+	autocrlf = false
+	safecrlf = true
+
+[pull]
+	rebase = true
+
+[rebase]
+	autoStash = true
+
+[alias]
+        co = checkout
+        ci = commit
+        st = status
+        br = branch
+        hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+        type = cat-file -t
+        dump = cat-file -p
+
+[safe]
+        directory = *
+
+[http "https://github.com"]
+	proxy = http://127.0.0.1:7890

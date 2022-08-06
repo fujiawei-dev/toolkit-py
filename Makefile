@@ -58,6 +58,7 @@ clean-build: ## remove build artifacts
 	rm -fr *.egg-info/
 
 clean-pyc: ## remove Python file artifacts
+	rm -fr __pycache__/
 	find . -name '*.pyc' -exec rm -f {} +
 	find . -name '*.pyo' -exec rm -f {} +
 	find . -name '*~' -exec rm -f {} +

@@ -5,6 +5,7 @@ import yaml
 from pydantic import BaseSettings
 from pydantic.env_settings import SettingsSourceCallable
 
+from toolkit.config.python import PythonOptions
 from toolkit.logger import logger
 
 log = logger.getChild("config.settings")
@@ -30,6 +31,8 @@ def yaml_config_settings_source(settings: BaseSettings) -> Dict[str, Any]:
 
 class Settings(BaseSettings):
     log_level: str = "INFO"
+
+    python: PythonOptions = PythonOptions()
 
     def __init__(self, *args, config_file="config.yml", **kwargs):
         self.__config__.config_file = config_file

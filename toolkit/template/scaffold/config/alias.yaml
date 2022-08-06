@@ -1,0 +1,27 @@
+common:
+  cip: curl ifconfig.me
+
+  ffmpeg: ffmpeg -hide_banner -y
+  ffprobe: ffprobe -hide_banner -y
+
+  get: git clone
+  gad: git add
+  gcmt: git commit -m
+  gst: git status
+  gph: git push
+  gpl: git pull
+  gh: git hist
+
+linux:
+  cls: clear
+
+  apti: apt install -y
+  aptr: apt remove -y
+  apts: apt search
+  aptu: apt update -y; apt upgrade -y; apt autoremove -y
+
+windows:
+    apti: choco install
+    aptr: choco uninstall
+    apts: choco search
+    aptu: choco upgrade all
