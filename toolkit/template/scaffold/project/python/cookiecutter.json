@@ -1,0 +1,11 @@
+{
+    "_copy_without_render": [
+        ".drone.yml",
+        ".editorconfig",
+        ".github/workflows/*",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "requirements-dev.txt",
+        "requirements.txt"
+    ]
+}

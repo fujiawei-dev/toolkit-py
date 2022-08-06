@@ -2,9 +2,8 @@
 
 import os.path
 
-from setuptools import find_packages, setup
-
 import versioneer
+from setuptools import find_packages, setup
 
 with open("requirements.txt") as install_requires_file:
     install_requires = install_requires_file.read().splitlines()
@@ -29,34 +28,26 @@ def find_package_data(*paths):
 
 
 setup(
-    name="toolkit-py",
+    name="{{ project_slug.kebab_case }}",
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
-    author="Rustle Karl",
-    author_email="fu.jiawei@outlook.com",
-    url="https://github.com/fujiawei-dev/toolkit-py",
-    description="Personal toolkit implemented by Python.",
+    author="{{ author }}",
+    author_email="{{ author_email }}",
+    url="https://github.com/{{ github_username }}/{{ project_slug.kebab_case }}",
+    description="{{ project_short_description }}",
     long_description=readme + "\n\n" + history,
     long_description_content_type="text/markdown",
-    keywords="toolkit",
+    keywords="{{ project_slug.kebab_case }}",
     license="MIT license",
     packages=find_packages(
-        include=["toolkit", "toolkit.*"],
+        include=["{{ project_slug.snake_case }}", "{{ project_slug.snake_case }}.*"],
         exclude=("tests", "tests.*", "docs"),
     ),
     test_suite="tests",
     include_package_data=True,
-    package_data={
-        "toolkit": find_package_data("toolkit/template"),
-    },
     entry_points={
         "console_scripts": [
-            "toolkit=toolkit.cli:main",
-            "mirror=toolkit.scaffold.mirror.cli:main",
-            "config=toolkit.scaffold.config.cli:main",
-            "project=toolkit.scaffold.project.cli:main",
-            "gua=toolkit.cli:generate_user_agent_command",
-            "upsfortypora=toolkit.cli:ups_for_typora_command",
+            "{{ project_slug.snake_case }}={{ project_slug.snake_case }}.cli:main",
         ],
     },
     python_requires=">=3.9",

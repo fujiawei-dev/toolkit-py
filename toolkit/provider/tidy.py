@@ -5,6 +5,7 @@ from typing import Callable, Iterable, List, Union
 
 import chardet
 import click
+from binaryornot.check import is_binary
 
 from toolkit.logger import logger
 
@@ -19,11 +20,16 @@ SPACE_CHARACTERS = ("&nbsp;",)
 # 行末尾空格
 PATTERN_LINE_RIGHT_WHITESPACE = re.compile(r"[ \t]+\n")
 
+# 常见二进制文件
+BINARY_FILE_SUFFIXES = {".exe", ".dll", ".so", ".jpg", "jpeg", ".png", ".gif", ".pyc"}
+BINARY_FILE_SUFFIXES |= {".7z", ".zip", ".lib"}
+
 
 def is_binary_file(path: Union[str, Path]) -> bool:
     """Check if a file is binary."""
-    text_chars = bytearray({7, 8, 9, 10, 12, 13, 27} | set(range(0x20, 0x100)) - {0x7F})
-    return bool((open(path, "rb").read(1024)).translate(None, text_chars))
+    # text_chars = bytearray({7, 8, 9, 10, 12, 13, 27} | set(range(0x20, 0x100)) - {0x7F})
+    # return bool((open(path, "rb").read(1024)).translate(None, text_chars))
+    return Path(path).suffix in BINARY_FILE_SUFFIXES or is_binary(path)
 
 
 def replace_all(string: str, words: Iterable[str] = tuple(), char: str = "") -> str:

@@ -2,16 +2,11 @@ from pathlib import Path
 
 from jinja2 import Template
 
-from toolkit import __author__, __author_email__, __version__
+from toolkit.config.context import BASE_CONTEXT
 
 
 def render_by_jinja2(content: str, *args, **kwargs):
-    kwargs |= {
-        "__version__": __version__,
-        "__author__": __author__,
-        "__author_email__": __author_email__,
-    }
-
+    kwargs |= BASE_CONTEXT
     return Template(content).render(*args, **kwargs).strip() + "\n"
 
 
