@@ -2,5 +2,6 @@
 extend-exclude = '''
 /(
   | tests/data
+  | toolkit/template
 )/
 '''
