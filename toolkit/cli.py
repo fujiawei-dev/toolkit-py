@@ -13,7 +13,6 @@ from toolkit.provider.youdao import block_youdao_ads_command
 
 __all__ = [
     "generate_user_agent_command",
-    "main",
     "ups_for_typora_command",
 ]
 

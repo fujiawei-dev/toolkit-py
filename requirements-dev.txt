@@ -2,6 +2,7 @@ black
 flake8
 pre-commit
 pytest
+pytest-click
 pytest-cov
 pytest-faker
 versioneer

@@ -54,7 +54,7 @@ def is_utf8_encoding(src: str) -> bool:
 
 
 def decompress(src: str, dst: str, password: str) -> bool:
-    logger.debug(f"compress {src} to {dst} with {password!r}")
+    log.debug(f"compress {src} to {dst} with {password!r}")
 
     args = ["7z", "x", src, "-o" + dst, "-p" + password, "-aou"]
 

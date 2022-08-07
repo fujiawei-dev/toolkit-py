@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+
+    # ----------------------------------------------
+    server:
+        image: example
+        restart: always
+        environment:
+            - TZ=Asia/Shanghai
+        volumes:
+            - ${DATA_PATH}/{{ project_slug.snake_case }}/volume:/volume
+        ports:
+            - "12345:12345"
+        depends_on:
+            - redis

@@ -10,6 +10,10 @@ BASE_CONTEXT = {
 
 COOKIECUTTER_CONTEXT = {"_new_lines": "\n"}
 
+IGNORED_ITEMS = [
+    "cookiecutter.json",
+]
+
 USER_INPUT_CONTEXT = {
     "project_short_description": "A short description of your project.",
 }

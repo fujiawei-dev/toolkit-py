@@ -13,6 +13,7 @@ stream_handler.setFormatter(
 #     interval=1,
 # )
 
-
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 logger.addHandler(stream_handler)
+
+# logging.basicConfig(level=logging.DEBUG)
