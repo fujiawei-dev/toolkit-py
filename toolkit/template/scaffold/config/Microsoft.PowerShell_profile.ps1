@@ -81,6 +81,12 @@ function GitPush
 }
 Set-Alias -Name gph -Value GitPush
 
+function GitPull
+{
+    git pull $args
+}
+Set-Alias -Name gpl -Value GitPull
+
 function GitHistory
 {
     git hist
