@@ -2,18 +2,16 @@ import logging.handlers
 
 logger = logging.getLogger("toolkit")
 
-stream_handler = logging.StreamHandler()
-stream_handler.setFormatter(
-    logging.Formatter("%(levelname)s:%(name)s:%(lineno)s:%(message)s")
-)
+GLOBAL = True
 
-# timed_rotating_file_handler = logging.handlers.TimedRotatingFileHandler(
-#     filename="toolkit.log",
-#     when="midnight",
-#     interval=1,
-# )
+if GLOBAL:
+    logging.basicConfig(level=logging.DEBUG)
 
-logger.setLevel(logging.INFO)
-logger.addHandler(stream_handler)
+else:
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(
+        logging.Formatter("%(levelname)s:%(name)s:%(lineno)s:%(message)s")
+    )
 
-# logging.basicConfig(level=logging.DEBUG)
+    logger.setLevel(logging.INFO)
+    logger.addHandler(stream_handler)

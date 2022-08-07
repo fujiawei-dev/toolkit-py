@@ -10,14 +10,14 @@ def get_user_input_context(raw_context: dict = None) -> dict:
     return raw_context
 
 
-def get_ignored_items(context: dict = None, fields: list = None) -> list:
-    context = context or {}
+def get_ignored_items(project_context: dict = None, fields: list = None) -> list:
+    project_context = project_context or {}
     fields = fields or []
 
     ignored_items = []
 
     for field in fields:
-        for item, allowed in context[field]:
+        for item, allowed in project_context[field]:
             if not allowed or read_user_yes_no(f"Ignore {item}?", "y"):
                 ignored_items.append(item)
 

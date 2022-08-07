@@ -12,6 +12,8 @@ COOKIECUTTER_CONTEXT = {"_new_lines": "\n"}
 
 IGNORED_ITEMS = [
     "cookiecutter.json",
+    "__pycache__/*",
+    "__pycache__",
 ]
 
 USER_INPUT_CONTEXT = {

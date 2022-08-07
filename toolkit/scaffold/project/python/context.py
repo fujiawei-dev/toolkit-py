@@ -2,6 +2,6 @@ from toolkit.config.runtime import WINDOWS
 
 PYTHON_CONTEXT = {
     "plugins": [
-        ("config/registry.py", WINDOWS),
+        ("{{project_slug.snake_case}}/config/registry.py", WINDOWS),
     ],
 }

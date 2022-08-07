@@ -41,11 +41,17 @@ def ignore(path: Union[str, Path], context: dict) -> bool:
         should be rendered or just copied.
     :param context: cookiecutter context.
     """
+    ignored = False
+
     with contextlib.suppress(KeyError):
         for item in context["cookiecutter"]["_ignore"]:
             if fnmatch.fnmatch(path, item):
-                return True
-    return False
+                ignored = True
+                break
+
+    log.debug(f"{path} is ignored: {ignored}")
+
+    return ignored
 
 
 def generate_cutter_context(
@@ -54,9 +60,11 @@ def generate_cutter_context(
     ignored_items: list = None,
 ) -> OrderedDict:
     cookiecutter_context = (
-        json.load(open(context_file, "r", encoding="utf-8"))
-        if os.path.isfile(context_file)
-        else {}
+        (
+            json.load(open(context_file, "r", encoding="utf-8"))
+            if os.path.isfile(context_file)
+            else {}
+        )
         | COOKIECUTTER_CONTEXT
         | {"_ignore": (ignored_items or []) + IGNORED_ITEMS}
     )
@@ -67,7 +75,13 @@ def generate_cutter_context(
         with open(temp_context_file, "w", encoding="utf-8", newline="\n") as f:
             json.dump(cookiecutter_context, f, ensure_ascii=False, indent=4)
 
-        return generate_context(temp_context_file) | BASE_CONTEXT | (context or {})
+        cutter_context = (
+            generate_context(temp_context_file) | BASE_CONTEXT | (context or {})
+        )
+
+    log.debug(f"Cutter context: {cutter_context}")
+
+    return cutter_context
 
 
 def generate_rendered_file(

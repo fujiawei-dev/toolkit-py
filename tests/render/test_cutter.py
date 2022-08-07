@@ -9,6 +9,7 @@ from toolkit.render.cutter import (
     generate_cutter_context,
     generate_rendered_file,
     generate_rendered_files_recursively,
+    ignore,
     is_copy_only,
 )
 
@@ -41,6 +42,31 @@ def test_is_copy_only():
 
     for pair in pairs:
         assert is_copy_only(pair[0], context) == pair[1]
+
+
+def test_ignore():
+    context = {
+        "cookiecutter": {
+            "_ignore": [
+                "cookiecutter.json",
+                "*.pyc",
+                "__pycache__/*",
+                "__pycache__",
+                "config/registry.py",
+                "*/config/registry.py",
+            ]
+        }
+    }
+
+    pairs = (
+        ("cookiecutter.json", True),
+        ("__pycache__/main.cpython-39.pyc", True),
+        ("config/registry.py", True),
+        ("project/config/registry.py", True),
+    )
+
+    for pair in pairs:
+        assert ignore(pair[0], context) == pair[1]
 
 
 def test_generate_cookiecutter_context():

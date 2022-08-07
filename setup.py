@@ -42,7 +42,13 @@ setup(
     license="MIT license",
     packages=find_packages(
         include=["toolkit", "toolkit.*"],
-        exclude=("tests", "tests.*", "docs"),
+        exclude=(
+            "tests",
+            "tests.*",
+            "docs",
+            "toolkit.template.scaffold",
+            "toolkit.template.scaffold.*",
+        ),
     ),
     test_suite="tests",
     include_package_data=True,
