@@ -26,3 +26,13 @@ def copy_items_in_directory(
             item_dst = dst / item_src.name
             if not skip_if_file_exists or not item_dst.exists():
                 shutil.copyfile(item_src, item_dst)
+
+
+def sanitize_path(path: str):
+    """Clear invalid characters in path."""
+    path = path.replace("/", "、").replace("\\", "、").replace("|", "&").replace(":", "：")
+
+    for char in ["~", '"', "?", "*", "<", ">", "{", "}"]:
+        path = path.replace(char, "")
+
+    return path

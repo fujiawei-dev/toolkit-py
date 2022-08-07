@@ -1,5 +1,11 @@
 .PHONY: clean coverage dist help install lint
 
+#.SILENT: ;               # no need for @
+#.ONESHELL: ;             # recipes execute in same shell
+#.NOTPARALLEL: ;          # wait for target to finish
+#.EXPORT_ALL_VARIABLES: ; # send all vars to shell
+#.IGNORE: ;            # ignore all errors, keep going
+
 define BROWSER_PYSCRIPT
 import os, webbrowser, sys
 
