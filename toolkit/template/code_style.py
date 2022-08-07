@@ -12,8 +12,8 @@ def get_camel_case_styles(text: str) -> tuple[str, str, str, str]:
     text = "".join(chars).lower()  # camel case
 
     return (
-        text,  # camel case
-        text.replace(" ", "-"),  # camel-case
-        text.title(),  # Camel Case
-        text.replace(" ", "_"),  # camel_case
+        text,  # 0 camel case
+        text.replace(" ", "-"),  # 1 camel-case
+        text.title(),  # 2 Camel Case
+        text.replace(" ", "_"),  # 3 camel_case
     )

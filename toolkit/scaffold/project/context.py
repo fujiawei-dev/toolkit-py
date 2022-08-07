@@ -1,11 +1,30 @@
-from cookiecutter.prompt import read_user_variable, read_user_yes_no
+from cookiecutter.prompt import read_user_choice, read_user_variable, read_user_yes_no
 
 
 def get_user_input_context(raw_context: dict = None) -> dict:
     raw_context = raw_context or {}
 
     for key, value in raw_context.items():
-        raw_context[key] = read_user_variable(key, value)
+        # isinstance(True, int) is True
+        if isinstance(value, bool):
+            raw_context[key] = read_user_yes_no(
+                'Please enter a value for "{}":'.format(key),
+                "y" if value else "n",
+            )
+
+        elif isinstance(value, (str, bytes, int, float)):
+            raw_context[key] = type(value)(
+                read_user_variable(
+                    'Please enter a value for "{}":'.format(key),
+                    value,
+                )
+            )
+
+        elif isinstance(value, list):
+            raw_context[key] = read_user_choice(
+                'Please enter a value for "{}":'.format(key),
+                value,
+            )
 
     return raw_context
 
