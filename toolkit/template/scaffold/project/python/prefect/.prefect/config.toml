@@ -1,0 +1,8 @@
+debug = true
+backend = "server"
+home_dir = "~/.prefect"
+
+[server]
+host = "http://192.168.0.18"
+port = "10024"
+endpoint = "${server.host}:${server.port}"

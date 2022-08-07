@@ -1,7 +1,8 @@
 # {{ project_slug.words_capitalized }}
 
-[![PyPI](https://img.shields.io/pypi/v/{{ project_slug.kebab_case }})](https://pypi.org/project/{{ project_slug.kebab_case }}/)
 [![License](https://img.shields.io/pypi/l/{{ project_slug.kebab_case }})](https://github.com/{{ github_username }}/{{ project_slug.kebab_case }}/blob/master/LICENSE)
+[![Latest Version](https://img.shields.io/pypi/v/{{ project_slug.kebab_case }})](https://pypi.org/project/{{ project_slug.kebab_case }}/)
+[![Supported Python versions](https://img.shields.io/pypi/pyversions/{{ project_slug.kebab_case }})](https://pypi.python.org/pypi/{{ project_slug.kebab_case }})
 
 [![Python Test](https://github.com/{{ github_username }}/{{ project_slug.kebab_case }}/actions/workflows/python-test.yml/badge.svg)](https://github.com/{{ github_username }}/{{ project_slug.kebab_case }}/actions/workflows/python-test.yml)
 [![Python Publish](https://github.com/{{ github_username }}/{{ project_slug.kebab_case }}/actions/workflows/python-publish.yml/badge.svg)](https://github.com/{{ github_username }}/{{ project_slug.kebab_case }}/actions/workflows/python-publish.yml)
