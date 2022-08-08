@@ -79,6 +79,7 @@ clean-test: ## remove test and coverage artifacts
 	rm -f coverage.xml
 	rm -fr htmlcov/
 	rm -fr .pytest_cache/
+	-rm -fr junit/
 
 release: dist ## package and upload a release
 	twine upload dist/*
