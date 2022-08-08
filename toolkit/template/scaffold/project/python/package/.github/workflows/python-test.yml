@@ -20,9 +20,9 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip flake8 pytest pytest-cov
-        pip install -i https://pypi.douban.com/simple -r requirements.txt
-        pip install -i https://pypi.douban.com/simple -r requirements-dev.txt
+        python -m pip install --upgrade pip
+        pip install -i -r requirements.txt
+        pip install -i -r requirements-dev.txt
     - name: Lint with flake8
       run: |
         flake8 .
