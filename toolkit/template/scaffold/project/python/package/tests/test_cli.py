@@ -1,6 +1,7 @@
 """Tests for `{{ project_slug.snake_case }}` package."""
 
 from click.testing import CliRunner
+
 from {{project_slug.snake_case}} import cli
 
 

@@ -177,7 +177,11 @@ def golang_user_input_context_hook(context: dict) -> dict:
 
     log.debug(f"golang_context: {golang_context}")
 
-    return context | golang_context.dict(exclude_none=True)
+    return (
+        context
+        | golang_context.dict(exclude_none=True)
+        | golang_user_input_context.dict(exclude_none=True)
+    )
 
 
 def golang_generated_path_hook(path: Union[str, Path]) -> str:

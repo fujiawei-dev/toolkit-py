@@ -3,6 +3,7 @@
 import sys
 
 import click
+
 from {{project_slug.snake_case}} import __version__
 
 

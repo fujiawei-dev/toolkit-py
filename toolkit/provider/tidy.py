@@ -65,8 +65,7 @@ def change_encoding(
             content = fp.read().replace(b"\r\n", b"\n")  # CRLF -> LF
 
             if not (original_encoding := chardet.detect(content)["encoding"]):
-                log.error(f"{src} detect encoding failed")
-                return
+                original_encoding = 'ascii'
 
             if original_encoding not in {"utf-8", "ascii"}:
                 text = content.decode(original_encoding)
@@ -99,7 +98,8 @@ def change_all_files_encoding(
 
     for item in Path(directory).iterdir():
         if item.is_dir():
-            change_all_files_encoding(item, encoding, middlewares)
+            if  item.stem[0] not in {".", "_"} or item.stem in {".github"}:
+                change_all_files_encoding(item, encoding, middlewares)
         else:
             change_encoding(item, None, encoding, middlewares)
 

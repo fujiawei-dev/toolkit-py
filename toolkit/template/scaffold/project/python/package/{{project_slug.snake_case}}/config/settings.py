@@ -5,7 +5,7 @@ import yaml
 from pydantic import BaseSettings
 from pydantic.env_settings import SettingsSourceCallable
 
-import logging
+from {{project_slug.snake_case}}.logger import logging
 
 log = logging.getLogger(__name__)
 

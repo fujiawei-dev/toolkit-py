@@ -8,7 +8,7 @@ def get_user_input_context(raw_user_input_context: dict = None) -> dict:
         # isinstance(True, int) is True
         if isinstance(value, bool):
             raw_user_input_context[key] = read_user_yes_no(
-                'Please enter a value for "{}":'.format(key),
+                'Are you sure "{}"?:'.format(key),
                 "y" if value else "n",
             )
 
@@ -26,7 +26,7 @@ def get_user_input_context(raw_user_input_context: dict = None) -> dict:
                 continue
 
             raw_user_input_context[key] = read_user_choice(
-                'Please enter a value for "{}":'.format(key),
+                'Please select a value for "{}":'.format(key),
                 value,
             )
 
@@ -41,7 +41,7 @@ def get_ignored_items(project_context: dict = None, fields: list = None) -> list
 
     for field in fields:
         for item, allowed in project_context[field]:
-            if not allowed or read_user_yes_no(f"Ignore {item}?", "y"):
+            if not allowed or read_user_yes_no(f"Ignore {item!r}?", "y"):
                 ignored_items.append(item)
 
     return ignored_items

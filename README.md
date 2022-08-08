@@ -21,7 +21,7 @@ If you are in China, you can use the following command to install the latest ver
 pip install -U toolkit-py -i https://pypi.douban.com/simple
 ```
 
-Or install it from source code:
+Install it from source code:
 
 ```shell
 pip install git+https://github.com/fujiawei-dev/toolkit-py.git@main
