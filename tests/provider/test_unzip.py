@@ -16,6 +16,9 @@ def test_unzipper():
     with tempfile.TemporaryDirectory() as temp_dir:
         unzipper = Unzipper()
 
+        if len(unzipper.passwords) < 12:
+            unzipper.passwords.extend("password" for _ in range(12))
+
         path = os.path.join(temp_dir, "path")
         move_to = os.path.join(temp_dir, "move_to")
 

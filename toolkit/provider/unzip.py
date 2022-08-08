@@ -232,7 +232,7 @@ class Unzipper(object):
 
             # 添加后缀
             if suffix == "":
-                new_src = src + time.strftime("%Y%m%d%H%M%S") + ".7z"
+                new_src = src + time.strftime("_%Y%m%d%H%M%S") + ".7z"
                 os.renames(src, new_src)
                 src = new_src
 
