@@ -17,4 +17,4 @@ steps:
       - pip -V
       - pip install -i https://pypi.douban.com/simple -r requirements.txt
       - pip install -i https://pypi.douban.com/simple -r requirements-dev.txt
-      - pytest .
+      - pytest tests
