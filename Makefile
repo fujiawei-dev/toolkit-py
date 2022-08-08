@@ -109,3 +109,9 @@ init: ## initialize a new project
 	git init
 	versioneer install
 	pre-commit install
+
+push-tags: ## push all tags to the repository
+	git push origin --tags
+
+latest-tag: ## print the latest tag
+	@git describe --tags --abbrev=0
