@@ -20,6 +20,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
+        sudo apt-get install -y p7zip-full p7zip-rar
         python -m pip install --upgrade pip flake8 pytest pytest-cov
         pip install -i https://pypi.douban.com/simple -r requirements.txt
         pip install -i https://pypi.douban.com/simple -r requirements-dev.txt
