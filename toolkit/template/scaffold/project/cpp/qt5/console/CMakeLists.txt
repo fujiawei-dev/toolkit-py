@@ -4,9 +4,55 @@ project({{ project_slug.snake_case }})
 
 set(CMAKE_CXX_STANDARD {{ cpp_standard }})
 
+# Base information
+message(STATUS "CMAKE_VERSION: " ${CMAKE_VERSION})
+message(STATUS "PROJECT_SOURCE_DIR: " ${PROJECT_SOURCE_DIR})
+message(STATUS "CMAKE_SOURCE_DIR: " ${CMAKE_SOURCE_DIR})
+
+# System information
+message(STATUS "CMAKE_HOST_SYSTEM_NAME: " ${CMAKE_HOST_SYSTEM_NAME})
+message(STATUS "CMAKE_HOST_SYSTEM_PROCESSOR: " ${CMAKE_HOST_SYSTEM_PROCESSOR})
+message(STATUS "CMAKE_HOST_SYSTEM_VERSION: " ${CMAKE_HOST_SYSTEM_VERSION})
+
+{% if enable_src_module -%}
+# Submodule build
+include(src/CMakeLists.txt)
+{%- endif %}
+
+# Settings for Qt5
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+# Build flags
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wall -O2")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -O2")
+
+{% if not x64_arch -%}
+if (WIN32)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
+endif ()
+{%- endif %}
+
+# System processor
+if (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "x86_64")
+    message(STATUS "LINUX_OS_X86_64")
+    set(LINUX_OS_X86_64 TRUE)
+    add_definitions(-DLINUX_OS_X86_64)
+elseif (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "AARCH64")
+    message(STATUS "LINUX_OS_ARM64")
+    set(LINUX_OS_ARM64 TRUE)
+    add_definitions(-DLINUX_OS_ARM64)
+endif ()
+
+{% if enable_3rd_module -%}
+# Build settings
+include_directories(${CMAKE_SOURCE_DIR}/include)
+link_directories(${CMAKE_SOURCE_DIR}/lib)
+{%- endif %}
 
 # Qt default installation directory
 set(QT_VERSION {{ qt_version }})
@@ -45,6 +91,9 @@ find_package(
         {%- if enable_network %}
         Network
         {%- endif %}
+        {%- if enable_websocket %}
+        WebSockets
+        {%- endif %}
         REQUIRED
 )
 
@@ -56,5 +105,16 @@ add_executable(
 target_link_libraries(
         {{ project_slug.snake_case }}
         Qt5::Core
+        {%- if enable_network %}
         Qt5::Network
+        {%- endif %}
+        {%- if enable_websocket %}
+        Qt5::WebSockets
+        {%- endif %}
 )
+
+{% if enable_3rd_module -%}
+add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/lib $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+{%- endif %}

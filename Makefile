@@ -34,7 +34,7 @@ help: ## print help
 version: ## print version
 	@python setup.py version
 
-pip: ## install dependencies
+pip dep: ## install dependencies
 	pip install -i https://pypi.douban.com/simple -r requirements.txt
 	pip install -i https://pypi.douban.com/simple -r requirements-dev.txt
 
@@ -88,9 +88,10 @@ dist: clean ## builds source and wheel package
 	python setup.py bdist_wheel
 	ls -l dist
 
-install: clean ## install the package to the active Python's site-packages
+install: pip-install clean ## install the package to the active Python's site-packages
+
+pip-install: ## install the package to the active Python's site-packages using pip
 	pip install .
-	# python setup.py install
 
 act-install: ## install act
 	curl https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo bash
