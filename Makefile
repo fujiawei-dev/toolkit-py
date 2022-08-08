@@ -94,6 +94,9 @@ install: pip-install clean ## install the package to the active Python's site-pa
 pip-install: ## install the package to the active Python's site-packages using pip
 	pip install .
 
+build:  ## build the package
+	python -m build
+
 act-install: ## install act
 	curl https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo bash
 	cp ./bin/act /usr/local/bin
