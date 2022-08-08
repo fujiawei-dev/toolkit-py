@@ -29,7 +29,7 @@ def is_binary_file(path: Union[str, Path]) -> bool:
     """Check if a file is binary."""
     # text_chars = bytearray({7, 8, 9, 10, 12, 13, 27} | set(range(0x20, 0x100)) - {0x7F})
     # return bool((open(path, "rb").read(1024)).translate(None, text_chars))
-    return Path(path).suffix in BINARY_FILE_SUFFIXES or is_binary(path)
+    return Path(path).suffix in BINARY_FILE_SUFFIXES or is_binary(str(path))
 
 
 def replace_all(string: str, words: Iterable[str] = tuple(), char: str = "") -> str:

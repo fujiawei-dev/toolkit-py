@@ -122,7 +122,7 @@ def test_generate_rendered_file():
 
 
 def test_generate_rendered_files_recursively():
-    context = {"key": "value"}
+    user_input_context = {"key": "value"}
     content = "{{ key }}"
 
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -141,7 +141,7 @@ def test_generate_rendered_files_recursively():
             generate_rendered_files_recursively(
                 template_path=str(template_path),
                 project_path=str(project_path),
-                context=context,
+                user_input_context=user_input_context,
             )
 
         dst = project_path / file_path.name
