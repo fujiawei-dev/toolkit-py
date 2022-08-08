@@ -18,7 +18,7 @@ import click
 import yaml
 
 from toolkit.config.runtime import EDITOR
-import logging
+from toolkit.logger import logging
 
 log = logging.getLogger(__name__)
 

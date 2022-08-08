@@ -7,7 +7,7 @@ import chardet
 import click
 from binaryornot.check import is_binary
 
-import logging
+from toolkit.logger import logging
 
 log = logging.getLogger(__name__)
 

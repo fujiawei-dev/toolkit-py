@@ -1,11 +1,11 @@
 import os
 from itertools import chain
 from pathlib import Path
-from typing import Union, NamedTuple, Iterable, Any
+from typing import Any, Iterable, NamedTuple, Union
 
 from pydantic import BaseModel
 
-import logging
+from toolkit.logger import logging
 
 log = logging.getLogger(__name__)
 
@@ -175,7 +175,7 @@ def golang_user_input_context_hook(context: dict) -> dict:
     if golang_context.log_framework == F.log.zerolog:
         golang_context.log_error_f = "Error().Msgf"
 
-    log.info(f"golang_context: {golang_context}")
+    log.debug(f"golang_context: {golang_context}")
 
     return context | golang_context.dict(exclude_none=True)
 

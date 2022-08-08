@@ -2,8 +2,8 @@ from toolkit.config.context import USER_INPUT_CONTEXT
 from toolkit.scaffold.project.command import generate_create_project_command
 from toolkit.scaffold.project.golang.context import (
     GOLANG_USER_INPUT_CONTEXT,
-    golang_user_input_context_hook,
     golang_generated_path_hook,
+    golang_user_input_context_hook,
 )
 from toolkit.scaffold.project.template import TEMPLATE_GOLANG_PATH
 

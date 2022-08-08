@@ -6,7 +6,7 @@ import shutil
 import tempfile
 from collections import OrderedDict
 from pathlib import Path
-from typing import Union, Callable
+from typing import Callable, Union
 
 import jinja2
 from cookiecutter.environment import StrictEnvironment
@@ -21,9 +21,8 @@ from jinja2 import FileSystemLoader
 
 from toolkit.config.context import BASE_CONTEXT, COOKIECUTTER_CONTEXT, IGNORED_ITEMS
 from toolkit.fs.dir import copy_items_in_directory
-
+from toolkit.logger import logging
 from toolkit.template.code_style import get_camel_case_styles
-import logging
 
 log = logging.getLogger(__name__)
 
