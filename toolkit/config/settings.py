@@ -6,9 +6,9 @@ from pydantic import BaseSettings
 from pydantic.env_settings import SettingsSourceCallable
 
 from toolkit.config.python import PythonOptions
-from toolkit.logger import logger
+import logging
 
-log = logger.getChild("config.settings")
+log = logging.getLogger(__name__)
 
 
 # https://pydantic-docs.helpmanual.io/usage/settings/

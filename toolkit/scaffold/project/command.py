@@ -1,3 +1,5 @@
+from typing import Callable
+
 import click
 
 from toolkit.scaffold.project.render import generate_rendered_project
@@ -6,7 +8,9 @@ from toolkit.scaffold.project.render import generate_rendered_project
 def generate_create_project_command(
     command_help: str,
     template_path: str,
-    raw_context: dict = None,
+    generated_path_hook: Callable[[str], str] = None,
+    raw_user_input_context: dict = None,
+    user_input_context_hook: Callable[[dict], dict] = None,
     project_context: dict = None,
     ignored_fields: list = None,
 ) -> click.Command:
@@ -30,7 +34,9 @@ def generate_create_project_command(
         generate_rendered_project(
             template_path=template_path,
             project_path=project_path,
-            raw_context=raw_context,
+            generated_path_hook=generated_path_hook,
+            raw_user_input_context=raw_user_input_context,
+            user_input_context_hook=user_input_context_hook,
             project_context=project_context,
             ignored_fields=ignored_fields,
             overwrite=overwrite,

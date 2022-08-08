@@ -1,0 +1,10 @@
+root = "."
+tmp_dir = ".air"
+
+[build]
+cmd = "make"
+bin = "{{ project_slug.snake_case }}"
+include_ext = ["go", "tmpl"]
+exclude_dir = ["storage", ".github", "docs"]
+include_dir = ["internal", "pkg"]
+exclude_regex = ["_test.go$"]

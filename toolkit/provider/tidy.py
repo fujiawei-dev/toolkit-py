@@ -7,9 +7,9 @@ import chardet
 import click
 from binaryornot.check import is_binary
 
-from toolkit.logger import logger
+import logging
 
-log = logger.getChild("provider.tidy")
+log = logging.getLogger(__name__)
 
 # 不可见字符
 INVISIBLE_CHARACTERS = ("\xa0", "\x0b", "\x0c", "\u200b", "\u3000")

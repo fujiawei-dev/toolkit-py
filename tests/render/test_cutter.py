@@ -54,6 +54,7 @@ def test_ignore():
                 "__pycache__",
                 "config/registry.py",
                 "*/config/registry.py",
+                "*.gin.*",
             ]
         }
     }
@@ -63,6 +64,7 @@ def test_ignore():
         ("__pycache__/main.cpython-39.pyc", True),
         ("config/registry.py", True),
         ("project/config/registry.py", True),
+        ("project/package/main.gin.go", True),
     )
 
     for pair in pairs:

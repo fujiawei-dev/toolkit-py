@@ -6,7 +6,7 @@ import shutil
 import tempfile
 from collections import OrderedDict
 from pathlib import Path
-from typing import Union
+from typing import Union, Callable
 
 import jinja2
 from cookiecutter.environment import StrictEnvironment
@@ -21,10 +21,11 @@ from jinja2 import FileSystemLoader
 
 from toolkit.config.context import BASE_CONTEXT, COOKIECUTTER_CONTEXT, IGNORED_ITEMS
 from toolkit.fs.dir import copy_items_in_directory
-from toolkit.logger import logger
-from toolkit.template.code_style import get_camel_case_styles
 
-log = logger.getChild("render.cutter")
+from toolkit.template.code_style import get_camel_case_styles
+import logging
+
+log = logging.getLogger(__name__)
 
 
 def is_copy_only(path: Union[str, Path], context: dict) -> bool:
@@ -119,7 +120,9 @@ def create_rendered_directory(
 def generate_rendered_files_recursively(
     template_path: str,
     project_path: str = ".",
+    generated_path_hook: Callable[[str], str] = None,
     user_input_context: dict = None,
+    user_input_context_hook: Callable[[dict], None] = None,
     ignored_items: list = None,
     skip_if_file_exists: bool = True,
 ):
@@ -150,6 +153,9 @@ def generate_rendered_files_recursively(
         | (user_input_context or {}),
         ignored_items=ignored_items,
     )
+
+    if callable(user_input_context_hook):
+        context = user_input_context_hook(context)
 
     env_vars = context.get("cookiecutter", {}).get("_jinja2_env_vars", {})
 
@@ -184,6 +190,10 @@ def generate_rendered_files_recursively(
                 in_dir = os.path.normpath(os.path.join(root, copy_dir))
                 out_dir = os.path.normpath(os.path.join(temp_project_dir, in_dir))
                 out_dir = jinja2_environment.from_string(out_dir).render(**context)
+
+                if generated_path_hook:
+                    out_dir = generated_path_hook(out_dir)
+
                 log.debug("Copying dir %s to %s without rendering", in_dir, out_dir)
 
                 if os.path.isdir(out_dir):
@@ -209,22 +219,25 @@ def generate_rendered_files_recursively(
                 if ignore(in_file, context):
                     continue
 
+                out_file_tmpl = jinja2_environment.from_string(in_file)
+                out_file_rendered = out_file_tmpl.render(**context)
+                out_file = os.path.join(temp_project_dir, out_file_rendered)
+
                 if is_copy_only_path(in_file, context):
-                    out_file_tmpl = jinja2_environment.from_string(in_file)
-                    out_file_rendered = out_file_tmpl.render(**context)
-                    out_file = os.path.join(temp_project_dir, out_file_rendered)
                     log.debug(f"Copying {in_file} to {out_file} without rendering")
                     shutil.copyfile(in_file, out_file)
                     shutil.copymode(in_file, out_file)
-                    continue
+                else:
+                    generate_rendered_file(
+                        project_path=temp_project_dir,
+                        template_file_path=in_file,
+                        context=context,
+                        jinja2_environment=jinja2_environment,
+                        skip_if_file_exists=skip_if_file_exists,
+                    )
 
-                generate_rendered_file(
-                    project_path=temp_project_dir,
-                    template_file_path=in_file,
-                    context=context,
-                    jinja2_environment=jinja2_environment,
-                    skip_if_file_exists=skip_if_file_exists,
-                )
+                if generated_path_hook:
+                    os.renames(out_file, generated_path_hook(out_file))
 
     # Move the generated project to the final location
     copy_items_in_directory(temp_project_dir, project_path, skip_if_file_exists)

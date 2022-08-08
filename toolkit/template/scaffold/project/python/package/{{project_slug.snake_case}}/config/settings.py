@@ -4,10 +4,10 @@ from typing import Any, Dict
 import yaml
 from pydantic import BaseSettings
 from pydantic.env_settings import SettingsSourceCallable
-from {{project_slug.snake_case}}.logger import logger
 
-log = logger.getChild("config.settings")
+import logging
 
+log = logging.getLogger(__name__)
 
 # https://pydantic-docs.helpmanual.io/usage/settings/
 

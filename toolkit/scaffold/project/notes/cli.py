@@ -12,7 +12,7 @@ from toolkit.scaffold.project.template import TEMPLATE_NOTES_PATH
 create_all = generate_create_project_command(
     command_help="Create a notes project scaffold.",
     template_path=TEMPLATE_NOTES_PATH,
-    raw_context=NOTES_USER_INPUT_CONTEXT,
+    raw_user_input_context=NOTES_USER_INPUT_CONTEXT,
 )
 
 

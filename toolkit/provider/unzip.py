@@ -18,9 +18,9 @@ import click
 import yaml
 
 from toolkit.config.runtime import EDITOR
-from toolkit.logger import logger
+import logging
 
-log = logger.getChild("provider.unzip")
+log = logging.getLogger(__name__)
 
 DEFAULT_PASSWORDS_DIR = Path.home() / ".config" / ".passwords"
 DEFAULT_PASSWORDS_DIR.mkdir(parents=True, exist_ok=True)
