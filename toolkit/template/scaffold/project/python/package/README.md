@@ -1,7 +1,7 @@
 # {{ project_slug.words_capitalized }}
 
 {% if open_source -%}
-[![License](https://img.shields.io/pypi/l/{{ project_slug.kebab_case }})](https://github.com/{{ github_username }}/{{ project_slug.kebab_case }}/blob/master/LICENSE)
+[![License](https://img.shields.io/pypi/l/{{ project_slug.kebab_case }})](https://github.com/{{ github_username }}/{{ project_slug.kebab_case }}/blob/main/LICENSE)
 {%- endif %}
 {% if enable_publish_action -%}
 [![Latest Version](https://img.shields.io/pypi/v/{{ project_slug.kebab_case }})](https://pypi.org/project/{{ project_slug.kebab_case }}/)

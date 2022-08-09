@@ -13,6 +13,7 @@ PYTHON_CONTEXT = {
 
 class PythonContext(BaseModel):
     open_source: bool = True
+    enable_click_group: bool = True
     enable_publish_action: bool = False
 
 

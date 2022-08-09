@@ -1,6 +1,6 @@
 # Toolkit-Py
 
-[![License](https://img.shields.io/pypi/l/toolkit-py)](https://github.com/fujiawei-dev/toolkit-py/blob/master/LICENSE)
+[![License](https://img.shields.io/pypi/l/toolkit-py)](https://github.com/fujiawei-dev/toolkit-py/blob/main/LICENSE)
 [![Latest Version](https://img.shields.io/pypi/v/toolkit-py)](https://pypi.org/project/toolkit-py/)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/toolkit-py)](https://pypi.python.org/pypi/toolkit-py)
 

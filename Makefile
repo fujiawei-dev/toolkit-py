@@ -28,6 +28,8 @@ for line in sys.stdin:
 endef
 export PRINT_HELP_PYSCRIPT
 
+all: lint test install
+
 help: ## print help
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
