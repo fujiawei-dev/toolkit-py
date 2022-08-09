@@ -14,7 +14,7 @@ def create_docker_project():
 
 create_cli = generate_create_project_command(
     command_help="Create a docker-cli project scaffold.",
-    template_path=TEMPLATE_DOCKER_PATH / "cli",
+    template_paths=TEMPLATE_DOCKER_PATH / "cli",
 )
 
 create_docker_project.add_command(create_cli, "cli")

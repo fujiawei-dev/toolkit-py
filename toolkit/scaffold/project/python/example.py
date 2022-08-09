@@ -3,5 +3,5 @@ from toolkit.scaffold.project.template import TEMPLATE_PYTHON_PATH
 
 create_example = generate_create_project_command(
     command_help="Create a python example project scaffold.",
-    template_path=TEMPLATE_PYTHON_PATH / "example",
+    template_paths=TEMPLATE_PYTHON_PATH / "example",
 )

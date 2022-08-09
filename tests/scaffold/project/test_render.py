@@ -10,6 +10,6 @@ def test_generate_rendered_project():
         project_path = os.path.join(tmpdir, "project")
         os.makedirs(project_path)
         generate_rendered_project(
-            template_path=TEMPLATE_PYTHON_PATH / "example",
+            template_paths=TEMPLATE_PYTHON_PATH / "example",
             project_path=project_path,
         )
