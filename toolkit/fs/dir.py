@@ -1,6 +1,11 @@
+import os
 import shutil
 from pathlib import Path
 from typing import Union
+
+from toolkit.logger import logging
+
+log = logging.getLogger(__name__)
 
 
 def copy_items_in_directory(
@@ -36,3 +41,10 @@ def sanitize_path(path: str):
         path = path.replace(char, "")
 
     return path
+
+
+def delete_empty_folder_including_itself(path: Union[str, Path]):
+    for root, dirs, files in os.walk(path, topdown=False):
+        if not files and not os.listdir(root):
+            log.warning(f"Deleting empty directory {root}")
+            os.rmdir(root)
