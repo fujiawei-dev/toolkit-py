@@ -1,5 +1,10 @@
 # History
 
+v1.5.0 (2022-08-10)
+
+- Added
+    - generate files from templates for existing project
+
 v1.4.5 (2022-08-09)
 
 - Added

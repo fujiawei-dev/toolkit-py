@@ -5,19 +5,19 @@ import (
 
 	"github.com/jinzhu/copier"
 
-	"{{ main_module }}/internal/entity"
+	"{{ main_module }}/internal/factory.entity"
 	"{{ main_module }}/internal/form"
 )
 
-type EntityTemplateEmbeddedResult struct {
+type {{ factory.entity|title }}EmbeddedResult struct {
 	ID    uint   `json:"id" example:"1"` // 记录ID
 	Email string `json:"email" example:"who@gmail.com"`
 }
 
-type EntityTemplateResult struct {
+type {{ factory.entity|title }}Result struct {
 	ID uint `json:"id" example:"1"` // 记录ID
 
-	EntityTemplateEmbedded EntityTemplateEmbeddedResult `json:"user"`
+	{{ factory.entity|title }}Embedded {{ factory.entity|title }}EmbeddedResult `json:"user"`
 
 	When  string `json:"when" example:"时间"`
 	Where string `json:"where" example:"地点"`
@@ -28,8 +28,8 @@ type EntityTemplateResult struct {
 	CreatedAt JSONTime `json:"created_at" example:"2022-03-21 08:57:19"` // 创建时间
 }
 
-func EntityTemplates(f form.SearchPager) (results []EntityTemplateResult, totalRows int64, err error) {
-	query := Db().Model(&entity.EntityTemplate{})
+func {{ factory.entity|title }}s(f form.SearchPager) (results []{{ factory.entity|title }}Result, totalRows int64, err error) {
+	query := Db().Model(&factory.entity.{{ factory.entity|title }}{})
 
 	if f.LikeQ != "" {
 		for _, q := range strings.Split(f.LikeQ, form.Or) {
@@ -63,10 +63,10 @@ func EntityTemplates(f form.SearchPager) (results []EntityTemplateResult, totalR
 		query = query.Order("id DESC")
 	}
 
-	var items entity.EntityTemplates
+	var items factory.entity.{{ factory.entity|title }}s
 
 	if err = query.Offset(f.Offset()).Limit(f.PageSize).
-		Preload("EntityTemplateEmbedded").
+		Preload("{{ factory.entity|title }}Embedded").
 		Find(&items).Error; err != nil {
 		return
 	}

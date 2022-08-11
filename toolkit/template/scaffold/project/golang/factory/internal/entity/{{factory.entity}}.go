@@ -1,4 +1,4 @@
-package entity
+package factory.entity
 
 import (
 	"errors"
@@ -11,21 +11,21 @@ import (
 )
 
 func init() {
-	AddEntity(EntityTemplateEmbedded{})
-	AddEntity(EntityTemplate{})
+	AddEntity({{ factory.entity|title }}Embedded{})
+	AddEntity({{ factory.entity|title }}{})
 }
 
-type EntityTemplateEmbedded struct {
+type {{ factory.entity|title }}Embedded struct {
 	gorm.Model
 	Email string `json:"email" example:"who@gmail.com"`
 }
 
-func (EntityTemplateEmbedded) TableName() string {
-	return "entity_templates_embedded"
+func ({{ factory.entity|title }}Embedded) TableName() string {
+	return "{{ factory.entity }}s_embedded"
 }
 
-// EntityTemplate basic minimal entity example
-type EntityTemplate struct {
+// {{ factory.entity|title }} basic minimal factory.entity example
+type {{ factory.entity|title }} struct {
 	ID uint `gorm:"primary_key" json:"id"`
 
 	// ID easy to traverse, so UID is necessary when get/put/delete
@@ -37,37 +37,37 @@ type EntityTemplate struct {
 	What  string `gorm:"size:128;" json:"what"`
 	How   string `gorm:"size:128;" json:"how"`
 
-	EntityTemplateEmbeddedID uint                   `json:"-"`
-	EntityTemplateEmbedded   EntityTemplateEmbedded `gorm:"foreignkey:EntityTemplateEmbeddedID;association_foreignkey:id" json:"-"`
+	{{ factory.entity|title }}EmbeddedID uint                   `json:"-"`
+	{{ factory.entity|title }}Embedded   {{ factory.entity|title }}Embedded `gorm:"foreignkey:{{ factory.entity|title }}EmbeddedID;association_foreignkey:id" json:"-"`
 
 	CreatedAt time.Time      `json:"-"`
 	UpdatedAt time.Time      `json:"-"`
 	DeletedAt gorm.DeletedAt `json:"-"`
 }
 
-func (EntityTemplate) TableName() string {
-	return "entity_templates"
+func ({{ factory.entity|title }}) TableName() string {
+	return "{{ factory.entity }}s"
 }
 
-type EntityTemplates []EntityTemplate
+type {{ factory.entity|title }}s []{{ factory.entity|title }}
 
-func (m *EntityTemplate) CopyFrom(src interface{}) error {
+func (m *{{ factory.entity|title }}) CopyFrom(src interface{}) error {
 	return copier.Copy(m, src)
 }
 
-func (m *EntityTemplate) CopyTo(dst interface{}) error {
+func (m *{{ factory.entity|title }}) CopyTo(dst interface{}) error {
 	return copier.Copy(dst, m)
 }
 
 // Create
 
 // Create inserts a new row to the database.
-func (m *EntityTemplate) Create() error {
+func (m *{{ factory.entity|title }}) Create() error {
 	return Db().Create(m).Error
 }
 
 // BeforeCreate creates a random UID if needed before inserting a new row to the database.
-func (m *EntityTemplate) BeforeCreate(tx *gorm.DB) (err error) {
+func (m *{{ factory.entity|title }}) BeforeCreate(tx *gorm.DB) (err error) {
 	if rnd.IsUID(m.UID, 'e') {
 		return nil
 	}
@@ -80,38 +80,38 @@ func (m *EntityTemplate) BeforeCreate(tx *gorm.DB) (err error) {
 // Query
 
 // First get the first record ordered by primary key
-func (m *EntityTemplate) First() (err error) {
+func (m *{{ factory.entity|title }}) First() (err error) {
 	err = Db().First(m).Error
 	return
 }
 
 // Last get the last record ordered by primary key
-func (m *EntityTemplate) Last() (err error) {
+func (m *{{ factory.entity|title }}) Last() (err error) {
 	err = Db().Last(m).Error
 	return
 }
 
 // Take get one record, no specified order
-func (m *EntityTemplate) Take() (err error) {
+func (m *{{ factory.entity|title }}) Take() (err error) {
 	err = Db().Take(m).Error
 	return
 }
 
-func (ms *EntityTemplates) FindAll() (err error) {
+func (ms *{{ factory.entity|title }}s) FindAll() (err error) {
 	err = Db().Find(ms).Error
 	return
 }
 
-func (m *EntityTemplate) FindByID(id uint) (err error) {
+func (m *{{ factory.entity|title }}) FindByID(id uint) (err error) {
 	return Db().First(m, id).Error
 }
 
-func (m *EntityTemplate) FindBySelf() (err error) {
+func (m *{{ factory.entity|title }}) FindBySelf() (err error) {
 	err = Db().Where(m).First(m).Error
 	return
 }
 
-func (m *EntityTemplate) Exists() (bool, error) {
+func (m *{{ factory.entity|title }}) Exists() (bool, error) {
 	err := m.FindBySelf()
 
 	if err == nil {
@@ -126,7 +126,7 @@ func (m *EntityTemplate) Exists() (bool, error) {
 }
 
 // Pluck query single column from database and scan into a slice
-func (m *EntityTemplate) Pluck(field string, dst interface{}) (err error) {
+func (m *{{ factory.entity|title }}) Pluck(field string, dst interface{}) (err error) {
 	err = Db().Model(m).Pluck(field, &dst).Error
 	return
 }
@@ -135,7 +135,7 @@ func (m *EntityTemplate) Pluck(field string, dst interface{}) (err error) {
 // https://gorm.io/docs/update.html
 
 // Save inserts a new row to the database or updates a row if the primary key already exists.
-func (m *EntityTemplate) Save() error {
+func (m *{{ factory.entity|title }}) Save() error {
 	// Save will save all fields when performing the Updating SQL
 	return Db().Save(m).Error
 }
@@ -143,33 +143,33 @@ func (m *EntityTemplate) Save() error {
 // Update single column
 // When updating a single column with Update, it needs to have any conditions,
 // or it will raise error ErrMissingWhereClause
-func (m *EntityTemplate) Update(column string, value interface{}) (err error) {
+func (m *{{ factory.entity|title }}) Update(column string, value interface{}) (err error) {
 	err = Db().Model(m).Where(m).Update(column, value).Error
 	return
 }
 
-func (m *EntityTemplate) Updates(values interface{}) (err error) {
+func (m *{{ factory.entity|title }}) Updates(values interface{}) (err error) {
 	err = Db().Model(m).Where(m).Updates(values).Error
 	return
 }
 
 // UpdateColumn Without Hooks/Time Tracking
-func (m *EntityTemplate) UpdateColumn(column string, value interface{}) (err error) {
+func (m *{{ factory.entity|title }}) UpdateColumn(column string, value interface{}) (err error) {
 	err = Db().Model(m).Where(m).UpdateColumn(column, value).Error
 	return
 }
 
 // UpdateColumns Update multiple columns without Hooks/Time Tracking
-func (m *EntityTemplate) UpdateColumns(values interface{}) (err error) {
+func (m *{{ factory.entity|title }}) UpdateColumns(values interface{}) (err error) {
 	err = Db().Model(m).Where(m).UpdateColumns(values).Error
 	return
 }
 
-// Delete marks the entity as deleted.
-func (m *EntityTemplate) Delete() error {
+// Delete marks the factory.entity as deleted.
+func (m *{{ factory.entity|title }}) Delete() error {
 	return Db().Delete(m).Error
 }
 
-func (m *EntityTemplate) DeletePermanently() error {
+func (m *{{ factory.entity|title }}) DeletePermanently() error {
 	return UnscopedDb().Delete(m).Error
 }

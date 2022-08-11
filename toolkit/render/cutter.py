@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Callable, Union
 
 import jinja2
+import yaml
 from cookiecutter.environment import StrictEnvironment
 from cookiecutter.generate import (
     generate_context,
@@ -70,7 +71,7 @@ def generate_cutter_context(
     )
 
     with tempfile.TemporaryDirectory(prefix="context-") as tmpdir:
-        temp_context_file = os.path.join(tmpdir, context_file)
+        temp_context_file = os.path.join(tmpdir, "cookiecutter.json")
 
         with open(temp_context_file, "w", encoding="utf-8", newline="\n") as f:
             json.dump(cookiecutter_context, f, ensure_ascii=False, indent=4)
@@ -243,3 +244,26 @@ def generate_rendered_files_recursively(
 
     # Remove the temp dir
     shutil.rmtree(temp_dir)
+
+    del context["cookiecutter"]
+    del context["factory"]
+
+    yaml.add_representer(
+        OrderedDict,
+        lambda dumper, data: dumper.represent_mapping(
+            "tag:yaml.org,2002:map", data.items()
+        ),
+    )
+
+    yaml.dump(
+        context,
+        open(
+            os.path.join(project_path, "cutter.yaml"),
+            "w",
+            encoding="utf-8",
+            newline="\n",
+        ),
+        sort_keys=True,
+        encoding="utf-8",
+        allow_unicode=True,
+    )
