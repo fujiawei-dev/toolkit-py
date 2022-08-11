@@ -1,5 +1,4 @@
 """Console script for {{project_slug.snake_case}}."""
-import os
 import sys
 
 import click

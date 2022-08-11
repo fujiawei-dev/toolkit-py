@@ -1,0 +1,14 @@
+kind: pipeline
+type: exec
+name: default
+
+steps:
+  - name: install
+    commands:
+      - make
+    environment:
+      GOARCH: amd64
+      GOOS: linux
+      GOPROXY: https://goproxy.cn,direct
+      GOSUMDB: off
+      GO111MODULE: on

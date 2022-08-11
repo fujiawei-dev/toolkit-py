@@ -39,4 +39,4 @@ steps:
       - pip install -i https://pypi.douban.com/simple -r requirements-dev.txt
       - pytest tests
       - pip install .
-      - python register.py
+      - {{ project_slug.snake_case }} register

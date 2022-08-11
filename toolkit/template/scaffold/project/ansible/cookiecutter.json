@@ -1,0 +1,14 @@
+{
+    "_copy_without_render": [
+        ".editorconfig",
+        ".github/workflows/*",
+        ".gitignore",
+        ".inventory.yaml",
+        ".pre-commit-config.yaml",
+        "ansible.cfg",
+        "app/*",
+        "playbook.yaml",
+        "requirements.yml",
+        "roles/*"
+    ]
+}

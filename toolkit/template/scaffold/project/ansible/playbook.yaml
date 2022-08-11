@@ -1,0 +1,36 @@
+- hosts: service
+
+  vars_files:
+    - vars/main.yml
+
+  roles:
+    - screen
+
+  tasks:
+    - name: Ensure Golang app folder exists.
+      file: "path={{ install_location }} state=directory"
+
+    - name: Copy Golang app to server.
+      copy: "src=dist/{{ executable_file }} dest={{ install_location }} mode='a+x'"
+
+    - name: Copy config file to server.
+      copy: "src=dist/{{ config_file }} dest={{ install_location }}/settings.yaml"
+
+    - name: Copy assets to server.
+      copy: "src=dist/{{ assets_dir }} dest={{ install_location }}"
+
+    - name: Check list of running screen.
+      command: screen -list
+      register: screen_list
+      changed_when: false
+      ignore_errors: false
+      failed_when: screen_list.rc not in [ 0, 1 ]
+
+    - name: Stop Golang app.
+      command: "screen -X -S {{ screen_id }} quit"
+      when: "screen_list.stdout.find(screen_id) != -1"
+
+    - name: Start Golang app.
+      command: "screen -dmS {{ screen_id }} bash -c '{{ install_location }}/{{ executable_file }} -D -S -P -c settings.yaml start'"
+      args:
+        chdir: "{{ install_location }}"

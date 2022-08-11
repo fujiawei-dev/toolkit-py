@@ -1,0 +1,5 @@
+---
+screen_id: {{ screen_id }}
+install_location: {{ install_location }}
+executable_file: {{ executable_file }}
+config_file: {{ config_file }}

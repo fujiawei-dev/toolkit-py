@@ -4,6 +4,7 @@ import sys
 
 import click
 
+from toolkit.scaffold.project.golang.example import create_example
 from toolkit.scaffold.project.golang.web import create_web
 
 
@@ -11,6 +12,8 @@ from toolkit.scaffold.project.golang.web import create_web
 def create_golang_project():
     pass
 
+
+create_golang_project.add_command(create_example, "example")
 
 create_golang_project.add_command(create_web, "web")
 

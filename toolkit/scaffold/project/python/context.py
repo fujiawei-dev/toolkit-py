@@ -4,6 +4,7 @@ from toolkit.config.runtime import WINDOWS
 from toolkit.logger import logging
 
 log = logging.getLogger(__name__)
+
 PYTHON_CONTEXT = {
     "plugins": [
         ("{{project_slug.snake_case}}/config/registry.py", WINDOWS),
