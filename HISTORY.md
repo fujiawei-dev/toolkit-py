@@ -1,5 +1,12 @@
 # History
 
+v1.5.1 (2022-08-12)
+
+- Added
+    - more templates
+- Fixed
+    - KeyError when deleting `factory` field
+
 v1.5.0 (2022-08-10)
 
 - Added

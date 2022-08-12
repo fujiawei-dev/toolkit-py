@@ -1,5 +1,7 @@
 # {{ project_slug.words_capitalized }}
 
+[![Code Style: black](https://img.shields.io/badge/codestyle-black-000000.svg)](https://github.com/psf/black)
+[![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/{{ github_username }}/{{ project_slug.kebab_case }}/blob/main/.pre-commit-config.yaml)
 {% if open_source -%}
 [![License](https://img.shields.io/pypi/l/{{ project_slug.kebab_case }})](https://github.com/{{ github_username }}/{{ project_slug.kebab_case }}/blob/main/LICENSE)
 {%- endif %}

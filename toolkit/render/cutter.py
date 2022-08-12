@@ -245,8 +245,9 @@ def generate_rendered_files_recursively(
     # Remove the temp dir
     shutil.rmtree(temp_dir)
 
-    del context["cookiecutter"]
-    del context["factory"]
+    with contextlib.suppress(KeyError):
+        del context["cookiecutter"]
+        del context["factory"]
 
     yaml.add_representer(
         OrderedDict,

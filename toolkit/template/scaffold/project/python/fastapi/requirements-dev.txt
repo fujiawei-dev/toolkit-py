@@ -1,0 +1,11 @@
+black
+build
+flake8
+pre-commit
+pyinstaller
+pytest
+pytest-click
+pytest-cov
+pytest-faker
+versioneer
+pywin32

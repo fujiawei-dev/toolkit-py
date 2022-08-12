@@ -1,5 +1,10 @@
 ---
 roles:
+  - name: geerlingguy.ansible
   - name: geerlingguy.docker
-  - name: geerlingguy.pip
+  - name: geerlingguy.firewall
   - name: geerlingguy.java
+  - name: geerlingguy.jenkins
+  - name: geerlingguy.kubernetes
+  - name: geerlingguy.pip
+  - name: geerlingguy.swap

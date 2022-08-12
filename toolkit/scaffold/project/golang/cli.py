@@ -5,8 +5,8 @@ import sys
 import click
 
 from toolkit.scaffold.project.golang.example import create_example
-from toolkit.scaffold.project.golang.web import create_web
 from toolkit.scaffold.project.golang.factory import create_factory
+from toolkit.scaffold.project.golang.web import create_web
 
 
 @click.group(help="Create a golang project scaffold.")
