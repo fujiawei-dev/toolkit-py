@@ -14,7 +14,7 @@ message(STATUS "CMAKE_HOST_SYSTEM_NAME: " ${CMAKE_HOST_SYSTEM_NAME})
 message(STATUS "CMAKE_HOST_SYSTEM_PROCESSOR: " ${CMAKE_HOST_SYSTEM_PROCESSOR})
 message(STATUS "CMAKE_HOST_SYSTEM_VERSION: " ${CMAKE_HOST_SYSTEM_VERSION})
 
-{% if enable_src_module -%}
+{%- if enable_src_module %}
 # Submodule build
 include(src/CMakeLists.txt)
 {%- endif %}
@@ -30,7 +30,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wall -O2")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -O2")
 
-{% if not x64_arch -%}
+{%- if not x64_arch %}
 if (WIN32)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
@@ -48,7 +48,7 @@ elseif (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "AARCH64")
     add_definitions(-DLINUX_OS_ARM64)
 endif ()
 
-{% if enable_3rd_module -%}
+{%- if enable_3rd_module %}
 # Build settings
 include_directories(${CMAKE_SOURCE_DIR}/include)
 link_directories(${CMAKE_SOURCE_DIR}/lib)
@@ -83,7 +83,7 @@ message(STATUS "QML2_IMPORT_PATH: " $ENV{QML2_IMPORT_PATH})
 
 set(ENV{QT_ASSUME_STDERR_HAS_CONSOLE} 1)
 
-message(STATUS "On Clion, you should set QT_ASSUME_STDERR_HAS_CONSOLE=1;QT_DEBUG_PLUGINS=1;PATH=${CMAKE_PREFIX_PATH}/bin\;${QT_PATH}/Tools/${QT_TOOL_VERSION}/bin;QML2_IMPORT_PATH=${CMAKE_PREFIX_PATH}/qml")
+message(STATUS "On Clion, you should set QT_ASSUME_STDERR_HAS_CONSOLE=1;QT_DEBUG_PLUGINS=0;PATH=${CMAKE_PREFIX_PATH}/bin\;${QT_PATH}/Tools/${QT_TOOL_VERSION}/bin;QML2_IMPORT_PATH=${CMAKE_PREFIX_PATH}/qml")
 
 find_package(
         Qt5 COMPONENTS
@@ -113,7 +113,7 @@ target_link_libraries(
         {%- endif %}
 )
 
-{% if enable_3rd_module -%}
+{%- if enable_3rd_module %}
 add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/lib $<TARGET_FILE_DIR:${PROJECT_NAME}>)

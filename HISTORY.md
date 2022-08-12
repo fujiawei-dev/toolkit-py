@@ -8,6 +8,7 @@ v1.5.1 (2022-08-12)
 - Fixed
     - KeyError when deleting `factory` field
     - package typo in Go templates
+    - unzip timeout
 
 v1.5.0 (2022-08-10)
 

@@ -27,9 +27,10 @@ DEFAULT_PASSWORDS_DIR.mkdir(parents=True, exist_ok=True)
 DEFAULT_PASSWORDS_FILE = DEFAULT_PASSWORDS_DIR / "customize.txt"
 DEFAULT_PASSWORDS_FILE.touch(exist_ok=True)
 
-NORMAL_FILE_SUFFIXES = {".jpeg", ".jpg", ".png"}
+NORMAL_FILE_SUFFIXES = {".jpeg", ".jpg", ".png", ".mp3"}
 COMPRESSED_FILE_SUFFIXES = {".7z", ".zip", ".rar", ".7zz"}
-DELETABLE_FILE_SUFFIXES = {".txt", ".url", ".html", ".gif"}
+DELETABLE_FILE_SUFFIXES = {".txt", ".url", ".html", ".gif", ".mp4", ".docx"}
+IGNORE_FILE_SUFFIXES = {".pickle"}
 
 
 def delete_empty_directories(path: Union[str, Path]):
@@ -63,7 +64,25 @@ def decompress(src: str, dst: str, password: str) -> bool:
 
     log.debug(shlex.join(args))
 
-    if not (success := subprocess.call(args, stdout=PIPE, stderr=PIPE) == 0):
+    success = False
+
+    # 500MB -> 25s
+    timeout = 8 if password == "" else int(os.path.getsize(src) / 1024 / 1024 / 20)
+
+    try:
+        success = (
+            subprocess.call(
+                args,
+                timeout=timeout,
+                stdout=PIPE,
+                stderr=PIPE,
+            )
+            == 0
+        )
+    except subprocess.TimeoutExpired:
+        log.warning(f"{src} decompress with {password!r} timeout {timeout}s")
+
+    if not success:
         shutil.rmtree(dst, ignore_errors=True)
 
     return success
@@ -103,6 +122,7 @@ def brute_force_decompress(
     passwords = passwords or []
 
     for password in passwords:
+        log.debug(f"try to decompress {src} with {password!r}")
         if decompress(src, dst, password):
             log.info(f"{src} found password {password!r}")
             return True, password, dst
@@ -170,7 +190,7 @@ class Unzipper(object):
 
         self.load_passwords()
 
-    def load_passwords(self):
+    def load_passwords(self, default_only: bool = True, max_size: int = 100):
         if not self.loaded:
             if not DEFAULT_PASSWORDS_DIR.exists():
                 DEFAULT_PASSWORDS_DIR.mkdir(parents=True)
@@ -182,9 +202,14 @@ class Unzipper(object):
                     DEFAULT_PASSWORDS_FILE.read_text(encoding="utf-8").splitlines()
                 )
 
-            for file in DEFAULT_PASSWORDS_DIR.iterdir():
-                if file.is_file() and file != DEFAULT_PASSWORDS_FILE:
-                    self.passwords.extend(file.read_text(encoding="utf-8").splitlines())
+            if not default_only:
+                for file in DEFAULT_PASSWORDS_DIR.iterdir():
+                    if file.is_file() and file != DEFAULT_PASSWORDS_FILE:
+                        self.passwords.extend(
+                            file.read_text(encoding="utf-8").splitlines()
+                        )
+
+                self.passwords = self.passwords[:max_size]
 
             self.loaded = True
 
@@ -210,6 +235,9 @@ class Unzipper(object):
     ) -> bool:
         if os.path.isfile(src):
             suffix = os.path.splitext(src)[1].lower()
+
+            if suffix in IGNORE_FILE_SUFFIXES:
+                return False
 
             if suffix in NORMAL_FILE_SUFFIXES:
                 return True
@@ -241,7 +269,6 @@ class Unzipper(object):
             if success and os.path.exists(src):
                 i, j = continue_decompress(src)
                 if j > 0 and (i < j or i < 8):
-                    log.debug(f"{src} continue decompress")
                     return self.decompress_recursively(src, move_to, parent)
 
                 # 是文件夹则移动
@@ -258,13 +285,15 @@ class Unzipper(object):
             return success
 
         elif Path(src) != Path(move_to) and os.path.isdir(src):
+            log.info('working on "%s"', src)
+
             workers = LifoQueue(maxsize=8)
 
             for item in Path(src).iterdir():
                 worker = Thread(
                     target=self.decompress_recursively,
                     args=(item.as_posix(), move_to, parent),
-                    daemon=True,
+                    daemon=False,
                 )
 
                 if workers.full():
@@ -274,7 +303,10 @@ class Unzipper(object):
                 workers.put(worker)
 
             while not workers.empty():
+                log.info(f"{workers.qsize()} workers are working")
                 workers.get().join()
+
+            log.info(f"{src} is successful")
 
         return False
 
@@ -318,7 +350,7 @@ class Unzipper(object):
 
             for k, v in self.segment_zips.items():
                 if not v.empty():
-                    log.warning(k, ":", list(v.queue))
+                    log.warning(f"{k}: {v.queue}")
 
         no_failure = True
 
@@ -382,15 +414,25 @@ class Unzipper(object):
     is_flag=True,
     help="Open the customize password file.",
 )
+@click.option(
+    "--open-password-dir",
+    is_flag=True,
+    help="Open the customize password directory.",
+)
 def unzip_command(
     src: str,
     move_to: str,
     disable_history: bool,
     show_config: bool,
     open_password_file: bool,
+    open_password_dir: bool,
 ):
     if open_password_file:
         click.edit(filename=str(DEFAULT_PASSWORDS_FILE), editor=EDITOR)
+        return
+
+    if open_password_dir:
+        click.launch(url=str(DEFAULT_PASSWORDS_DIR), locate=True)
         return
 
     if show_config:
