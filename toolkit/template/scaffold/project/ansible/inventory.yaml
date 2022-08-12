@@ -1,19 +1,11 @@
-nginx:
+app:
     hosts:
-        nginx_1:
+        app_1:
             ansible_user: root
             ansible_host: 192.168.1.21
-
-        nginx_2:
+        app_2:
             ansible_user: root
             ansible_host: 192.168.1.22
-
-service:
-    hosts:
-        service_1:
+        app_3:
             ansible_user: root
-            ansible_host: 192.168.1.31
-
-        service_2:
-            ansible_user: root
-            ansible_host: 192.168.1.32
+            ansible_host: 192.168.1.23

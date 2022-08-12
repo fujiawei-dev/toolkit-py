@@ -1,4 +1,4 @@
-package factory.entity
+package entity
 
 import (
 	"errors"
@@ -24,7 +24,6 @@ func ({{ factory.entity|title }}Embedded) TableName() string {
 	return "{{ factory.entity }}s_embedded"
 }
 
-// {{ factory.entity|title }} basic minimal factory.entity example
 type {{ factory.entity|title }} struct {
 	ID uint `gorm:"primary_key" json:"id"`
 
@@ -45,7 +44,7 @@ type {{ factory.entity|title }} struct {
 	DeletedAt gorm.DeletedAt `json:"-"`
 }
 
-func ({{ factory.entity|title }}) TableName() string {
+func (*{{ factory.entity|title }}) TableName() string {
 	return "{{ factory.entity }}s"
 }
 

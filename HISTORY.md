@@ -4,8 +4,10 @@ v1.5.1 (2022-08-12)
 
 - Added
     - more templates
+    - improved ansible templates
 - Fixed
     - KeyError when deleting `factory` field
+    - package typo in Go templates
 
 v1.5.0 (2022-08-10)
 

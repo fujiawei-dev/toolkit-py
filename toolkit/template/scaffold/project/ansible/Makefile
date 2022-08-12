@@ -1,5 +1,8 @@
 .PHONY: ;
 
+# https://github.com/ansible/ansible/issues/42388
+export ANSIBLE_CONFIG=ansible.cfg
+
 INVENTORY_FILE = inventory.yaml
 
 install:

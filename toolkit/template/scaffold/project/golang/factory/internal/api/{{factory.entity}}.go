@@ -9,7 +9,7 @@ import (
     {%- endif %}
 
 	"{{ main_module }}/internal/acl"
-	"{{ main_module }}/internal/factory.entity"
+	"{{ main_module }}/internal/entity"
 	"{{ main_module }}/internal/form"
 	"{{ main_module }}/internal/query"
 )
@@ -46,7 +46,7 @@ func Post{{ factory.entity|title }}(router {{ web_framework_router_group }}) {
 			return{{ web_framework_nil }}
 		}
 
-		var m factory.entity.{{ factory.entity|title }}
+		var m entity.{{ factory.entity|title }}
 
 		if err := m.CopyFrom(f); err != nil {
 			ErrorUnexpected(c, err)
@@ -94,7 +94,7 @@ func Put{{ factory.entity|title }}(router {{ web_framework_router_group }}) {
 			return{{ web_framework_nil }}
 		}
 
-		var m factory.entity.{{ factory.entity|title }}
+		var m entity.{{ factory.entity|title }}
 		if err := m.FindByID(id); err != nil {
 			ErrorExpectedOrUnexpected(c, err)
 			return{{ web_framework_nil }}
@@ -158,7 +158,7 @@ func Delete{{ factory.entity|title }}(router {{ web_framework_router_group }}) {
 			return{{ web_framework_nil }}
 		}
 
-		var m factory.entity.{{ factory.entity|title }}
+		var m entity.{{ factory.entity|title }}
 
 		if err := m.FindByID(id); err != nil {
 			ErrorExpectedOrUnexpected(c, err)
@@ -205,7 +205,7 @@ func Get{{ factory.entity|title }}(router {{ web_framework_router_group }}) {
 			return{{ web_framework_nil }}
 		}
 
-		var m factory.entity.{{ factory.entity|title }}
+		var m entity.{{ factory.entity|title }}
 
 		if err := m.FindByID(id); err != nil {
 			ErrorExpectedOrUnexpected(c, err)

@@ -8,14 +8,14 @@ def get_user_input_context(raw_user_input_context: dict = None) -> dict:
         # isinstance(True, int) is True
         if isinstance(value, bool):
             raw_user_input_context[key] = read_user_yes_no(
-                'Are you sure "{}"?:'.format(key),
+                'Are you sure "{}"?'.format(key),
                 "y" if value else "n",
             )
 
         elif isinstance(value, (str, bytes, int, float)):
             raw_user_input_context[key] = type(value)(
                 read_user_variable(
-                    'Please enter a value for "{}":'.format(key),
+                    'Please enter a value for "{}"'.format(key),
                     value,
                 )
             )
@@ -26,7 +26,7 @@ def get_user_input_context(raw_user_input_context: dict = None) -> dict:
                 continue
 
             raw_user_input_context[key] = read_user_choice(
-                'Please select a value for "{}":'.format(key),
+                'Please select a value for "{}"'.format(key),
                 value,
             )
 

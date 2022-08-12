@@ -5,7 +5,7 @@ import (
 
 	"github.com/jinzhu/copier"
 
-	"{{ main_module }}/internal/factory.entity"
+	"{{ main_module }}/internal/entity"
 	"{{ main_module }}/internal/form"
 )
 
@@ -29,7 +29,7 @@ type {{ factory.entity|title }}Result struct {
 }
 
 func {{ factory.entity|title }}s(f form.SearchPager) (results []{{ factory.entity|title }}Result, totalRows int64, err error) {
-	query := Db().Model(&factory.entity.{{ factory.entity|title }}{})
+	query := Db().Model(&entity.{{ factory.entity|title }}{})
 
 	if f.LikeQ != "" {
 		for _, q := range strings.Split(f.LikeQ, form.Or) {
@@ -63,7 +63,7 @@ func {{ factory.entity|title }}s(f form.SearchPager) (results []{{ factory.entit
 		query = query.Order("id DESC")
 	}
 
-	var items factory.entity.{{ factory.entity|title }}s
+	var items entity.{{ factory.entity|title }}s
 
 	if err = query.Offset(f.Offset()).Limit(f.PageSize).
 		Preload("{{ factory.entity|title }}Embedded").

@@ -1,36 +1,46 @@
-- hosts: service
+- hosts: app
 
   vars_files:
     - vars/main.yml
 
   roles:
     - screen
+    - geerlingguy.pip
 
   tasks:
-    - name: Ensure Golang app folder exists.
+    - name: Install httpie.
+      pip: "name=httpie"
+
+    - name: Ensure remote folder exists.
       file: "path={{ install_location }} state=directory"
 
-    - name: Copy Golang app to server.
-      copy: "src=dist/{{ executable_file }} dest={{ install_location }} mode='a+x'"
+    - name: Copy the app to server.
+      copy: "src=app/{{ executable_file }} dest={{ install_location }} mode='a+x'"
 
-    - name: Copy config file to server.
-      copy: "src=dist/{{ config_file }} dest={{ install_location }}/settings.yaml"
+    - name: Copy the config file to server.
+      copy: "src=app/config/{{ config_file }} dest={{ install_location }}/config.yaml"
 
-    - name: Copy assets to server.
-      copy: "src=dist/{{ assets_dir }} dest={{ install_location }}"
+    - name: Copy the assets directory to server.
+      copy: "src=app/{{ assets_directory }} dest={{ install_location }}"
 
-    - name: Check list of running screen.
+    - name: Check list of running screens.
       command: screen -list
       register: screen_list
       changed_when: false
       ignore_errors: false
       failed_when: screen_list.rc not in [ 0, 1 ]
 
-    - name: Stop Golang app.
+    - name: Stop the running app.
       command: "screen -X -S {{ screen_id }} quit"
       when: "screen_list.stdout.find(screen_id) != -1"
 
-    - name: Start Golang app.
-      command: "screen -dmS {{ screen_id }} bash -c '{{ install_location }}/{{ executable_file }} -D -S -P -c settings.yaml start'"
+    - name: Start the app.
+      command: "screen -dmS {{ screen_id }} bash -c '{{ install_location }}/{{ executable_file }} {{ start_command }}'"
       args:
         chdir: "{{ install_location }}"
+
+    - name: Test http
+      command: http 'localhost:{{ http_port }}'
+      register: test_http
+
+    - debug: msg="{{ test_http.stdout }}"

@@ -8,9 +8,12 @@ log = logging.getLogger(__name__)
 
 
 class AnsibleContext(BaseModel):
-    install_location: str = "/usr/local/bin"
-    executable_file: str = "main"
+    assets_directory: str = "assets"
     config_file: str = "config.yaml"
+    executable_file: str = "main"
+    http_port: int = 8080
+    install_location: str = "/usr/local/bin"
+    start_command: str = "start"
 
     screen_id: str = None
 
