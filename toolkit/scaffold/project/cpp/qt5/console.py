@@ -19,7 +19,9 @@ class ConsoleContext(BaseModel):
         ["mingw73_32", "mingw730_32"],
     ]
 
+    all_in_main: bool = True
     enable_network: bool = True
+    enable_http_request: bool = False
     enable_websocket: bool = False
     enable_event_loop: bool = False
     enable_src_module: bool = False
@@ -45,6 +47,21 @@ def console_user_input_context_hook(context: dict) -> dict:
 
     if "64" in console_context.qt_compile_version:
         console_context.x64_arch = True
+
+    console_context.enable_network = any(
+        [
+            console_context.enable_http_request,
+            console_context.enable_websocket,
+        ]
+    )
+
+    console_context.enable_event_loop = any(
+        [
+            console_context.enable_event_loop,
+            console_context.enable_network,
+            console_context.enable_websocket,
+        ]
+    )
 
     ignored = []
 

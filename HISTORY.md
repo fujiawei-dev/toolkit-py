@@ -1,5 +1,9 @@
 # History
 
+v1.5.2 (2022-08-13)
+
+- Improved Qt5 template.
+
 v1.5.1 (2022-08-12)
 
 - Added
