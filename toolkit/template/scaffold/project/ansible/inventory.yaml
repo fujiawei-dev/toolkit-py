@@ -3,9 +3,5 @@ app:
         app_1:
             ansible_user: root
             ansible_host: 192.168.1.21
-        app_2:
-            ansible_user: root
-            ansible_host: 192.168.1.22
-        app_3:
-            ansible_user: root
-            ansible_host: 192.168.1.23
+            ansible_python_interpreter: /usr/bin/python3
+            ansible_ssh_common_args: "-o StrictHostKeyChecking=no"

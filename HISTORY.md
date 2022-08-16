@@ -4,6 +4,9 @@ v1.5.3 (2022-08-15)
 
 - Added
     - golang web example templates
+    - cpp Qt5 example templates
+- Updated
+    - ansible templates
 
 v1.5.2 (2022-08-13)
 

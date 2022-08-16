@@ -8,39 +8,54 @@
     - geerlingguy.pip
 
   tasks:
-    - name: Install httpie.
-      pip: "name=httpie"
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/pip_module.html
+    - name: Install httpie python app
+      ansible.builtin.pip:
+        name: httpie
+        extra_args: -i https://pypi.douban.com/simple
 
-    - name: Ensure remote folder exists.
-      file: "path={{ install_location }} state=directory"
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html
+    - name: Create the directory if it does not exist
+      ansible.builtin.file:
+        path: "{{ install_location }}"
+        state: directory
+        mode: "0755"
 
-    - name: Copy the app to server.
-      copy: "src=app/{{ executable_file }} dest={{ install_location }} mode='a+x'"
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/pip_module.html
+    - name: Copy the app with permissions to server
+      ansible.builtin.copy:
+        src: "app/{{ executable_file }}'"
+        dest: "{{ install_location }}"
+        mode: u=rwx,g=r,o=r
 
-    - name: Copy the config file to server.
-      copy: "src=app/config/{{ config_file }} dest={{ install_location }}/config.yaml"
+    - name: Copy the config file to the server
+      ansible.builtin.copy:
+        src: "app/config/{{ config_file }}"
+        dest: "{{ install_location }}/config.yaml"
+        mode: "0644"
 
-    - name: Copy the assets directory to server.
-      copy: "src=app/{{ assets_directory }} dest={{ install_location }}"
-
-    - name: Check list of running screens.
-      command: screen -list
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/command_module.html
+    - name: Check the list of running screens.
+      ansible.builtin.command: screen -list
       register: screen_list
       changed_when: false
-      ignore_errors: false
-      failed_when: screen_list.rc not in [ 0, 1 ]
+      failed_when: "screen_list.rc not in [ 0, 1 ]"
 
     - name: Stop the running app.
-      command: "screen -X -S {{ screen_id }} quit"
+      ansible.builtin.command: "screen -X -S {{ screen_id }} quit"
       when: "screen_list.stdout.find(screen_id) != -1"
 
     - name: Start the app.
-      command: "screen -dmS {{ screen_id }} bash -c '{{ install_location }}/{{ executable_file }} {{ start_command }}'"
+      ansible.builtin.command: "screen -dmS {{ screen_id }} bash -c '{{ install_location }}/{{ executable_file }} {{ start_command }}'"
       args:
         chdir: "{{ install_location }}"
 
-    - name: Test http
-      command: http 'localhost:{{ http_port }}'
-      register: test_http
+    - name: Test if the http server is already running
+      ansible.builtin.command: http 'localhost:{{ http_port }}'
+      register: result
 
-    - debug: msg="{{ test_http.stdout }}"
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/debug_module.html
+    - name: Print return information from the previous task
+      ansible.builtin.debug:
+        var: result
+        verbosity: 2

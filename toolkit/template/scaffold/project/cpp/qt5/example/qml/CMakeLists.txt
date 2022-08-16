@@ -2,22 +2,7 @@ cmake_minimum_required(VERSION 3.18)
 
 project({{ project_slug.snake_case }})
 
-set(CMAKE_CXX_STANDARD {{ cpp_standard }})
-
-# Base information
-message(STATUS "CMAKE_VERSION: " ${CMAKE_VERSION})
-message(STATUS "PROJECT_SOURCE_DIR: " ${PROJECT_SOURCE_DIR})
-message(STATUS "CMAKE_SOURCE_DIR: " ${CMAKE_SOURCE_DIR})
-
-# System information
-message(STATUS "CMAKE_HOST_SYSTEM_NAME: " ${CMAKE_HOST_SYSTEM_NAME})
-message(STATUS "CMAKE_HOST_SYSTEM_PROCESSOR: " ${CMAKE_HOST_SYSTEM_PROCESSOR})
-message(STATUS "CMAKE_HOST_SYSTEM_VERSION: " ${CMAKE_HOST_SYSTEM_VERSION})
-
-{%- if enable_src_module %}
-# Submodule build
-include(src/CMakeLists.txt)
-{%- endif %}
+set(CMAKE_CXX_STANDARD 17)
 
 # Settings for Qt5
 set(CMAKE_AUTOMOC ON)
@@ -26,7 +11,6 @@ set(CMAKE_AUTOUIC ON)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-# Build flags
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wall -O2")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -O2")
 
@@ -36,17 +20,6 @@ if (WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
 endif ()
 {%- endif %}
-
-# System processor
-if (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "x86_64")
-    message(STATUS "LINUX_OS_X86_64")
-    set(LINUX_OS_X86_64 TRUE)
-    add_definitions(-DLINUX_OS_X86_64)
-elseif (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "AARCH64")
-    message(STATUS "LINUX_OS_ARM64")
-    set(LINUX_OS_ARM64 TRUE)
-    add_definitions(-DLINUX_OS_ARM64)
-endif ()
 
 {%- if enable_3rd_module %}
 # Build settings
@@ -88,29 +61,36 @@ message(STATUS "On Clion, you should set QT_ASSUME_STDERR_HAS_CONSOLE=1;QT_DEBUG
 find_package(
         Qt5 COMPONENTS
         Core
-        {%- if enable_network %}
+        Gui
+        Widgets
+        Qml
+        Quick
+        Concurrent
+        Multimedia
         Network
-        {%- endif %}
-        {%- if enable_websocket %}
         WebSockets
-        {%- endif %}
         REQUIRED
 )
 
+qt5_add_big_resources(QML_FILES qml.qrc)
+
 add_executable(
-        {{ project_slug.snake_case }} 
-        main.cpp
+    {{ project_slug.snake_case }}
+    main.cpp
+    ${QML_FILES}
 )
 
 target_link_libraries(
         {{ project_slug.snake_case }}
         Qt5::Core
-        {%- if enable_network %}
+        Qt5::Gui
+        Qt5::Widgets
+        Qt5::Qml
+        Qt5::Quick
+        Qt5::Concurrent
+        Qt5::Multimedia
         Qt5::Network
-        {%- endif %}
-        {%- if enable_websocket %}
         Qt5::WebSockets
-        {%- endif %}
 )
 
 {%- if enable_3rd_module %}
@@ -118,3 +98,10 @@ add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/lib $<TARGET_FILE_DIR:${PROJECT_NAME}>)
 {%- endif %}
+
+if (WIN32)
+    set_target_properties(
+            ${PROJECT_NAME}
+            PROPERTIES LINK_FLAGS_RELEASE "-mwindows"
+    )
+endif ()
