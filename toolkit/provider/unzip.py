@@ -66,8 +66,8 @@ def decompress(src: str, dst: str, password: str) -> bool:
 
     success = False
 
-    # 500MB -> 25s
-    timeout = 8 if password == "" else int(os.path.getsize(src) / 1024 / 1024 / 20)
+    timeout = os.path.getsize(src) // (1 << 24)
+    timeout = 8 if password == "" else max(timeout, 5)
 
     try:
         success = (

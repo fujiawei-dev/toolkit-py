@@ -1,5 +1,10 @@
 # History
 
+v1.5.4 (2022-08-15)
+
+- Fixed
+    - timeout issue when unzipping a file
+
 v1.5.3 (2022-08-15)
 
 - Added
