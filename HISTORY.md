@@ -4,6 +4,8 @@ v1.5.4 (2022-08-15)
 
 - Fixed
     - timeout issue when unzipping a file
+- Added
+    - example project scaffold
 
 v1.5.3 (2022-08-15)
 
