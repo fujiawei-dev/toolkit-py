@@ -72,14 +72,12 @@ find_package(
         REQUIRED
 )
 
-qt5_add_big_resources(QML_FILES qml.qrc)
-
 add_executable(
         {{ project_slug.snake_case }}
         main.cpp
         core.cpp
         core.h
-        ${QML_FILES}
+        qml.qrc
 )
 
 target_link_libraries(

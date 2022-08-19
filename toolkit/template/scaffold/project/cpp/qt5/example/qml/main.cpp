@@ -9,6 +9,8 @@ int main(int argc, char *argv[]) {
 
   QGuiApplication app(argc, argv);
 
+  QGuiApplication::setFont(QFont("Microsoft YaHei", 14));
+
   Core *core = new Core(&app);
 
   QQmlApplicationEngine engine;
