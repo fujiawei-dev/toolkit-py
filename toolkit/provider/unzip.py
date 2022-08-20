@@ -380,6 +380,8 @@ class Unzipper(object):
 
         try:
             return self.run(src, move_to)
+        except KeyboardInterrupt:
+            pass
         finally:
             pickle.dump(self.successful_items_dict, file=open(history_file, "wb"))
 
