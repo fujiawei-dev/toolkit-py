@@ -3,6 +3,8 @@
 v1.5.5 (2022-08-19)
 
 - Improved Qt5 QML example template.
+- Added Qt5 console example template
+- Create a note source example at the same time as the note is created.
 
 v1.5.4 (2022-08-15)
 

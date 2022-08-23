@@ -1,10 +1,12 @@
 import os.path
 import time
 from pathlib import Path
-from typing import Union
+from typing import NamedTuple, Union
 
 import click
+from cookiecutter.prompt import read_user_choice
 
+from toolkit.scaffold.project import python
 from toolkit.template.code_style import get_camel_case_styles
 
 ARTICLE_SETTINGS_PATH = "assets/templates/article_settings.yaml"
@@ -22,6 +24,15 @@ ARTICLE_HEADER_TITLE = """\
 title: "{title}"  # 文章标题
 url:  "{url}"  # 设置网页永久链接
 """
+
+
+class ProgrammingLanguage(NamedTuple):
+    python: str = "python"
+    golang: str = "golang"
+    cpp: str = "cpp"
+
+
+L = ProgrammingLanguage()
 
 
 def render_article_content(
@@ -72,7 +83,13 @@ def render_article_content(
     help="The path of the workspace.",
 )
 @click.option("--header-only", is_flag=True, help="Only create the header.")
-def create_article(article_path: str, workspace_path: str, header_only: bool):
+@click.pass_context
+def create_article(
+    ctx: click.Context,
+    article_path: str,
+    workspace_path: str,
+    header_only: bool,
+):
     if not os.path.exists(article_path) or header_only:
         if header_only:
             article_paths = []
@@ -104,3 +121,16 @@ def create_article(article_path: str, workspace_path: str, header_only: bool):
 
             with open(article_path, "w", encoding="utf-8") as fp:
                 fp.write(render_article_content(article_path, workspace_path))
+
+        language = read_user_choice("Language", list(L))
+
+        if language == L.python:
+            ctx.invoke(
+                python.create_example,
+                project_path=os.path.join("src", os.path.splitext(article_path)[0]),
+                overwrite=False,
+            )
+        elif language == L.golang:
+            pass
+        elif language == L.cpp:
+            pass

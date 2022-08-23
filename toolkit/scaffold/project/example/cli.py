@@ -3,6 +3,7 @@
 import sys
 
 import click
+
 from toolkit.scaffold.project.command import generate_create_project_command
 from toolkit.scaffold.project.template import TEMPLATE_EXAMPLE_PATH
 

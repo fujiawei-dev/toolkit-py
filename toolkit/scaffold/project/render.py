@@ -19,6 +19,9 @@ def generate_rendered_project(
     ignored_fields: list = None,
     overwrite: bool = False,
 ):
+    if not os.path.exists(project_path):
+        os.makedirs(project_path, exist_ok=True)
+
     if isinstance(template_paths, (str, Path)):
         template_paths = [template_paths]
 
