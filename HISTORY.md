@@ -1,5 +1,9 @@
 # History
 
+v1.5.6 (2022-08-24)
+
+- Some improvements
+
 v1.5.5 (2022-08-19)
 
 - Improved Qt5 QML example template.

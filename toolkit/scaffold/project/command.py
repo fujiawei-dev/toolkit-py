@@ -1,3 +1,4 @@
+import os.path
 from pathlib import Path
 from typing import Callable, Union
 
@@ -65,5 +66,7 @@ def generate_create_project_command(
             ignored_fields=ignored_fields,
             overwrite=overwrite,
         )
+
+        click.echo(f"Project created at:\n{os.path.abspath(project_path)}")
 
     return create_project
