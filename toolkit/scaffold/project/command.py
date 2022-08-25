@@ -45,7 +45,7 @@ def generate_create_project_command(
     )
     @click.option(
         "--project-path",
-        type=click.Path(exists=True, file_okay=False),
+        type=click.Path(file_okay=False),
         default=".",
         help="The path to the final generated project.",
     )
