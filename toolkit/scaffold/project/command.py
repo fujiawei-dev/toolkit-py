@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Callable, Union
 
 import click
+from cookiecutter.prompt import read_user_choice, read_user_yes_no
 
 from toolkit.scaffold.project.render import generate_rendered_project
 
@@ -54,7 +55,13 @@ def generate_create_project_command(
         is_flag=True,
         help="Overwrite existing files.",
     )
-    def create_project(project_path: str, overwrite: bool):
+    @click.option(
+        "--launch-editor",
+        "-e",
+        is_flag=True,
+        help="Launch the editor after generating the project.",
+    )
+    def create_project(project_path: str, overwrite: bool, launch_editor: bool):
         generate_rendered_project(
             template_paths=template_paths,
             project_path=project_path,
@@ -68,5 +75,20 @@ def generate_create_project_command(
         )
 
         click.echo(f"Project created at:\n{os.path.abspath(project_path)}")
+
+        if launch_editor or read_user_yes_no("Launch editor?", True):
+            click.edit(
+                editor=read_user_choice(
+                    "Which editor to use?",
+                    [
+                        "code",
+                        "clion",
+                        "golang",
+                        "pycharm",
+                    ],
+                ),
+                filename=project_path,
+                require_save=False,
+            )
 
     return create_project

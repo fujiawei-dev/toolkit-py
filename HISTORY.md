@@ -3,6 +3,7 @@
 v1.5.6 (2022-08-24)
 
 - Some improvements
+- Launch the editor directly after creating the project
 
 v1.5.5 (2022-08-19)
 
