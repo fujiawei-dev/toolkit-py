@@ -17,6 +17,7 @@ def generate_create_project_command(
     user_input_context_hook: Callable[[dict], dict] = None,
     project_context: dict = None,
     ignored_fields: list = None,
+    editors: list = None,
 ) -> click.Command:
     """
     Generate a click command that can be used to create a project scaffold.
@@ -30,6 +31,7 @@ def generate_create_project_command(
         user_input_context_hook: A function that can be used to modify the user input context.
         project_context: The project context to use for the project scaffold.
         ignored_fields: The fields to ignore when generating the project scaffold.
+        editors: The editors to use when generating the project scaffold.
 
     Returns:
         The click command.
@@ -80,7 +82,8 @@ def generate_create_project_command(
             click.edit(
                 editor=read_user_choice(
                     "Which editor to use?",
-                    [
+                    editors
+                    or [
                         "code",
                         "clion",
                         "golang",

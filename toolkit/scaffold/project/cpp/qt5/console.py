@@ -84,4 +84,5 @@ create_console = generate_create_project_command(
     template_paths=TEMPLATE_CPP_QT5_PATH / "console",
     raw_user_input_context=USER_INPUT_CONTEXT | CONSOLE_USER_INPUT_CONTEXT,
     user_input_context_hook=console_user_input_context_hook,
+    editors=["clion", "code"],
 )
