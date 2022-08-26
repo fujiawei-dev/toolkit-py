@@ -76,7 +76,7 @@ def generate_create_project_command(
 
         click.echo(f"Project created at:\n{os.path.abspath(project_path)}")
 
-        if launch_editor or read_user_yes_no("Launch editor?", True):
+        if launch_editor or read_user_yes_no("Launch editor?", "yes"):
             click.edit(
                 editor=read_user_choice(
                     "Which editor to use?",
