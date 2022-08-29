@@ -17,7 +17,7 @@ func init() {
 
 type {{ factory.entity_slug.pascal_case }}Embedded struct {
 	gorm.Model
-	Email string `json:"email" example:"who@gmail.com"`
+	Email string `gorm:"type:varchar(255)" json:"email" example:"who@gmail.com"`
 }
 
 func ({{ factory.entity_slug.pascal_case }}Embedded) TableName() string {
@@ -30,7 +30,7 @@ type {{ factory.entity_slug.pascal_case }} struct {
 	// ID easy to traverse, so UID is necessary when get/put/delete
 	UID string `gorm:"column:uid" json:"uid" example:"UID"`
 
-	When  string `gorm:"size:128;" json:"when"`
+	When  string `gorm:"type:varchar(255)" json:"when"`
 	Where string `gorm:"size:128;" json:"where"`
 	Who   string `gorm:"size:128;" json:"who"`
 	What  string `gorm:"size:128;" json:"what"`

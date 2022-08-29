@@ -1,6 +1,6 @@
 # History
 
-v1.5.6 (2022-08-29)
+v1.5.7 (2022-08-29)
 
 - Added `factory_user_input_context_hook` hook.
 
