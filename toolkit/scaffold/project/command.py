@@ -14,6 +14,7 @@ def generate_create_project_command(
     generated_path_hook: Callable[[str], str] = None,
     raw_user_input_context: dict = None,
     factory_user_input_context: dict = None,
+    factory_user_input_context_hook: Callable[[dict], dict] = None,
     user_input_context_hook: Callable[[dict], dict] = None,
     project_context: dict = None,
     ignored_fields: list = None,
@@ -28,6 +29,7 @@ def generate_create_project_command(
         generated_path_hook: A function that can be used to modify the generated path.
         raw_user_input_context: The raw user input context to use for the project scaffold.
         factory_user_input_context: The user input context to use for the project scaffold.
+        factory_user_input_context_hook: A function that can be used to modify the factory user input context.
         user_input_context_hook: A function that can be used to modify the user input context.
         project_context: The project context to use for the project scaffold.
         ignored_fields: The fields to ignore when generating the project scaffold.
@@ -70,6 +72,7 @@ def generate_create_project_command(
             generated_path_hook=generated_path_hook,
             raw_user_input_context=raw_user_input_context,
             factory_user_input_context=factory_user_input_context,
+            factory_user_input_context_hook=factory_user_input_context_hook,
             user_input_context_hook=user_input_context_hook,
             project_context=project_context,
             ignored_fields=ignored_fields,

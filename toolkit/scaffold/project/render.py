@@ -14,6 +14,7 @@ def generate_rendered_project(
     generated_path_hook: Callable[[str], str] = None,
     raw_user_input_context: dict = None,
     factory_user_input_context: dict = None,
+    factory_user_input_context_hook: Callable[[dict], dict] = None,
     user_input_context_hook: Callable[[dict], dict] = None,
     project_context: dict = None,
     ignored_fields: list = None,
@@ -36,6 +37,8 @@ def generate_rendered_project(
 
     if factory_user_input_context:
         factory = context.get_user_input_context(factory_user_input_context)
+        if factory_user_input_context_hook:
+            factory = factory_user_input_context_hook(factory)
         user_input_context["factory"] = factory
 
     ignored_items = context.get_ignored_items(project_context, ignored_fields)

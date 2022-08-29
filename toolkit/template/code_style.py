@@ -1,4 +1,15 @@
-def get_camel_case_styles(text: str) -> tuple[str, str, str, str]:
+from typing import NamedTuple
+
+
+class CamelCaseStyle(NamedTuple):
+    words_lowercase: str  # camel case
+    kebab_case: str  # camel-case
+    words_capitalized: str  # Camel Case
+    snake_case: str  # camel_case
+    pascal_case: str  # CamelCase
+
+
+def get_camel_case_styles(text: str) -> CamelCaseStyle:
     symbols = "_- "
 
     chars = list(text.strip(symbols))
@@ -11,9 +22,10 @@ def get_camel_case_styles(text: str) -> tuple[str, str, str, str]:
 
     text = "".join(chars).lower()  # camel case
 
-    return (
-        text,  # 0 camel case
-        text.replace(" ", "-"),  # 1 camel-case
-        text.title(),  # 2 Camel Case
-        text.replace(" ", "_"),  # 3 camel_case
+    return CamelCaseStyle(
+        words_lowercase=text,  # camel case
+        kebab_case=text.replace(" ", "-"),  # camel-case
+        words_capitalized=text.title(),  # Camel Case
+        snake_case=text.replace(" ", "_"),  # camel_case
+        pascal_case=text.title().replace(" ", ""),  # CamelCase
     )

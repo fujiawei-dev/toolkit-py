@@ -15,38 +15,38 @@ import (
 )
 
 func init() {
-	AddRouteRegistrar(Post{{ factory.entity|title }})
-	AddRouteRegistrar(Put{{ factory.entity|title }})
-	AddRouteRegistrar(Delete{{ factory.entity|title }})
+	AddRouteRegistrar(Post{{ factory.entity_slug.pascal_case }})
+	AddRouteRegistrar(Put{{ factory.entity_slug.pascal_case }})
+	AddRouteRegistrar(Delete{{ factory.entity_slug.pascal_case }})
 
-	AddRouteRegistrar(Get{{ factory.entity|title }})
-	AddRouteRegistrar(Get{{ factory.entity|title }}s)
+	AddRouteRegistrar(Get{{ factory.entity_slug.pascal_case }})
+	AddRouteRegistrar(Get{{ factory.entity_slug.pascal_case }}s)
 }
 
-// Post{{ factory.entity|title }}
+// Post{{ factory.entity_slug.pascal_case }}
 // @Summary      创建{{ factory.entity_chinese }}
 // @Description  创建{{ factory.entity_chinese }}
 // @Tags         {{ factory.entity_chinese }}管理
 // @Accept       json
 // @Security     ApiKeyAuth
-// @Param        object  body  form.{{ factory.entity|title }}Create  false  "参数"
+// @Param        object  body  form.{{ factory.entity_slug.pascal_case }}Create  false  "参数"
 // @Produce      json
 // @Success      200  {object}  query.Response  "操作成功"
 // @Router       /{{ factory.entity }} [post]
-func Post{{ factory.entity|title }}(router {{ web_framework_router_group }}) {
+func Post{{ factory.entity_slug.pascal_case }}(router {{ web_framework_router_group }}) {
 	router.{{ web_framework_post }}("/{{ factory.entity }}", {{ web_framework_jwt_up }}func(c {{ web_framework_context }}) {{ web_framework_error }}{
-		if _, pass := Auth(c, acl.Resource{{ factory.entity|title }}s, acl.ActionCreate); !pass {
+		if _, pass := Auth(c, acl.Resource{{ factory.entity_slug.pascal_case }}s, acl.ActionCreate); !pass {
 			return{{ web_framework_nil }}
 		}
 
-		var f form.{{ factory.entity|title }}Create
+		var f form.{{ factory.entity_slug.pascal_case }}Create
 
 		if err := form.ShouldBind(c, &f); err != nil {
 			ErrorInvalidParameters(c, err)
 			return{{ web_framework_nil }}
 		}
 
-		var m entity.{{ factory.entity|title }}
+		var m entity.{{ factory.entity_slug.pascal_case }}
 
 		if err := m.CopyFrom(f); err != nil {
 			ErrorUnexpected(c, err)
@@ -63,20 +63,20 @@ func Post{{ factory.entity|title }}(router {{ web_framework_router_group }}) {
 	})
 }
 
-// Put{{ factory.entity|title }}
+// Put{{ factory.entity_slug.pascal_case }}
 // @Summary      修改{{ factory.entity_chinese }}
 // @Description  修改{{ factory.entity_chinese }}
 // @Tags         {{ factory.entity_chinese }}管理
 // @Accept       json
 // @Security     ApiKeyAuth
 // @Param        id      path  int                        true   "ID"
-// @Param        object  body  form.{{ factory.entity|title }}Update  false  "参数"
+// @Param        object  body  form.{{ factory.entity_slug.pascal_case }}Update  false  "参数"
 // @Produce      json
 // @Success      200  {object}  query.Response  "操作成功"
 // @Router       /{{ factory.entity }}/{id} [put]
-func Put{{ factory.entity|title }}(router {{ web_framework_router_group }}) {
+func Put{{ factory.entity_slug.pascal_case }}(router {{ web_framework_router_group }}) {
 	router.{{ web_framework_put }}("/{{ factory.entity }}/{{ web_framework_query_id }}", {{ web_framework_jwt_up }}func(c {{ web_framework_context }}) {{ web_framework_error }}{
-		if _, pass := Auth(c, acl.Resource{{ factory.entity|title }}s, acl.ActionUpdate); !pass {
+		if _, pass := Auth(c, acl.Resource{{ factory.entity_slug.pascal_case }}s, acl.ActionUpdate); !pass {
 			return{{ web_framework_nil }}
 		}
 
@@ -94,14 +94,14 @@ func Put{{ factory.entity|title }}(router {{ web_framework_router_group }}) {
 			return{{ web_framework_nil }}
 		}
 
-		var m entity.{{ factory.entity|title }}
+		var m entity.{{ factory.entity_slug.pascal_case }}
 		if err := m.FindByID(id); err != nil {
 			ErrorExpectedOrUnexpected(c, err)
 			return{{ web_framework_nil }}
 		}
 
 		// Handle null values, malicious injection, etc.
-		var f form.{{ factory.entity|title }}Update
+		var f form.{{ factory.entity_slug.pascal_case }}Update
 
 		if err := m.CopyTo(&f); err != nil {
 			ErrorUnexpected(c, err)
@@ -128,7 +128,7 @@ func Put{{ factory.entity|title }}(router {{ web_framework_router_group }}) {
 	}{{ web_framework_jwt_down }})
 }
 
-// Delete{{ factory.entity|title }}
+// Delete{{ factory.entity_slug.pascal_case }}
 // @Summary      删除{{ factory.entity_chinese }}
 // @Description  删除{{ factory.entity_chinese }}
 // @Tags         {{ factory.entity_chinese }}管理
@@ -138,9 +138,9 @@ func Put{{ factory.entity|title }}(router {{ web_framework_router_group }}) {
 // @Produce      json
 // @Success      200  {object}  query.Response  "操作成功"
 // @Router       /{{ factory.entity }}/{id} [delete]
-func Delete{{ factory.entity|title }}(router {{ web_framework_router_group }}) {
+func Delete{{ factory.entity_slug.pascal_case }}(router {{ web_framework_router_group }}) {
 	router.{{ web_framework_delete }}("/{{ factory.entity }}/{{ web_framework_query_id }}", {{ web_framework_jwt_up }}func(c {{ web_framework_context }}) {{ web_framework_error }}{
-		if _, pass := Auth(c, acl.Resource{{ factory.entity|title }}s, acl.ActionDelete); !pass {
+		if _, pass := Auth(c, acl.Resource{{ factory.entity_slug.pascal_case }}s, acl.ActionDelete); !pass {
 			return{{ web_framework_nil }}
 		}
 
@@ -158,7 +158,7 @@ func Delete{{ factory.entity|title }}(router {{ web_framework_router_group }}) {
 			return{{ web_framework_nil }}
 		}
 
-		var m entity.{{ factory.entity|title }}
+		var m entity.{{ factory.entity_slug.pascal_case }}
 
 		if err := m.FindByID(id); err != nil {
 			ErrorExpectedOrUnexpected(c, err)
@@ -175,7 +175,7 @@ func Delete{{ factory.entity|title }}(router {{ web_framework_router_group }}) {
 	}{{ web_framework_jwt_down }})
 }
 
-// Get{{ factory.entity|title }}
+// Get{{ factory.entity_slug.pascal_case }}
 // @Summary      获取{{ factory.entity_chinese }}
 // @Description  获取{{ factory.entity_chinese }}，存在必要性存疑，如前期需要再讨论
 // @Tags         {{ factory.entity_chinese }}管理
@@ -183,11 +183,11 @@ func Delete{{ factory.entity|title }}(router {{ web_framework_router_group }}) {
 // @Accept       json
 // @Param        id  path  int  true  "ID"
 // @Produce      json
-// @Success      200  {object}  query.Response{result=query.{{ factory.entity|title }}Result}  "操作成功"
+// @Success      200  {object}  query.Response{result=query.{{ factory.entity_slug.pascal_case }}Result}  "操作成功"
 // @Router       /{{ factory.entity }}/{id} [get]
-func Get{{ factory.entity|title }}(router {{ web_framework_router_group }}) {
+func Get{{ factory.entity_slug.pascal_case }}(router {{ web_framework_router_group }}) {
 	router.{{ web_framework_get }}("/{{ factory.entity }}/{{ web_framework_query_id }}", {{ web_framework_jwt_up }}func(c {{ web_framework_context }}) {{ web_framework_error }}{
-		if _, pass := Auth(c, acl.Resource{{ factory.entity|title }}s, acl.ActionRead); !pass {
+		if _, pass := Auth(c, acl.Resource{{ factory.entity_slug.pascal_case }}s, acl.ActionRead); !pass {
 			return{{ web_framework_nil }}
 		}
 
@@ -205,14 +205,14 @@ func Get{{ factory.entity|title }}(router {{ web_framework_router_group }}) {
 			return{{ web_framework_nil }}
 		}
 
-		var m entity.{{ factory.entity|title }}
+		var m entity.{{ factory.entity_slug.pascal_case }}
 
 		if err := m.FindByID(id); err != nil {
 			ErrorExpectedOrUnexpected(c, err)
 			return{{ web_framework_nil }}
 		}
 
-		var r query.{{ factory.entity|title }}Result
+		var r query.{{ factory.entity_slug.pascal_case }}Result
 		m.CopyTo(&r)
 
 		SendJSON(c, r)
@@ -220,7 +220,7 @@ func Get{{ factory.entity|title }}(router {{ web_framework_router_group }}) {
 	}{{ web_framework_jwt_down }})
 }
 
-// Get{{ factory.entity|title }}s
+// Get{{ factory.entity_slug.pascal_case }}s
 // @Summary      获取{{ factory.entity_chinese }}列表
 // @Description  获取{{ factory.entity_chinese }}列表
 // @Tags         {{ factory.entity_chinese }}管理
@@ -231,11 +231,11 @@ func Get{{ factory.entity|title }}(router {{ web_framework_router_group }}) {
 // @Param        time_begin  query  string  false  "开始时间前一天，比如 2021-10-01，则实际从 2021-10-02 起开始"
 // @Param        time_end    query  string  false  "结束时间后一天，比如 2022-10-01，则实际到 2021-09-31 起结束"
 // @Produce      json
-// @Success      200  {object}  query.Response{result=Result{pager=form.Pager,list=[]query.{{ factory.entity|title }}Result}}  "操作成功"
+// @Success      200  {object}  query.Response{result=Result{pager=form.Pager,list=[]query.{{ factory.entity_slug.pascal_case }}Result}}  "操作成功"
 // @Router       /{{ factory.entity }}s [get]
-func Get{{ factory.entity|title }}s(router {{ web_framework_router_group }}) {
+func Get{{ factory.entity_slug.pascal_case }}s(router {{ web_framework_router_group }}) {
 	router.{{ web_framework_get }}("/{{ factory.entity }}s", {{ web_framework_jwt_up }}func(c {{ web_framework_context }}) {{ web_framework_error }}{
-		if _, pass := Auth(c, acl.Resource{{ factory.entity|title }}s, acl.ActionSearch); !pass {
+		if _, pass := Auth(c, acl.Resource{{ factory.entity_slug.pascal_case }}s, acl.ActionSearch); !pass {
 			return{{ web_framework_nil }}
 		}
 
@@ -246,7 +246,7 @@ func Get{{ factory.entity|title }}s(router {{ web_framework_router_group }}) {
 			return{{ web_framework_nil }}
 		}
 
-		list, totalRow, err := query.{{ factory.entity|title }}s(f)
+		list, totalRow, err := query.{{ factory.entity_slug.pascal_case }}s(f)
 
 		if err != nil {
 			ErrorUnexpected(c, err)

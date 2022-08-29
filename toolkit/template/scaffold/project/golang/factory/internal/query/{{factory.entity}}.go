@@ -9,15 +9,15 @@ import (
 	"{{ main_module }}/internal/form"
 )
 
-type {{ factory.entity|title }}EmbeddedResult struct {
+type {{ factory.entity_slug.pascal_case }}EmbeddedResult struct {
 	ID    uint   `json:"id" example:"1"` // 记录ID
 	Email string `json:"email" example:"who@gmail.com"`
 }
 
-type {{ factory.entity|title }}Result struct {
+type {{ factory.entity_slug.pascal_case }}Result struct {
 	ID uint `json:"id" example:"1"` // 记录ID
 
-	{{ factory.entity|title }}Embedded {{ factory.entity|title }}EmbeddedResult `json:"user"`
+	{{ factory.entity_slug.pascal_case }}Embedded {{ factory.entity_slug.pascal_case }}EmbeddedResult `json:"user"`
 
 	When  string `json:"when" example:"时间"`
 	Where string `json:"where" example:"地点"`
@@ -28,8 +28,8 @@ type {{ factory.entity|title }}Result struct {
 	CreatedAt JSONTime `json:"created_at" example:"2022-03-21 08:57:19"` // 创建时间
 }
 
-func {{ factory.entity|title }}s(f form.SearchPager) (results []{{ factory.entity|title }}Result, totalRows int64, err error) {
-	query := Db().Model(&entity.{{ factory.entity|title }}{})
+func {{ factory.entity_slug.pascal_case }}s(f form.SearchPager) (results []{{ factory.entity_slug.pascal_case }}Result, totalRows int64, err error) {
+	query := Db().Model(&entity.{{ factory.entity_slug.pascal_case }}{})
 
 	if f.LikeQ != "" {
 		for _, q := range strings.Split(f.LikeQ, form.Or) {
@@ -63,10 +63,10 @@ func {{ factory.entity|title }}s(f form.SearchPager) (results []{{ factory.entit
 		query = query.Order("id DESC")
 	}
 
-	var items entity.{{ factory.entity|title }}s
+	var items entity.{{ factory.entity_slug.pascal_case }}s
 
 	if err = query.Offset(f.Offset()).Limit(f.PageSize).
-		Preload("{{ factory.entity|title }}Embedded").
+		Preload("{{ factory.entity_slug.pascal_case }}Embedded").
 		Find(&items).Error; err != nil {
 		return
 	}
