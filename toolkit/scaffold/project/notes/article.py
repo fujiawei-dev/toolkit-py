@@ -6,7 +6,7 @@ from typing import NamedTuple, Union
 import click
 from cookiecutter.prompt import read_user_choice
 
-from toolkit.scaffold.project import golang, python
+from toolkit.scaffold.project import cpp, golang, python
 from toolkit.template.code_style import get_camel_case_styles
 
 ARTICLE_SETTINGS_PATH = "assets/templates/article_settings.yaml"
@@ -137,4 +137,8 @@ def create_article(
                 overwrite=False,
             )
         elif language == L.cpp:
-            pass
+            ctx.invoke(
+                cpp.create_example,
+                project_path=os.path.join("src", os.path.splitext(article_path)[0]),
+                overwrite=False,
+            )

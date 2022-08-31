@@ -1,6 +1,5 @@
-"""
-Date: 2022.08.08 14:05
-Description: Omit
-LastEditors: Rustle Karl
-LastEditTime: 2022.08.08 14:05
-"""
+from .example import create_example
+
+__all__ = [
+    "create_example",
+]
