@@ -4,11 +4,9 @@ import sys
 import click
 from toolkit.config.runtime import EDITOR
 from toolkit.config.serialize import serialize_to_yaml_file
-
 from {{project_slug.snake_case}} import __version__
 from {{project_slug.snake_case}}.config import DEFAULT_CONFIG_FILE
 from {{project_slug.snake_case}}.config.settings import Settings
-
 
 {% if enable_click_group -%}
 @click.group()

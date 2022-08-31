@@ -1,4 +1,8 @@
-from {{project_slug.snake_case}}.config.settings import Settings, yaml_config_settings_source
+from {{project_slug.snake_case}}.config.settings import (
+    Settings,
+    yaml_config_settings_source,
+)
+
 from tests.config.test_settings_data import create_temp_config_yml
 
 

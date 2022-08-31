@@ -4,6 +4,7 @@ import sys
 
 import click
 
+from toolkit.scaffold.project.cpp.example import create_example
 from toolkit.scaffold.project.cpp.qt5.cli import create_cpp_qt5_project
 
 
@@ -11,6 +12,8 @@ from toolkit.scaffold.project.cpp.qt5.cli import create_cpp_qt5_project
 def create_cpp_project():
     pass
 
+
+create_cpp_project.add_command(create_example, "example")
 
 create_cpp_project.add_command(create_cpp_qt5_project, "qt5")
 

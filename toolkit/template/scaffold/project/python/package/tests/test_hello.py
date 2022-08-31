@@ -1,6 +1,5 @@
 """Tests for hello function."""
 import pytest
-
 from {{project_slug.snake_case}}.example import hello
 
 

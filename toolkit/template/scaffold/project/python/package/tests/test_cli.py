@@ -1,10 +1,8 @@
 """Tests for `{{ project_slug.snake_case }}` package."""
 
 import click
-
 from click.testing import CliRunner
-
-from {{project_slug.snake_case}} import cli, __version__
+from {{project_slug.snake_case}} import __version__, cli
 
 
 def test_command_line_interface():

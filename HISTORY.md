@@ -1,5 +1,12 @@
 # History
 
+v1.5.8 (2022-08-31)
+
+- Added
+    - cpp example templates
+- Fixed
+    - do not launch editor if in current directory
+
 v1.5.7 (2022-08-29)
 
 - Added `factory_user_input_context_hook` hook.
