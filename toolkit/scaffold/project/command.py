@@ -91,7 +91,7 @@ def generate_create_project_command(
                     or [
                         "code",
                         "clion",
-                        "golang",
+                        "goland",
                         "pycharm",
                     ],
                 ),
