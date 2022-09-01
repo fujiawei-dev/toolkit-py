@@ -14,6 +14,7 @@ create_all = generate_create_project_command(
     template_paths=TEMPLATE_ANSIBLE_PATH,
     raw_user_input_context=ANSIBLE_USER_INPUT_CONTEXT,
     user_input_context_hook=ansible_user_input_context_hook,
+    editors=["code"],
 )
 
 

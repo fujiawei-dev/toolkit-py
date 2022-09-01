@@ -6,4 +6,5 @@ create_example = generate_create_project_command(
     command_help="Create a python example project scaffold.",
     template_paths=TEMPLATE_PYTHON_PATH / "example",
     raw_user_input_context=USER_INPUT_CONTEXT,
+    editors=["pycharm", "code"],
 )

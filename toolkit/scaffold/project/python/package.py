@@ -14,4 +14,5 @@ create_package = generate_create_project_command(
     user_input_context_hook=python_user_input_context_hook,
     project_context=PYTHON_CONTEXT,
     ignored_fields=["plugins"],
+    editors=["pycharm", "code"],
 )

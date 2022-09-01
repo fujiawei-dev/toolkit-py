@@ -32,4 +32,5 @@ create_factory = generate_create_project_command(
     factory_user_input_context=FactoryContext().dict(exclude_none=True),
     factory_user_input_context_hook=factory_user_input_context_hook,
     user_input_context_hook=golang_user_input_context_hook,
+    editors=["goland", "code"],
 )

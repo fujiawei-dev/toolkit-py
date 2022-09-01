@@ -22,6 +22,7 @@ def create_example():
 create_example_console = generate_create_project_command(
     command_help="Create a golang console example project scaffold.",
     template_paths=TEMPLATE_GOLANG_EXAMPLE_PATH / "console",
+    editors=["goland", "code"],
 )
 
 create_example.add_command(create_example_console, "console")
@@ -55,6 +56,7 @@ create_example_web = generate_create_project_command(
     raw_user_input_context=USER_INPUT_CONTEXT
     | ExampleWebContext().dict(exclude_none=True),
     user_input_context_hook=example_web_user_input_context_hook,
+    editors=["goland", "code"],
 )
 
 
