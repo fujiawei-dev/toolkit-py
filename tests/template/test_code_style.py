@@ -1,4 +1,4 @@
-from toolkit.template.code_style import get_camel_case_styles
+from toolkit.template.code_style import get_camel_case_styles, CamelCaseStyle
 
 
 def test_get_camel_case_styles():
@@ -14,7 +14,13 @@ def test_get_camel_case_styles():
                 "camel_case_",
                 "Camel-case",
             ),
-            ("camel case", "camel-case", "Camel Case", "camel_case"),
+            CamelCaseStyle(
+                "camel case",
+                "camel-case",
+                "Camel Case",
+                "camel_case",
+                "CamelCase",
+            ),
         ),
     )
 

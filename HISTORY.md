@@ -6,6 +6,7 @@ v1.5.8 (2022-08-31)
     - cpp example templates
 - Fixed
     - do not launch editor if in current directory
+    - `test_get_camel_case_styles` test
 
 v1.5.7 (2022-08-29)
 
