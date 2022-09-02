@@ -4,22 +4,12 @@ project({{ project_slug.snake_case }})
 
 set(CMAKE_CXX_STANDARD 17)
 
-# Settings for Qt5
+# Settings for Qt6
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wall -O2")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -O2")
-
-{%- if not x64_arch %}
-if (WIN32)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
-endif ()
-{%- endif %}
 
 # Qt default installation directory
 set(QT_VERSION {{ qt_version }})
@@ -27,7 +17,6 @@ set(QT_VERSION {{ qt_version }})
 if (WIN32)
     set(QT_PATH "C:/Qt/Qt${QT_VERSION}")
     set(QT_COMPILE_VERSION {{ qt_compile_version }})
-    set(QT_TOOL_VERSION {{ qt_tool_version }})
 else ()
     set(QT_PATH "/opt/Qt")
     set(QT_COMPILE_VERSION "gcc_64")
@@ -40,7 +29,7 @@ message(STATUS "CMAKE_PREFIX_PATH: " ${CMAKE_PREFIX_PATH})
 
 # Set environment variables
 if (WIN32)
-    set(ENV{PATH} "${CMAKE_PREFIX_PATH}/bin\;${QT_PATH}/Tools/${QT_TOOL_VERSION}/bin\;%PATH%")
+    set(ENV{PATH} "${CMAKE_PREFIX_PATH}/bin\;%PATH%")
     message(STATUS "PATH: " $ENV{PATH})
 endif ()
 
@@ -50,10 +39,10 @@ message(STATUS "QML2_IMPORT_PATH: " $ENV{QML2_IMPORT_PATH})
 
 set(ENV{QT_ASSUME_STDERR_HAS_CONSOLE} 1)
 
-message(STATUS "On Clion, you should set QT_ASSUME_STDERR_HAS_CONSOLE=1;QT_DEBUG_PLUGINS=0;PATH=${CMAKE_PREFIX_PATH}/bin\;${QT_PATH}/Tools/${QT_TOOL_VERSION}/bin;QML2_IMPORT_PATH=${CMAKE_PREFIX_PATH}/qml")
+message(STATUS "On Clion, you should set QT_ASSUME_STDERR_HAS_CONSOLE=1;QT_DEBUG_PLUGINS=0;PATH=${CMAKE_PREFIX_PATH}/bin\;QML2_IMPORT_PATH=${CMAKE_PREFIX_PATH}/qml")
 
 find_package(
-        Qt5 COMPONENTS
+        Qt6 COMPONENTS
         Core
         Gui
         Widgets
@@ -77,16 +66,16 @@ add_executable(
 
 target_link_libraries(
         {{ project_slug.snake_case }}
-        Qt5::Core
-        Qt5::Gui
-        Qt5::Widgets
-        Qt5::Qml
-        Qt5::Quick
-        Qt5::QuickControls2
-        Qt5::Concurrent
-        Qt5::Multimedia
-        Qt5::Network
-        Qt5::WebSockets
+        Qt6::Core
+        Qt6::Gui
+        Qt6::Widgets
+        Qt6::Qml
+        Qt6::Quick
+        Qt6::QuickControls2
+        Qt6::Concurrent
+        Qt6::Multimedia
+        Qt6::Network
+        Qt6::WebSockets
 )
 
 if (WIN32)

@@ -4,23 +4,23 @@ from pydantic import BaseModel
 from toolkit.config.context import USER_INPUT_CONTEXT
 from toolkit.logger import logging
 from toolkit.scaffold.project.command import generate_create_project_command
-from toolkit.scaffold.project.template import TEMPLATE_CPP_QT5_PATH
+from toolkit.scaffold.project.template import TEMPLATE_CPP_QT6_PATH
 
 log = logging.getLogger(__name__)
 
-TEMPLATE_CPP_QT5_EXAMPLE_PATH = TEMPLATE_CPP_QT5_PATH / "example"
+TEMPLATE_CPP_QT6_EXAMPLE_PATH = TEMPLATE_CPP_QT6_PATH / "example"
 
 
-@click.group(help="Create a cpp qt5 example project scaffold.")
+@click.group(help="Create a cpp qt6 example project scaffold.")
 def create_example():
     pass
 
 
 class ExampleContext(BaseModel):
-    qt_version: str = "5.12.6"
+    qt_version: str = "6.3.1"
     qt_tool_chain: list = [
-        ["mingw73_64", "mingw730_64"],
-        ["mingw73_32", "mingw730_32"],
+        ["msvc2019_64", ""],
+        ["mingw_64", "mingw1120_64"],
     ]
 
     enable_3rd_module: bool = False
@@ -53,8 +53,8 @@ def example_user_input_context_hook(context: dict) -> dict:
 
 
 create_example_qml = generate_create_project_command(
-    command_help="Create a cpp qt5 qml example project scaffold.",
-    template_paths=TEMPLATE_CPP_QT5_EXAMPLE_PATH / "qml",
+    command_help="Create a cpp qt6 qml example project scaffold.",
+    template_paths=TEMPLATE_CPP_QT6_EXAMPLE_PATH / "qml",
     raw_user_input_context=USER_INPUT_CONTEXT
     | ExampleContext(enable_3rd_module=None).dict(exclude_none=True),
     user_input_context_hook=example_user_input_context_hook,
@@ -62,14 +62,3 @@ create_example_qml = generate_create_project_command(
 )
 
 create_example.add_command(create_example_qml, "qml")
-
-create_example_console = generate_create_project_command(
-    command_help="Create a cpp qt5 console example project scaffold.",
-    template_paths=TEMPLATE_CPP_QT5_EXAMPLE_PATH / "console",
-    raw_user_input_context=USER_INPUT_CONTEXT
-    | ExampleContext().dict(exclude_none=True),
-    user_input_context_hook=example_user_input_context_hook,
-    editors=["clion", "code"],
-)
-
-create_example.add_command(create_example_console, "console")

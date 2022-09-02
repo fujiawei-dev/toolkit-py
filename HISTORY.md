@@ -1,5 +1,9 @@
 # History
 
+v1.5..9 (2022-09-02)
+
+- Added Qt6 QML example template.
+
 v1.5.8 (2022-08-31)
 
 - Added
