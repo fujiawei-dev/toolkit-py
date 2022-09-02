@@ -148,6 +148,7 @@ def generate_rendered_files_recursively(
                 "kebab_case": project_slugs[1],  # camel-case
                 "words_capitalized": project_slugs[2],  # Camel Case
                 "snake_case": project_slugs[3],  # camel_case
+                "pascal_case": project_slugs[4],  # CamelCase
             },
         }
         | (user_input_context or {}),
