@@ -27,6 +27,8 @@ url:  "{url}"  # 设置网页永久链接
 
 
 class ProgrammingLanguage(NamedTuple):
+    none: str = "none"
+
     python: str = "python"
     golang: str = "golang"
     cpp: str = "cpp"
