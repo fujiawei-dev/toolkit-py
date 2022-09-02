@@ -65,6 +65,7 @@ find_package(
         Widgets
         Qml
         Quick
+        QuickControls2
         Concurrent
         Multimedia
         Network
@@ -87,6 +88,7 @@ target_link_libraries(
         Qt5::Widgets
         Qt5::Qml
         Qt5::Quick
+        Qt5::QuickControls2
         Qt5::Concurrent
         Qt5::Multimedia
         Qt5::Network

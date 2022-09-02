@@ -1,7 +1,8 @@
+#include <QFont>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include <QFont>
+#include <QQuickStyle>
 
 #include "core.h"
 
@@ -13,6 +14,8 @@ int main(int argc, char *argv[]) {
   QCoreApplication::setOrganizationDomain("qt.example.com");
 
   QGuiApplication app(argc, argv);
+
+  QQuickStyle::setStyle("Material");
 
   QGuiApplication::setFont(QFont("Microsoft YaHei", 14));
 
