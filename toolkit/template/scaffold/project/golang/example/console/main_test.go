@@ -2,6 +2,10 @@ package main
 
 import "testing"
 
+func Add(x, y int) int {
+	return x + y
+}
+
 func TestAdd(t *testing.T) {
 	type args struct {
 		x int

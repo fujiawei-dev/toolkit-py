@@ -67,7 +67,7 @@ def render_article_content(
         with open(ARTICLE_CONTENT_PATH, encoding="utf-8") as fp:
             article_content += (fp.read() + "\n\n") * 3
 
-    return article_content
+    return article_content.strip() + "\n"
 
 
 @click.command(help="Create a new article.")
