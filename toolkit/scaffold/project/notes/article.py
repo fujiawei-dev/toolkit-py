@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import NamedTuple, Union
 
 import click
-from cookiecutter.prompt import read_user_choice
+from cookiecutter.prompt import read_user_choice, read_user_yes_no
 
 from toolkit.scaffold.project import cpp, golang, python
 from toolkit.template.code_style import get_camel_case_styles
@@ -32,6 +32,7 @@ class ProgrammingLanguage(NamedTuple):
     python: str = "python"
     golang: str = "golang"
     cpp: str = "cpp"
+    kotlin: str = "kotlin"
 
 
 L = ProgrammingLanguage()
@@ -126,24 +127,32 @@ def create_article(
 
         language = read_user_choice("Language", list(L))
 
+        src_project_path = os.path.join("src", os.path.splitext(article_path)[0])
+
         if language == L.python:
             ctx.invoke(
                 python.create_example,
-                project_path=os.path.join("src", os.path.splitext(article_path)[0]),
+                project_path=src_project_path,
                 ignored_items=",".join(["README.md"]),
                 overwrite=False,
             )
         elif language == L.golang:
             ctx.invoke(
                 golang.create_example_console,
-                project_path=os.path.join("src", os.path.splitext(article_path)[0]),
+                project_path=src_project_path,
                 ignored_items=",".join(["README.md"]),
                 overwrite=False,
             )
         elif language == L.cpp:
             ctx.invoke(
                 cpp.create_example,
-                project_path=os.path.join("src", os.path.splitext(article_path)[0]),
+                project_path=src_project_path,
                 ignored_items=",".join(["README.md"]),
                 overwrite=False,
             )
+        elif language == L.kotlin:
+            # Kotlin project is complex, so it doesn't create an example automatically.
+            # Use IntelliJ IEDA to create it.
+            if read_user_yes_no("Launch explorer?", "yes"):
+                os.makedirs(src_project_path, exist_ok=True)
+                click.launch(src_project_path, locate=True)
