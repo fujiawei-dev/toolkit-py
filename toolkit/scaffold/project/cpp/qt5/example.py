@@ -26,6 +26,7 @@ class ExampleContext(BaseModel):
     x64_arch: bool = None
     qt_compile_version: str = None
     qt_tool_version: str = None
+    enable_3rd_module: bool = None
 
 
 def example_user_input_context_hook(context: dict) -> dict:
@@ -65,7 +66,7 @@ create_example_console = generate_create_project_command(
     command_help="Create a cpp qt5 console example project scaffold.",
     template_paths=TEMPLATE_CPP_QT5_EXAMPLE_PATH / "console",
     raw_user_input_context=USER_INPUT_CONTEXT
-    | ExampleContext().dict(exclude_none=True),
+    | ExampleContext(enable_3rd_module=False).dict(exclude_none=True),
     user_input_context_hook=example_user_input_context_hook,
     editors=["clion", "code"],
 )

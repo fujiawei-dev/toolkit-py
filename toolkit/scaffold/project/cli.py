@@ -7,6 +7,7 @@ import click
 from toolkit.scaffold.project.ansible.cli import create_ansible_project
 from toolkit.scaffold.project.cpp.cli import create_cpp_project
 from toolkit.scaffold.project.docker.cli import create_docker_project
+from toolkit.scaffold.project.example.cli import create_example_project
 from toolkit.scaffold.project.golang.cli import create_golang_project
 from toolkit.scaffold.project.notes.cli import create_notes_project
 from toolkit.scaffold.project.python.cli import create_python_project
@@ -22,6 +23,8 @@ main.add_command(create_ansible_project, "ansible")
 main.add_command(create_cpp_project, "cpp")
 
 main.add_command(create_docker_project, "docker")
+
+main.add_command(create_example_project, "example")
 
 main.add_command(create_golang_project, "golang")
 

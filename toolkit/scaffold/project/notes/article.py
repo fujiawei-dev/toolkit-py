@@ -7,6 +7,7 @@ import click
 from cookiecutter.prompt import read_user_choice, read_user_yes_no
 
 from toolkit.scaffold.project import cpp, golang, python
+from toolkit.scaffold.project.cpp import qt5
 from toolkit.template.code_style import get_camel_case_styles
 
 ARTICLE_SETTINGS_PATH = "assets/templates/article_settings.yaml"
@@ -29,10 +30,13 @@ url:  "{url}"  # 设置网页永久链接
 class ProgrammingLanguage(NamedTuple):
     none: str = "none"
 
-    python: str = "python"
-    golang: str = "golang"
     cpp: str = "cpp"
+    golang: str = "golang"
     kotlin: str = "kotlin"
+    python: str = "python"
+    qt5: str = "qt5"
+    qt6: str = "qt6"
+    rust: str = "rust"
 
 
 L = ProgrammingLanguage()
@@ -156,3 +160,13 @@ def create_article(
             if read_user_yes_no("Launch explorer?", "yes"):
                 os.makedirs(src_project_path, exist_ok=True)
                 click.launch(src_project_path, locate=True)
+        elif language == L.qt5:
+            choice = read_user_choice("Application", ["console", "qml"])
+            ctx.invoke(
+                qt5.create_example_console
+                if choice == "console"
+                else qt5.create_example_qml,
+                project_path=src_project_path,
+                ignored_items=",".join(["README.md"]),
+                overwrite=False,
+            )
