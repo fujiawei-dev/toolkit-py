@@ -54,6 +54,12 @@ def generate_create_project_command(
         help="The path to the final generated project.",
     )
     @click.option(
+        "--ignored-items",
+        type=click.STRING,
+        default="",
+        help="The items to ignore when generating the project scaffold.",
+    )
+    @click.option(
         "--overwrite",
         "-y",
         is_flag=True,
@@ -65,7 +71,12 @@ def generate_create_project_command(
         is_flag=True,
         help="Launch the editor after generating the project.",
     )
-    def create_project(project_path: str, overwrite: bool, launch_editor: bool):
+    def create_project(
+        project_path: str,
+        ignored_items: str,
+        overwrite: bool,
+        launch_editor: bool,
+    ):
         generate_rendered_project(
             template_paths=template_paths,
             project_path=project_path,
@@ -76,6 +87,7 @@ def generate_create_project_command(
             user_input_context_hook=user_input_context_hook,
             project_context=project_context,
             ignored_fields=ignored_fields,
+            ignored_items=ignored_items.split(","),
             overwrite=overwrite,
         )
 

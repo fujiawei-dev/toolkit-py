@@ -34,6 +34,16 @@ def get_user_input_context(raw_user_input_context: dict = None) -> dict:
 
 
 def get_ignored_items(project_context: dict = None, fields: list = None) -> list:
+    '''
+    Get the ignored items from the project context.
+
+    Args:
+        project_context: The project context.
+        fields: The fields to ignore.
+
+    Returns:
+        The ignored items.
+    '''
     project_context = project_context or {}
     fields = fields or []
 

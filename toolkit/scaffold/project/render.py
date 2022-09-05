@@ -18,6 +18,7 @@ def generate_rendered_project(
     user_input_context_hook: Callable[[dict], dict] = None,
     project_context: dict = None,
     ignored_fields: list = None,
+    ignored_items: list = None,
     overwrite: bool = False,
 ):
     if not os.path.exists(project_path):
@@ -41,7 +42,8 @@ def generate_rendered_project(
             factory = factory_user_input_context_hook(factory)
         user_input_context["factory"] = factory
 
-    ignored_items = context.get_ignored_items(project_context, ignored_fields)
+    ignored_items = ignored_items or []
+    ignored_items.extend(context.get_ignored_items(project_context, ignored_fields))
 
     for i in range(len(template_paths)):
         generate_rendered_files_recursively(

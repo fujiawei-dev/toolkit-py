@@ -130,17 +130,20 @@ def create_article(
             ctx.invoke(
                 python.create_example,
                 project_path=os.path.join("src", os.path.splitext(article_path)[0]),
+                ignored_items=",".join(["README.md"]),
                 overwrite=False,
             )
         elif language == L.golang:
             ctx.invoke(
                 golang.create_example_console,
                 project_path=os.path.join("src", os.path.splitext(article_path)[0]),
+                ignored_items=",".join(["README.md"]),
                 overwrite=False,
             )
         elif language == L.cpp:
             ctx.invoke(
                 cpp.create_example,
                 project_path=os.path.join("src", os.path.splitext(article_path)[0]),
+                ignored_items=",".join(["README.md"]),
                 overwrite=False,
             )
