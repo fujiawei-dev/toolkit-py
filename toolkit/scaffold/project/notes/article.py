@@ -59,7 +59,7 @@ def render_article_content(
         ARTICLE_HEADER_SEPARATOR
         + ARTICLE_HEADER_CREATOR
         + "\n"
-        + ARTICLE_HEADER_TITLE.format(title=project_slugs[2], url=url)
+        + ARTICLE_HEADER_TITLE.format(title=project_slugs.pascal_case, url=url)
     )
 
     if os.path.isfile(ARTICLE_SETTINGS_PATH):
