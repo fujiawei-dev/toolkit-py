@@ -3,6 +3,7 @@
 v1.5..9 (2022-09-02)
 
 - Added Qt6 QML example template.
+- Extract the titles of all articles from the folder as the table of contents.
 
 v1.5.8 (2022-08-31)
 
