@@ -5,6 +5,7 @@ import sys
 import click
 
 from toolkit.scaffold.project.python.example import create_example
+from toolkit.scaffold.project.python.fastapi import create_fastapi
 from toolkit.scaffold.project.python.package import create_package
 from toolkit.scaffold.project.python.prefect import create_prefect
 
@@ -15,6 +16,8 @@ def create_python_project():
 
 
 create_python_project.add_command(create_example, "example")
+
+create_python_project.add_command(create_fastapi, "fastapi")
 
 create_python_project.add_command(create_package, "package")
 

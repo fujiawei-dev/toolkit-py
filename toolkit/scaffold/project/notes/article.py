@@ -7,6 +7,7 @@ import click
 import yaml
 from cookiecutter.prompt import read_user_choice, read_user_yes_no
 
+from toolkit.config import context
 from toolkit.scaffold.project import cpp, golang, python
 from toolkit.scaffold.project.cpp import qt5
 from toolkit.template.code_style import get_camel_case_styles
@@ -157,6 +158,8 @@ def create_article(
         language = read_user_choice("Language", list(L))
 
         src_project_path = os.path.join("src", os.path.splitext(article_path)[0])
+
+        context.USER_INPUT_CONTEXT = {}
 
         if language == L.python:
             ctx.invoke(
