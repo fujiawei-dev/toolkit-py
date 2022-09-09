@@ -1,9 +1,10 @@
 import os.path
 import time
 from pathlib import Path
-from typing import NamedTuple, Union
+from typing import Any, NamedTuple, Union
 
 import click
+import yaml
 from cookiecutter.prompt import read_user_choice, read_user_yes_no
 
 from toolkit.scaffold.project import cpp, golang, python
@@ -16,8 +17,8 @@ ARTICLE_CONTENT_PATH = "assets/templates/article_content.md"
 
 ARTICLE_HEADER_SEPARATOR = "---\n"
 
-ARTICLE_HEADER_CREATOR = f"""\
-date: {time.strftime("%Y-%m-%dT%H:%M:%S+08:00")}  # 创建日期
+ARTICLE_HEADER_CREATOR = """\
+date: {date}  # 创建日期
 author: "Rustle Karl"  # 作者
 """
 
@@ -46,6 +47,7 @@ def render_article_content(
     article_path: Union[str, Path],
     workspace_path: str = os.getcwd(),
     header_only: bool = False,
+    **kwargs: Any,
 ) -> str:
     prefix = os.path.basename(workspace_path)
 
@@ -57,9 +59,13 @@ def render_article_content(
 
     article_content = (
         ARTICLE_HEADER_SEPARATOR
-        + ARTICLE_HEADER_CREATOR
+        + ARTICLE_HEADER_CREATOR.format(
+            date=kwargs.get("date") or time.strftime("%Y-%m-%dT%H:%M:%S+08:00")
+        )
         + "\n"
-        + ARTICLE_HEADER_TITLE.format(title=project_slugs.pascal_case, url=url)
+        + ARTICLE_HEADER_TITLE.format(
+            title=kwargs.get("title") or project_slugs.pascal_case, url=url
+        )
     )
 
     if os.path.isfile(ARTICLE_SETTINGS_PATH):
@@ -109,13 +115,29 @@ def create_article(
 
             for article_path in article_paths:
                 if article_path.open().read(3) == "---":
-                    continue
+                    with article_path.open(encoding="utf-8") as fp:
+                        header = ""
+                        started = False
 
-                old_content = article_path.read_text(encoding="utf-8")
+                        for line in fp:
+                            if started and line.startswith("---"):
+                                break
+
+                            if not started and line.startswith("---"):
+                                started = True
+                            elif started:
+                                header += line
+
+                        md = yaml.safe_load(header)
+                        old_content = fp.read()
+
+                else:
+                    md = {}
+                    old_content = article_path.read_text(encoding="utf-8")
 
                 with article_path.open(mode="w", encoding="utf-8", newline="\n") as fp:
                     fp.write(
-                        render_article_content(article_path, workspace_path, True)
+                        render_article_content(article_path, workspace_path, True, **md)
                         + old_content
                     )
 
@@ -128,6 +150,9 @@ def create_article(
 
             with open(article_path, "w", encoding="utf-8") as fp:
                 fp.write(render_article_content(article_path, workspace_path))
+
+        if header_only:
+            return
 
         language = read_user_choice("Language", list(L))
 

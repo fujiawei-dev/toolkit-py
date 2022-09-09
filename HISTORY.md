@@ -1,5 +1,11 @@
 # History
 
+v1.5..10 (2022-09-09)
+
+- Updated
+    - Improved the directory structure of the notes project.
+    - Improve the way note headers are regenerated.
+
 v1.5..9 (2022-09-02)
 
 - Added Qt6 QML example template.

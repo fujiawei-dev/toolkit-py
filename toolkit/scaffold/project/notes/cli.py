@@ -7,8 +7,11 @@ import click
 from toolkit.scaffold.project.command import generate_create_project_command
 from toolkit.scaffold.project.notes.article import create_article
 from toolkit.scaffold.project.notes.toc import extract_toc_from_folder
-from toolkit.scaffold.project.notes.context import NOTES_USER_INPUT_CONTEXT
 from toolkit.scaffold.project.template import TEMPLATE_NOTES_PATH
+
+NOTES_USER_INPUT_CONTEXT = {
+    "programing_language": "python",
+}
 
 create_all = generate_create_project_command(
     command_help="Create a notes project scaffold.",

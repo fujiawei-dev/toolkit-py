@@ -1,6 +1,6 @@
 import os.path
 from pathlib import Path
-from typing import Union, NamedTuple
+from typing import NamedTuple, Union
 
 import click
 import yaml
