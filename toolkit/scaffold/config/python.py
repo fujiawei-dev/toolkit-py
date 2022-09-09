@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import click
 
 from toolkit.config.fs import HOME_PATH
@@ -60,3 +62,25 @@ def create_or_edit_pypirc_file(edit: bool, force: bool):
 
 
 create_or_edit_python_config.add_command(create_or_edit_pypirc_file, "pypirc")
+
+
+@click.command(help="Create a pyinstaller spec file.")
+def create_pyinstaller_spec():
+    pyinstaller_spec = Path.cwd() / "main.spec"
+
+    if pyinstaller_spec.exists():
+        return
+
+    template = TEMPLATE_PATH / "pyinstaller" / "spec.py"
+
+    with open(pyinstaller_spec, "w", encoding="utf-8", newline="\n") as f:
+        with template.open("r", encoding="utf-8") as g:
+            # skip lines
+            for _ in range(3):
+                next(g)
+
+            for l in g:
+                f.write(l)
+
+
+create_or_edit_python_config.add_command(create_pyinstaller_spec, "pyinstaller")

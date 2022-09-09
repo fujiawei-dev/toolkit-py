@@ -1,3 +1,3 @@
-# {{ project_slug.words_capitalized }} 示例
+# {{ project_slug.words_capitalized }}
 
 > {{ project_short_description }}
