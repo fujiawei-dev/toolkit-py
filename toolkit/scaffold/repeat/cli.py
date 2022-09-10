@@ -7,15 +7,18 @@ import click
 @click.command(
     help="""Generate similar files or directories according to the specified pattern.
 
-    For example, if you want to generate a series of files named 1.txt, 2.txt, 3.txt, you can use the following command:
+    For example, if you want to generate a series of files named 1.txt, 2.txt, 3.txt,
+    you can use the following command:
 
     repeat %d.txt
 
-    If you want to generate a series of directories named 1, 2, 3, you can use the following command:
+    If you want to generate a series of directories named 1, 2, 3,
+    you can use the following command:
 
     repeat -m %d
 
-    If you want to generate a series of files named 1.txt, 2.txt, 3.txt, and the content of each file is the same, you can use the following command:
+    If you want to generate a series of files named 1.txt, 2.txt, 3.txt,
+    and the content of each file is the same, you can use the following command:
 
     repeat -c "Hello World" %d.txt
     """

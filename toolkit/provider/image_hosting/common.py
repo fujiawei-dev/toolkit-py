@@ -26,8 +26,8 @@ class UploadResult(object):
         )
 
 
-def download_image(url: str) -> str:
-    file = os.path.join(gettempdir(), os.path.basename(url))
+def download_image(url: str, file: str = None) -> str:
+    file = file or os.path.join(gettempdir(), os.path.basename(url))
 
     with open(file, "wb") as fp:
         fp.write(requests.get(url, headers=HEADERS).content)

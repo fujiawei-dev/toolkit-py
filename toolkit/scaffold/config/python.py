@@ -79,8 +79,8 @@ def create_pyinstaller_spec():
             for _ in range(3):
                 next(g)
 
-            for l in g:
-                f.write(l)
+            for line in g:
+                f.write(line)
 
 
 create_or_edit_python_config.add_command(create_pyinstaller_spec, "pyinstaller")

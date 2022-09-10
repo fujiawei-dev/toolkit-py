@@ -9,6 +9,7 @@ v1.5..10 (2022-09-09)
     - Create a pyinstaller spec file.
     - Generate similar files or directories according to the specified pattern.
     - Soguo image hosting support.
+    - Replace online image url to local image path.
 
 v1.5..9 (2022-09-02)
 
