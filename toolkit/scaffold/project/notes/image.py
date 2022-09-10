@@ -6,34 +6,43 @@ import click
 
 from toolkit.provider.image_hosting import download_image
 
+# 网络图片正则表达式
 IMAGE_URL_PATTERN = re.compile(r"!\[.*?\]\((https?://.*?)\)")
 
+# 图片正则表达式
+IMAGE_URI_PATTERN = re.compile(r"!\[.*?\]\((.*?)\)")
 
-def replace_image_url_from_file(file_path: str, images_path: str) -> bool:
+
+def replace_image_uri_from_file(file_path: str, images_path: str) -> bool:
     with open(file_path, "r", encoding="utf-8") as f:
         content = f.read()
 
-    urls = IMAGE_URL_PATTERN.findall(content)
+    uris: list[str] = IMAGE_URI_PATTERN.findall(content)
 
-    if urls and not os.path.exists(images_path):
+    if uris and not os.path.exists(images_path):
         os.makedirs(images_path, exist_ok=True)
 
-    for url in urls:
-        image_path = os.path.join(images_path, os.path.basename(url))
-        download_image(url, image_path)
+    for uri in uris:
+        image_path = os.path.join(images_path, os.path.basename(uri))
+
+        if uri.startswith("http"):  # 网络图片
+            download_image(uri, image_path)
+        else:  # 本地图片
+            os.rename(os.path.join(os.path.dirname(file_path), uri), image_path)
+
         content = content.replace(
-            url,
+            uri,
             os.path.relpath(
                 image_path,
                 os.path.dirname(file_path),
             ).replace("\\", "/"),
         )
 
-    if urls:
+    if uris:
         with open(file_path, "w", encoding="utf-8", newline="\n") as f:
             f.write(content)
 
-    return bool(urls)
+    return bool(uris)
 
 
 @click.command(
@@ -56,7 +65,7 @@ def replace_image_url_from_file(file_path: str, images_path: str) -> bool:
 def offline_images(workspace_path, article_path):
     for item in Path(article_path).rglob("*.md"):
         if item.is_file():
-            if replace_image_url_from_file(
+            if replace_image_uri_from_file(
                 item.as_posix(),
                 os.path.join(
                     workspace_path,
