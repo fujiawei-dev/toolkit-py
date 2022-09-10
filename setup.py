@@ -61,6 +61,7 @@ setup(
             "mirror=toolkit.scaffold.mirror.cli:main",
             "config=toolkit.scaffold.config.cli:main",
             "project=toolkit.scaffold.project.cli:main",
+            "repeat=toolkit.scaffold.repeat.cli:main",
             "gua=toolkit.cli:generate_user_agent_command",
             "upsfortypora=toolkit.cli:ups_for_typora_command",
         ],

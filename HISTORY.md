@@ -7,6 +7,7 @@ v1.5..10 (2022-09-09)
     - Improve the way note headers are regenerated.
 - Added
     - Create a pyinstaller spec file.
+    - Generate similar files or directories according to the specified pattern.
 
 v1.5..9 (2022-09-02)
 
