@@ -17,6 +17,7 @@ def replace_image_uri_from_file(file_path: str, images_path: str) -> bool:
     with open(file_path, "r", encoding="utf-8") as f:
         content = f.read()
 
+    updated = False
     uris: list[str] = IMAGE_URI_PATTERN.findall(content)
 
     if uris and not os.path.exists(images_path):
@@ -28,21 +29,24 @@ def replace_image_uri_from_file(file_path: str, images_path: str) -> bool:
         if uri.startswith("http"):  # 网络图片
             download_image(uri, image_path)
         else:  # 本地图片
-            os.rename(os.path.join(os.path.dirname(file_path), uri), image_path)
+            old_image_path = os.path.join(os.path.dirname(file_path), uri)
+            if os.path.normpath(old_image_path) != os.path.normpath(image_path):
+                os.rename(old_image_path, image_path)
 
-        content = content.replace(
-            uri,
-            os.path.relpath(
-                image_path,
-                os.path.dirname(file_path),
-            ).replace("\\", "/"),
-        )
+        new_uri = os.path.relpath(
+            image_path,
+            os.path.dirname(file_path),
+        ).replace("\\", "/")
 
-    if uris:
+        if new_uri != uri:
+            updated = True
+            content = content.replace(uri, new_uri)
+
+    if updated:
         with open(file_path, "w", encoding="utf-8", newline="\n") as f:
             f.write(content)
 
-    return bool(uris)
+    return updated
 
 
 @click.command(
