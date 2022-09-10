@@ -3,6 +3,7 @@ import re
 from pathlib import Path
 
 import click
+import requests
 
 from toolkit.provider.image_hosting import download_image
 
@@ -27,11 +28,27 @@ def replace_image_uri_from_file(file_path: str, images_path: str) -> bool:
         image_path = os.path.join(images_path, os.path.basename(uri))
 
         if uri.startswith("http"):  # 网络图片
-            download_image(uri, image_path)
+            try:
+                download_image(uri, image_path)
+            except requests.exceptions.RequestException:
+                click.secho("[x] ---------------------------------", fg="red")
+                click.secho(f"[x] download image failed: {uri}", fg="red")
+                click.secho(f"[x] original markdown file: {file_path}", fg="red")
+                click.secho("[x] ---------------------------------", fg="red")
+                return False
+
         else:  # 本地图片
             old_image_path = os.path.join(os.path.dirname(file_path), uri)
-            if os.path.normpath(old_image_path) != os.path.normpath(image_path):
-                os.rename(old_image_path, image_path)
+            old_image_path = os.path.normpath(old_image_path)
+            if old_image_path != os.path.normpath(image_path):
+                if not os.path.exists(old_image_path):
+                    click.secho("[x] -------------------------------", fg="red")
+                    click.secho(f"[x] image not exists: {old_image_path}", fg="red")
+                    click.secho(f"[x] original markdown file: {file_path}", fg="red")
+                    click.secho("[x] -------------------------------", fg="red")
+                    return False
+                else:
+                    os.rename(old_image_path, image_path)
 
         new_uri = os.path.relpath(
             image_path,
@@ -70,7 +87,7 @@ def offline_images(workspace_path, article_path):
     for item in Path(article_path).rglob("*.md"):
         if item.is_file():
             if replace_image_uri_from_file(
-                item.as_posix(),
+                str(item),
                 os.path.join(
                     workspace_path,
                     "assets",
