@@ -56,11 +56,14 @@ def main(
 ):
     for i in range(start, end, step):
         item = Path(destination) / (pattern % i)
+        if item.exists():
+            continue
+
         if mkdir:
             item.mkdir(parents=True, exist_ok=True)
-        elif not item.exists():
+        else:
             with open(item, "w", encoding="utf-8", newline="\n") as f:
-                f.write(content)
+                f.write(content.strip() + "\n")
 
 
 if __name__ == "__main__":
