@@ -1,6 +1,6 @@
 # History
 
-v1.5..10 (2022-09-09)
+v1.5.10 (2022-09-09)
 
 - Updated
     - Improved the directory structure of the notes project.
@@ -11,7 +11,7 @@ v1.5..10 (2022-09-09)
     - Soguo image hosting support.
     - Replace online image url to local image path.
 
-v1.5..9 (2022-09-02)
+v1.5.9 (2022-09-02)
 
 - Added Qt6 QML example template.
 - Extract the titles of all articles from the folder as the table of contents.
