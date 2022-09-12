@@ -57,12 +57,13 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "toolkit=toolkit.cli:main",
-            "mirror=toolkit.scaffold.mirror.cli:main",
+            "article=toolkit.scaffold.project.notes.article:create_article",  # shortcut
             "config=toolkit.scaffold.config.cli:main",
+            "gua=toolkit.cli:generate_user_agent_command",
+            "mirror=toolkit.scaffold.mirror.cli:main",
             "project=toolkit.scaffold.project.cli:main",
             "repeat=toolkit.scaffold.repeat.cli:main",
-            "gua=toolkit.cli:generate_user_agent_command",
+            "toolkit=toolkit.cli:main",
             "upsfortypora=toolkit.cli:ups_for_typora_command",
         ],
     },

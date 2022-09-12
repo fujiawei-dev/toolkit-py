@@ -82,27 +82,29 @@ def render_article_content(
     return article_content.strip() + "\n"
 
 
-@click.command(help="Create a new article.")
-@click.option(
-    "--article-path",
-    "-p",
-    type=click.STRING,
-    required=True,
-    help="The path of the article or articles folder.",
+@click.command(
+    help="""
+    Create a new article or add a header(s) to the article(s) in the workspace path.
+
+    article-path: The path of the article to be created or updated
+                    which relative to the workspace path.
+    """
 )
 @click.option(
     "--workspace-path",
+    "-w",
     type=click.STRING,
     default=os.getcwd(),
     help="The path of the workspace.",
 )
-@click.option("--header-only", is_flag=True, help="Only create the header.")
+@click.option("--header-only", "-o", is_flag=True, help="Only create the header.")
+@click.argument("article-path", type=click.STRING, required=True, nargs=1)
 @click.pass_context
 def create_article(
     ctx: click.Context,
-    article_path: str,
     workspace_path: str,
     header_only: bool,
+    article_path: str,
 ):
     if not os.path.exists(article_path) or header_only:
         if header_only:
@@ -198,3 +200,9 @@ def create_article(
                 ignored_items=",".join(["README.md"]),
                 overwrite=False,
             )
+
+
+if __name__ == "__main__":
+    import sys
+
+    sys.exit(create_article())  # pragma: no cover
