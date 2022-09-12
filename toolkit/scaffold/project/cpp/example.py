@@ -14,7 +14,7 @@ class ExampleContext(BaseModel):
 
 
 create_example = generate_create_project_command(
-    command_help="Create a cpp qt5 qml example project scaffold.",
+    command_help="Create a cpp example project scaffold.",
     template_paths=TEMPLATE_CPP_PATH / "example",
     raw_user_input_context=USER_INPUT_CONTEXT
     | ExampleContext().dict(exclude_none=True),
