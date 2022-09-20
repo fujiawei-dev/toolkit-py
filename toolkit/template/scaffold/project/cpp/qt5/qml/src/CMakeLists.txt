@@ -46,13 +46,6 @@ configure_file(
         NEWLINE_STYLE LF
 )
 
-configure_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/pack/inno_setup.ini
-        ${CMAKE_CURRENT_SOURCE_DIR}/pack/inno_setup.iss
-        @ONLY
-        NEWLINE_STYLE LF
-)
-
 # Compile Typescript
 # npm install -g typescript
 

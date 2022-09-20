@@ -18,7 +18,7 @@ def generate_create_project_command(
     user_input_context_hook: Callable[[dict], dict] = None,
     project_context: dict = None,
     ignored_fields: list = None,
-    editors: list = None,
+    editors: Union[list, str] = None,
 ) -> click.Command:
     """
     Generate a click command that can be used to create a project scaffold.
@@ -97,15 +97,21 @@ def generate_create_project_command(
             launch_editor or read_user_yes_no("Launch editor?", "yes")
         ):
             click.edit(
-                editor=read_user_choice(
-                    "Which editor to use?",
-                    editors
-                    or [
-                        "code",
-                        "clion",
-                        "goland",
-                        "pycharm",
-                    ],
+                editor=editors
+                if isinstance(editors, str)
+                else (
+                    editors[0]
+                    if len(editors) == 1
+                    else read_user_choice(
+                        "Which editor to use?",
+                        editors
+                        or [
+                            "code",
+                            "clion",
+                            "goland",
+                            "pycharm",
+                        ],
+                    )
                 ),
                 filename=project_path,
                 require_save=False,
