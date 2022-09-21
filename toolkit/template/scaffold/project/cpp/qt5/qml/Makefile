@@ -30,13 +30,20 @@ BUILD_DIR = cmake-build-release-${QT_TOOL_VERSION}
 
 dist: dist-copy dist-deployqt dist-setup
 
-dist-copy:
+dist-clean:
+	-rm -r ${DIST_DIR}
+	-mkdir ${DIST_DIR}
+	-rm -r ${BIN_DIR}
+	-mkdir ${BIN_DIR}
+
+dist-copy: dist-clean
 	cp ${BUILD_DIR}/${EXECUTABLE} ${DIST_DIR}/${EXECUTABLE}
 	cp -r lib/*.dll ${DIST_DIR}
 
 dist-deployqt:
-	${WINDEPLOYQT}
+	pwsh -Command '${WINDEPLOYQT}'
+	mv ${DIST_DIR}/${EXECUTABLE} ${BIN_DIR}/${EXECUTABLE}
 
 dist-setup:
-	enigmavbconsole pack/enigma_setup.evb
-	iscc pack/inno_setup.iss
+	enigmavbconsole installer/enigma_setup.evb
+	iscc installer/inno_setup.iss
