@@ -22,7 +22,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wall -O2")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -O2")
 
-{%- if not x64_arch %}
+{% if not x64_arch -%}
 if (WIN32)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
@@ -102,14 +102,14 @@ FILE(
 )
 
 add_executable(
-    sod
+    ${PROJECT_NAME}
     ${SRC_LIST}
     ${QML_FILES}
     logo.rc
 )
 
 target_link_libraries(
-        {{ project_slug.snake_case }}
+        ${PROJECT_NAME}
         Qt5::Core
         Qt5::Gui
         Qt5::Widgets

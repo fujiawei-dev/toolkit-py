@@ -18,5 +18,5 @@ create_example = generate_create_project_command(
     template_paths=TEMPLATE_CPP_PATH / "example",
     raw_user_input_context=USER_INPUT_CONTEXT
     | ExampleContext().dict(exclude_none=True),
-    editors=["clion", "code"],
+    editors="clion",
 )

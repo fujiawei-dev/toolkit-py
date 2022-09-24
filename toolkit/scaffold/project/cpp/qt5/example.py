@@ -57,7 +57,7 @@ create_example_qml = generate_create_project_command(
     raw_user_input_context=USER_INPUT_CONTEXT
     | ExampleContext().dict(exclude_none=True),
     user_input_context_hook=example_user_input_context_hook,
-    editors=["clion", "code"],
+    editors="clion",
 )
 
 create_example.add_command(create_example_qml, "qml")
@@ -68,7 +68,7 @@ create_example_console = generate_create_project_command(
     raw_user_input_context=USER_INPUT_CONTEXT
     | ExampleContext(enable_3rd_module=False).dict(exclude_none=True),
     user_input_context_hook=example_user_input_context_hook,
-    editors=["clion", "code"],
+    editors="clion",
 )
 
 create_example.add_command(create_example_console, "console")

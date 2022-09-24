@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
 
   engine.rootContext()->setContextProperty("core", core);
 
-  const QUrl url(QStringLiteral("qrc:/main.qml"));
+  const QUrl url(QStringLiteral("qrc:/frontend/content/main.qml"));
   QObject::connect(
       &engine, &QQmlApplicationEngine::objectCreated,
       &app, [url](QObject *obj, const QUrl &objUrl) {

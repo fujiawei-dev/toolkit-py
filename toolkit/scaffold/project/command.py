@@ -48,22 +48,10 @@ def generate_create_project_command(
         context_settings={"ignore_unknown_options": True},
     )
     @click.option(
-        "--project-path",
-        type=click.Path(file_okay=False),
-        default=".",
-        help="The path to the final generated project.",
-    )
-    @click.option(
         "--ignored-items",
         type=click.STRING,
         default="",
         help="The items to ignore when generating the project scaffold.",
-    )
-    @click.option(
-        "--overwrite",
-        "-y",
-        is_flag=True,
-        help="Overwrite existing files.",
     )
     @click.option(
         "--launch-editor",
@@ -71,12 +59,28 @@ def generate_create_project_command(
         is_flag=True,
         help="Launch the editor after generating the project.",
     )
+    @click.option("--overwrite", "-y", is_flag=True, help="Overwrite existing files.")
+    @click.argument("project-path", type=click.Path(file_okay=False), default=".")
     def create_project(
-        project_path: str,
         ignored_items: str,
-        overwrite: bool,
         launch_editor: bool,
+        overwrite: bool,
+        project_path: str,
     ):
+        """
+        Create a project scaffold.
+
+        Args:
+            ignored_items: The items to ignore when generating the project scaffold.
+            launch_editor: Whether to launch the editor after generating the project.
+            overwrite: Whether to overwrite existing files.
+            project_path: The path to the project to create.
+
+        Examples:
+            Create a project scaffold:
+
+            $ project <language> <type> <project-path>
+        """
         generate_rendered_project(
             template_paths=template_paths,
             project_path=project_path,
