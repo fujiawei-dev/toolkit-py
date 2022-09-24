@@ -9,7 +9,7 @@ Window {
     height: 480
     title: qsTr("{{ project_slug.words_capitalized }}")
 
-    {{ project_slug.pascal_case }} {
+    {{ project_slug.pascal_case }}Custom {
 
     }
 

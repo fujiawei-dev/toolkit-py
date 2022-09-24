@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>{{ project_slug.pascal_case }}.qml</file>
+        <file>{{ project_slug.pascal_case }}Custom.qml</file>
     </qresource>
 </RCC>
