@@ -7,10 +7,6 @@ import chardet
 import click
 from binaryornot.check import is_binary
 
-from toolkit.logger import logging
-
-log = logging.getLogger(__name__)
-
 # 不可见字符
 INVISIBLE_CHARACTERS = ("\xa0", "\x0b", "\x0c", "\u200b", "\u3000")
 
@@ -54,7 +50,7 @@ def change_encoding(
     middlewares: list[Callable] = None,
 ):
     if dst and os.path.exists(dst):
-        log.error(f"{dst} already exists")
+        click.echo(f"{dst} already exists")
         return
 
     if not is_binary_file(src):
@@ -62,20 +58,32 @@ def change_encoding(
         encoding = encoding or "utf-8"
 
         with open(src, "rb+") as fp:
-            content = fp.read().replace(b"\r\n", b"\n")  # CRLF -> LF
+            modification = []
+            raw_content = fp.read()
+            lf_content = raw_content.replace(b"\r\n", b"\n")  # CRLF -> LF
 
-            if not (original_encoding := chardet.detect(content)["encoding"]):
+            if raw_content != lf_content:
+                modification.append("CRLF -> LF")
+
+            if not (original_encoding := chardet.detect(lf_content)["encoding"]):
                 original_encoding = "ascii"
 
-            if original_encoding not in {"utf-8", "ascii"}:
-                text = content.decode(original_encoding)
+            if original_encoding not in {encoding, "ascii"}:
+                modification.append(f"{original_encoding} -> {encoding}")
 
-                if middlewares:
-                    for middleware in middlewares:
-                        text = middleware(text)
+            lf_text = lf_content.decode(original_encoding)
+            middlewares_text = lf_text
 
-                content = text.encode(encoding)
+            if middlewares:
+                for middleware in middlewares:
+                    middlewares_text = middleware(middlewares_text)
 
+            if lf_text != middlewares_text:
+                modification.append("use middlewares")
+
+            content = middlewares_text.encode(encoding)
+
+            if modification:
                 if dst == src:
                     fp.seek(0)
                     fp.truncate()
@@ -83,7 +91,7 @@ def change_encoding(
                 else:
                     dst.write_bytes(content)
 
-                log.info(f"{src.name}: {original_encoding} -> {encoding}")
+                click.echo(f"{src.name}: {', '.join(modification)}")
 
 
 def change_all_files_encoding(

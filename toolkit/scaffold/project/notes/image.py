@@ -1,5 +1,6 @@
 import os
 import re
+import shutil
 from pathlib import Path
 
 import click
@@ -48,7 +49,7 @@ def replace_image_uri_from_file(file_path: str, images_path: str) -> bool:
                     click.secho("[x] -------------------------------", fg="red")
                     return False
                 else:
-                    os.rename(old_image_path, image_path)
+                    shutil.move(old_image_path, image_path)
 
         new_uri = os.path.relpath(
             image_path,

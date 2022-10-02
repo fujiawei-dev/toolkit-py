@@ -96,7 +96,7 @@ def print_custom_aliases(
         click.echo("Copied to clipboard.")
     elif edit:
         filename = tempfile.mktemp(suffix=".sh" if bash else ".ps1", prefix="alias_")
-        with open(filename, "w", encoding="utf-8") as fp:
+        with open(filename, "w", encoding="utf-8", newline="\n") as fp:
             fp.write(message)
         click.edit(filename=filename, editor=EDITOR)
     else:
