@@ -13,5 +13,5 @@ create_web = generate_create_project_command(
     generated_path_hook=golang_generated_path_hook,
     raw_user_input_context=USER_INPUT_CONTEXT | GOLANG_USER_INPUT_CONTEXT,
     user_input_context_hook=golang_user_input_context_hook,
-    editors=["goland", "code"],
+    editors=["goland"],
 )

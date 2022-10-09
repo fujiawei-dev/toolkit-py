@@ -151,8 +151,9 @@ def create_article(
             if "." not in filename:
                 article_path += ".md"
 
-            with open(article_path, "w", encoding="utf-8", newline="\n") as fp:
-                fp.write(render_article_content(article_path, workspace_path))
+            if not os.path.exists(article_path):
+                with open(article_path, "w", encoding="utf-8", newline="\n") as fp:
+                    fp.write(render_article_content(article_path, workspace_path))
 
         if header_only:
             return

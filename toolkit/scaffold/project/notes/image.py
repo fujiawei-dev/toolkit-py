@@ -51,10 +51,14 @@ def replace_image_uri_from_file(file_path: str, images_path: str) -> bool:
                 else:
                     shutil.move(old_image_path, image_path)
 
-        new_uri = os.path.relpath(
-            image_path,
-            os.path.dirname(file_path),
-        ).replace("\\", "/")
+        new_uri = (
+            os.path.relpath(
+                image_path,
+                os.path.dirname(file_path),
+            )
+            .replace("\\", "/")
+            .replace(" ", "%20")
+        )
 
         if new_uri != uri:
             updated = True
