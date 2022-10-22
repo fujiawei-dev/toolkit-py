@@ -1,41 +1,19 @@
 """Tests for `{{ project_slug.snake_case }}` package."""
+from typer.testing import CliRunner
 
-import click
-from click.testing import CliRunner
-from {{project_slug.snake_case}} import __version__, cli
+from {{project_slug.snake_case}}.cli import DEFAULT_CONFIG_FILE, __version__, app
 
 
-def test_command_line_interface():
-    """Test the CLI."""
-    runner = CliRunner()
+runner = CliRunner()
 
-    version_result = runner.invoke(cli.main, ["{%- if not enable_click_group -%}--{%- endif -%}version"])
-    assert version_result.exit_code == 0
-    assert  version_result.stdout.strip()== __version__
 
-    help_result = runner.invoke(cli.main, ["--help"])
-    assert help_result.exit_code == 0
-
-def test_cli(cli_runner):
-    @click.command()
-    @click.argument("name")
-    def hello(name):
-        click.echo("Hello %s!" % name)
-
-    result = cli_runner.invoke(hello, ["Peter"])
+def test_version():
+    result = runner.invoke(app, ["version"])
     assert result.exit_code == 0
-    assert result.output == "Hello Peter!\n"
+    assert result.stdout.strip() == __version__
 
 
-def test_fixture(isolated_cli_runner):
-    @click.command()
-    @click.argument("f", type=click.File())
-    def cat(f):
-        click.echo(f.read())
-
-    with open("hello.txt", "w") as f:
-        f.write("Hello World!")
-
-    result = isolated_cli_runner.invoke(cat, ["hello.txt"])
+def test_edit():
+    result = runner.invoke(app, ["edit"])
     assert result.exit_code == 0
-    assert result.output == "Hello World!\n"
+    assert DEFAULT_CONFIG_FILE.exists()

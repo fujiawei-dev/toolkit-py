@@ -26,7 +26,10 @@ def replace_image_uri_from_file(file_path: str, images_path: str) -> bool:
         os.makedirs(images_path, exist_ok=True)
 
     for uri in uris:
-        image_path = os.path.join(images_path, os.path.basename(uri))
+        image_path = os.path.join(
+            images_path,
+            os.path.basename(uri.replace("%20", " ")),
+        )
 
         if uri.startswith("http"):  # 网络图片
             try:
@@ -39,7 +42,10 @@ def replace_image_uri_from_file(file_path: str, images_path: str) -> bool:
                 return False
 
         else:  # 本地图片
-            old_image_path = os.path.join(os.path.dirname(file_path), uri)
+            old_image_path = os.path.join(
+                os.path.dirname(file_path),
+                uri.replace("%20", " "),
+            )
             old_image_path = os.path.normpath(old_image_path)
             if old_image_path != os.path.normpath(image_path):
                 if not os.path.exists(old_image_path):

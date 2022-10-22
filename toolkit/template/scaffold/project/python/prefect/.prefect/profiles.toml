@@ -1,0 +1,4 @@
+active = "default"
+
+[profiles.default]
+PREFECT_API_URL = "http://192.168.0.18:10018/api"

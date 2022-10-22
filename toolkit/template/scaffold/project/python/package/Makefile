@@ -69,7 +69,6 @@ clean-build: ## remove build artifacts
 	rm -fr *.egg-info/
 
 clean-pyc: ## remove Python file artifacts
-	rm -fr __pycache__/
 	find . -name '*.pyc' -exec rm -f {} +
 	find . -name '*.pyo' -exec rm -f {} +
 	find . -name '*~' -exec rm -f {} +
@@ -77,11 +76,11 @@ clean-pyc: ## remove Python file artifacts
 
 clean-test: ## remove test and coverage artifacts
 	rm -fr .tox/
-	rm -f .coverage
-	rm -f coverage.xml
-	rm -fr htmlcov/
 	rm -fr .pytest_cache/
-	-rm -fr junit/
+	find . -name '.coverage' -exec rm -fr {} +
+	find . -name 'coverage.xml' -exec rm -fr {} +
+	find . -name 'junit' -exec rm -fr {} +
+	find . -name 'htmlcov' -exec rm -fr {} +
 
 release: dist ## package and upload a release
 	twine upload dist/*

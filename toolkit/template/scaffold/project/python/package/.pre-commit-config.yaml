@@ -6,11 +6,14 @@ repos:
     hooks:
       - id: check-added-large-files
       - id: check-json
+      - id: pretty-format-json
+        args: ['--no-ensure-ascii', '--autofix']
       - id: check-merge-conflict
       - id: check-symlinks
       - id: check-toml
       - id: check-xml
       - id: check-yaml
+        args: [--allow-multiple-documents]
       - id: debug-statements
       - id: detect-private-key
       - id: end-of-file-fixer
@@ -19,8 +22,6 @@ repos:
       - id: mixed-line-ending
         args: ['--fix=lf']
         description: Forces to replace line ending by the UNIX 'lf' character.
-      - id: pretty-format-json
-        args: ['--no-ensure-ascii']
       - id: requirements-txt-fixer
       - id: sort-simple-yaml
       - id: trailing-whitespace

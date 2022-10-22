@@ -2,8 +2,19 @@
 
 from pathlib import Path
 
-DEFAULT_CONFIG_FILE = (
-    Path.home() / ".config" / "{{ project_slug.kebab_case }}" / "config.yaml"
-)
+from .settings import Settings
 
-DEFAULT_CONFIG_FILE.parent.mkdir(parents=True, exist_ok=True)
+__all__ = [
+    "DEFAULT_CONFIG_FILE",
+    "Settings",
+    "settings",
+]
+
+DEFAULT_CONFIG_DIR = Path.home() / ".config" / "{{ project_slug.kebab_case }}"
+
+if not DEFAULT_CONFIG_DIR.exists():
+    DEFAULT_CONFIG_DIR.mkdir(parents=True)
+
+DEFAULT_CONFIG_FILE = DEFAULT_CONFIG_DIR / "config.yaml"
+
+settings = Settings()

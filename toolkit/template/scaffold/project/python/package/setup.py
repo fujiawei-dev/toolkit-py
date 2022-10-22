@@ -2,8 +2,9 @@
 
 import os.path
 
-import versioneer
 from setuptools import find_packages, setup
+
+import versioneer
 
 with open("requirements.txt") as install_requires_file:
     install_requires = install_requires_file.read().splitlines()
@@ -38,7 +39,7 @@ setup(
     long_description=readme + "\n\n" + history,
     long_description_content_type="text/markdown",
     keywords="{{ project_slug.kebab_case }}",
-    {% if open_source -%}
+    {%- if open_source %}
     license="MIT license",
     {%- endif %}
     packages=find_packages(
@@ -59,7 +60,7 @@ setup(
         "Environment :: Console",
         "Intended Audience :: Developers",
         "Operating System :: OS Independent",
-        {% if open_source -%}
+        {%- if open_source %}
         "License :: OSI Approved :: MIT License",
         {%- endif %}
         "Programming Language :: Python :: 3",
