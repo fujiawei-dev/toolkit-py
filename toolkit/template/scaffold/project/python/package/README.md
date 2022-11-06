@@ -5,11 +5,13 @@
 [![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/{{ github_username }}/{{ project_slug.kebab_case }}/blob/main/.pre-commit-config.yaml)
 [![License](https://img.shields.io/pypi/l/{{ project_slug.kebab_case }})](https://github.com/{{ github_username }}/{{ project_slug.kebab_case }}/blob/main/LICENSE)
 [![Python Test](https://github.com/{{ github_username }}/{{ project_slug.kebab_case }}/actions/workflows/python-test.yml/badge.svg)](https://github.com/{{ github_username }}/{{ project_slug.kebab_case }}/actions/workflows/python-test.yml)
+{% else %}
 {%- endif %}
 {%- if enable_publish_action -%}
 [![Latest Version](https://img.shields.io/pypi/v/{{ project_slug.kebab_case }})](https://pypi.org/project/{{ project_slug.kebab_case }}/)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/{{ project_slug.kebab_case }})](https://pypi.python.org/pypi/{{ project_slug.kebab_case }})
 [![Python Publish](https://github.com/{{ github_username }}/{{ project_slug.kebab_case }}/actions/workflows/python-publish.yml/badge.svg)](https://github.com/{{ github_username }}/{{ project_slug.kebab_case }}/actions/workflows/python-publish.yml)
+{%- else %}
 {%- endif %}
 > {{ project_short_description }}
 

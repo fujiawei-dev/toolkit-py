@@ -3,7 +3,7 @@ import typer
 
 from {{project_slug.snake_case}} import __version__
 from {{project_slug.snake_case}}.config import DEFAULT_CONFIG_FILE
-from {{project_slug.snake_case}}.config.runtime import EDITOR
+from {{project_slug.snake_case}}.config.platform import EDITOR
 from {{project_slug.snake_case}}.config.serialize import serialize_to_yaml_file
 from {{project_slug.snake_case}}.config.settings import Settings
 
@@ -19,7 +19,7 @@ def version():
 @app.command(help="Edit the config file.")
 def edit(
     overwrite: bool = typer.Option(
-        True,
+        False,
         "--overwrite",
         "-o",
         help="Overwrite the config file.",
